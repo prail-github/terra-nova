@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>P.Rail - Terra-Nova — Play</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta name="author" content="P.Rail">
+  <link rel="stylesheet" href="style.css">
+  
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="interpreter/roboto.css">
+<link rel="stylesheet" type="text/css" href="interpreter/jquery.powertip.css">
+<link rel="stylesheet" type="text/css" href="interpreter/toastr.css">
+<link rel="stylesheet" type="text/css" href="interpreter/vex.css">
+<link rel="stylesheet" type="text/css" href="interpreter/vex-theme-plain.css">
+
+<link rel="stylesheet" type="text/css" href="interpreter/haven.css">
+<link rel="stylesheet" type="text/css" href="interpreter/vorple.css">
+  
+ </head>
+<body class="play">
+<div class="container">
+<div class="coverimage"><span><a href="Cover.jpg"><img src="Small Cover.jpg" border="1"></a></span></div>
+<div class="links">
+<div class="smalltitle">Terra-Nova</div>
+<ul>
+<li><a href="index.html">Home page</a></li>
+</ul>
+</div>
+
+<div id="gameport">
+<main id="vorple">
+<div id="loader">
+<h2 id="loader-message">Loading scripts</h2>
+<div id="spinner">V</div>
+</div>
+</main>
+
+<script src="interpreter/vorple.min.js"></script>
+<script src="interpreter/Terra-Nova.gblorb.js"></script>
+
+<script>
+if( location.protocol === "file:" ) {
+$( 'body' )
+.empty()
+.html( "<div><p>You are currently viewing the page from the filesystem. " +
+"Unfortunately Vorple requires that the page is viewed through " +
+"the HTTP protocol, that is, you'll need to either upload it " +
+"to the Internet or install a local server.</p>" +
+'<p>See <a href="https://vorple-if.com/docs/localhost" style="color:#dde">vorple-if.com/docs/localhost</a> ' +
+"for more information.</p>" +
+"</div>" )
+.find( 'div' )
+.css({
+margin: "2em",
+padding: "1em",
+color: "#fff",
+backgroundColor: "rgb(137, 50, 58)",
+border: "3px solid gray"
+});
+
+throw new Error( "Vorple can't be run from the filesystem" );
+}
+
+$( function() {
+$( '.container, .interpretercredit' ).remove();
+});
+
+vorple.options = {
+autosave: false,
+engineColors: false,
+story: ""
+};
+
+vorple.debug.off();
+vorple.init();
+
+</script>
+<script>
+// Create a hidden canvas element at page load
+const hiddenCanvas = document.createElement('canvas');
+hiddenCanvas.style.display = 'none';
+document.body.appendChild(hiddenCanvas);  
+
+const hiddenCtx = hiddenCanvas.getContext('2d');
+
+function setBackgroundColorAndTextColor(rgb) {
+// Ensure the RGB value is a hexadecimal color code
+if (!rgb.startsWith('#')) {
+console.error('Invalid RGB value. Must start with "#"');
+return;
+}
+
+// Extract the hexadecimal color code
+const hexCode = rgb.substring(1);
+
+// Convert hexadecimal color code to RGB values
+const red = parseInt(hexCode.substring(0, 2), 16);
+const green = parseInt(hexCode.substring(2, 4), 16);
+const blue = parseInt(hexCode.substring(4, 6), 16);
+
+// Calculate luminance for contrast determination
+const luminance = (0.299 * red + 0.587 * green + 0.114 * blue) / 255;
+
+// Choose contrasting text color based on luminance
+let textColor = luminance > 0.5 ? "black" : "white";
+
+// Additional logic for more sophisticated color choices
+if (luminance > 0.7) {
+// For very light backgrounds, consider a darker shade of black
+textColor = "#333333";
+} else if (luminance < 0.3) {
+// For very dark backgrounds, consider a lighter shade of white
+textColor = "#cccccc";
+}
+
+// Set background and text colors
+document.getElementById('vorple').style.backgroundColor = rgb;
+let bs = document.getElementById('lineinput-field');
+if ( bs != null ) {
+bs.style.color = textColor;
+bs.style.fontFamily = "Georgia";
+}
+
+bs = document.getElementById('lineinput-prefix');
+if ( bs != null ) {
+bs.style.backgroundColor = rgb;
+bs.style.color = textColor;
+bs.style.fontFamily = "Georgia";
+}
+
+document.body.style.color = textColor;
+document.body.style.backgroundColor = rgb;
+}
+
+function getMostCommonRGB(image) {
+// Set canvas dimensions to match the image
+hiddenCanvas.width = image.width;
+hiddenCanvas.height = image.height;
+
+// Draw the image onto the hidden canvas
+hiddenCtx.drawImage(image, 0, 0);
+
+// Get the image data
+const imageData = hiddenCtx.getImageData(0, 0, hiddenCanvas.width, hiddenCanvas.height);
+const data = imageData.data;
+
+// Create a map to store RGB values and their frequencies
+const rgbMap = {};
+
+// Iterate over each pixel and increment the frequency of its RGB value
+for (let i = 0; i < data.length; i += 4) {
+const r = data[i];
+const g = data[i + 1];
+const b = data[i + 2];
+const key = `${r},${g},${b}`;
+rgbMap[key] = (rgbMap[key] || 0) + 1;
+}
+
+// Find the most frequent RGB value
+let mostCommonRGB = null;
+let maxFrequency = 0;
+for (const key in rgbMap) {
+if (rgbMap[key] > maxFrequency) {
+mostCommonRGB = key;
+maxFrequency = rgbMap[key];
+}
+}
+
+let result = `#${mostCommonRGB.split(',').map(Number).map(v => v.toString(16).padStart(2, '0')).join('')}`;
+return result;
+}
+
+function updateImage(src) {
+var sideWindow = document.getElementById('side_window');
+sideWindow.innerHTML = '<img src="' + src + ' "style="max-width:500px;">';
+
+const image = new Image();
+image.src = src;
+
+image.onload = () => {
+const mostCommonRGB = getMostCommonRGB(image);
+setBackgroundColorAndTextColor(mostCommonRGB);
+};
+}
+
+vorple.addEventListener('init', function() {
+var containerDiv = document.createElement('div');
+containerDiv.id = 'my_container';
+
+// move side_window inside container
+var sideWindow = document.createElement('div');
+sideWindow.id = 'side_window';
+
+// Move sideWindow & window0 into new container
+var window0 = document.getElementById('window0');
+
+containerDiv.appendChild(sideWindow);
+containerDiv.appendChild(window0);
+
+// move container inside output div
+var outputDiv = document.getElementById('output');
+outputDiv.appendChild(containerDiv);
+
+// Adjust CSS styles as needed for layout
+sideWindow.style.marginTop = '10px';
+sideWindow.style.paddingTop = '10px';
+sideWindow.style.paddingRight = '10px';
+
+containerDiv.style.height = '95vh';
+containerDiv.style.paddingTop = '10px';
+containerDiv.style.marginTop = '10px';
+containerDiv.style.display = 'grid';
+containerDiv.style.gridTemplateColumns = '500px 1fr';
+
+window0.style.overflowY= 'auto';
+window0.style.paddingTop = '10px';
+window0.style.paddingLeft = '10px';
+window0.style.marginTop = '10px';
+
+var playArea = document.getElementById('output');
+playArea.style.maxWidth = '1400px';
+
+document.body.style.fontFamily = "Georgia";
+document.body.style.fontSize = "14pt";
+});
+</script>
+</div>
+
+</div>
+<div class="interpretercredit"><a href="https://vorple-if.com">Vorple</a></div>
+</body>
+</html>
+
