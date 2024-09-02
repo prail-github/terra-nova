@@ -1,0 +1,30 @@
+complementary #bf7fceb #15121b
+complementary #1dffde2 #211e19
+complementary #3fdefda #262533
+complementary #7fddee1 #271e1f
+complementary #fefff9 #080607
+complementary #fefff1 #100e0f
+complementary #5a2512a5 #92a6a5
+complementary #200a04dc #dce0d2
+
+----------------------------------
+
+analogous #bfd776d #15121b
+analogous #1dff9e6 #211e19
+analogous #3edfbd5 #262533
+analogous #7f97f5d #271e1f
+analogous #fdfff8 #080607
+analogous #fdfff0 #100e0f
+analogous #5a21049b #92a6a5
+analogous #200b00dd #dce0d2
+
+----------------------------------
+
+triadic #bf5ffe8 #15121b
+triadic #1dffbe4 #211e19
+triadic #3edfbce #262533
+triadic #7dfe5da #271e1f
+triadic #fefff9 #080607
+triadic #fefff1 #100e0f
+triadic #5a012493 #92a6a5
+triadic #20040ad6 #dce0d2
