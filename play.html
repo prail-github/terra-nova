@@ -121,14 +121,44 @@ document.getElementById('vorple').style.backgroundColor = rgb;
 let bs = document.getElementById('lineinput-field');
 if ( bs != null ) {
 bs.style.color = textColor;
-bs.style.fontFamily = "Georgia";
+//bs.style.fontFamily = "Georgia";
 }
 
 bs = document.getElementById('lineinput-prefix');
 if ( bs != null ) {
 bs.style.backgroundColor = rgb;
 bs.style.color = textColor;
-bs.style.fontFamily = "Georgia";
+//bs.style.fontFamily = "Georgia";
+}
+
+bs = document.getElementById('output');
+if ( bs != null ) {
+bs.style.backgroundColor = rgb;
+bs.style.color = textColor;
+}
+
+bs = document.getElementById('my_container');
+if ( bs != null ) {
+bs.style.backgroundColor = rgb;
+bs.style.color = textColor;
+}
+
+bs = document.getElementById('side_window');
+if ( bs != null ) {
+bs.style.backgroundColor = rgb;
+bs.style.color = textColor;
+}
+
+bs = document.getElementById('window0');
+if ( bs != null ) {
+bs.style.backgroundColor = rgb;
+bs.style.color = textColor;
+}
+
+bs = document.querySelector('.status-line-container');
+if ( bs != null ) {
+bs.style.backgroundColor = rgb;
+bs.style.color = textColor;
 }
 
 document.body.style.color = textColor;
@@ -173,7 +203,7 @@ let result = `#${mostCommonRGB.split(',').map(Number).map(v => v.toString(16).pa
 return result;
 }
 
-function updateImage(src) {
+function updateImage(src, backgroundColor = 'default') {
 var sideWindow = document.getElementById('side_window');
 sideWindow.innerHTML = '<img src="' + src + ' "style="max-width:500px;">';
 
@@ -181,10 +211,60 @@ const image = new Image();
 image.src = src;
 
 image.onload = () => {
-const mostCommonRGB = getMostCommonRGB(image);
-setBackgroundColorAndTextColor(mostCommonRGB);
+let mostCommonRGB = getMostCommonRGB(image);
+if (backgroundColor != 'default' ) {
+mostCommonRGB = backgroundColor;   // override background color (rare)
+}
+const textColor = setBackgroundColorAndTextColor(mostCommonRGB);
 };
 }
+
+// These function all have to do with trying to RESTORE the interface after
+// the user types 'restore' ... it is still imperfect, but pretty good.
+var lastCmd;
+
+// Function to return the last command the user typed
+function getLastCommand() {
+let result = "none";
+if (lastCmd) {
+result = lastCmd;
+}
+//console.log("lastCmd:", result);
+return result;
+}
+
+var restoreRequested;
+
+// Function to return the last command the user typed
+function checkRestore() {
+let result = restoreRequested;
+restoreRequested = 'no';  // reset to not fire
+//console.log("checkRestore:", result);
+return (result && result == "yes");
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+// Attach an event listener to the document (or a parent element) for keydown events
+document.body.addEventListener('keydown', function(event) {
+// Check if the target of the event is the dynamically created input field
+const inputField = document.getElementById('lineinput-field');
+
+if (inputField && event.target === inputField) {
+// Check if the pressed key is 'Enter' (key code 13)
+if (event.key === 'Enter' || event.keyCode === 13) {
+//event.preventDefault();  // Prevent the default form submission
+
+// Log the value of the input field to the console
+//console.log("Line input value:", inputField.value);
+lastCmd = inputField.value;
+if ( lastCmd.toLowerCase() == "restore" || lastCmd.toLowerCase() == "undo" ) {
+restoreRequested = 'yes';
+}
+
+}
+}
+});
+});
 
 vorple.addEventListener('init', function() {
 var containerDiv = document.createElement('div');
@@ -223,9 +303,109 @@ window0.style.marginTop = '10px';
 var playArea = document.getElementById('output');
 playArea.style.maxWidth = '1400px';
 
-document.body.style.fontFamily = "Georgia";
+//document.body.style.fontFamily = "Georgia";
 document.body.style.fontSize = "14pt";
 });
+
+// All our images
+const imageArray = [
+'assembly-line-scale-1.jpg',
+'blackwood-portrait-3.jpg',
+'blast-off.gif',
+'blocked-tunnel-1.jpg',
+'blocked-tunnel-darker-new.jpg',
+'blocked-tunnel-darker.jpg',
+'bot-assembly-4.jpg',
+'caretaker-closeup-4.jpg',
+'crumbling-ruins.jpg',
+'cyborg-agony-1.jpg',
+'cyborg-blocks-your-path-3.jpg',
+'cyborg-hybrid-1.jpg',
+'dark-tunnel.jpg',
+'dead-game-over-1.jpg',
+'docking-bay-normal-hand.jpg',
+'docking-bay-robotic-hand.jpg',
+'drone-attack-9.jpg',
+'drones-appear-1.jpg',
+'embrace-harmony-poster-rotated-1.jpg',
+'equipment-storage-3.jpg',
+'foundry-1.jpg',
+'future-village-5.jpg',
+'future-village-n.jpg',
+'hiroshi-portrait-1.jpg',
+'horizon-east.jpg',
+'horizon-north.jpg',
+'horizon-northeast.jpg',
+'horizon-northwest.jpg',
+'horizon-south.jpg',
+'horizon-southwest.jpg',
+'horizon-up-6.jpg',
+'horizon-west.jpg',
+'kai-at-console-in-bay-1.jpg',
+'kai-captured-normal-hand.jpg',
+'kai-captured-robotic-hand.jpg',
+'kai-cyborg-5.jpg',
+'kai-in-orbit-normal-hand.jpg',
+'kai-in-orbit-robotic-hand.jpg',
+'kai-is-grabbed-33.jpg',
+'kai-modified-2.jpg',
+'kai-new-hand-3.jpg',
+'kai-on-belt-f.jpg',
+'kai-on-bridge-1.jpg',
+'lab-with-caretaker-e.jpg',
+'lab-without-caretaker.jpg',
+'ladder-down-5a.jpg',
+'ladder-up-8.jpg',
+'lander-fff.jpg',
+'lander-interior-5.jpg',
+'lander-museum-z.jpg',
+'lava-pit-1.jpg',
+'legacy-bay-1.jpg',
+'legacy-bridge-2.jpg',
+'legacy-deep-space-11a.jpg',
+'legacy-deploys-zephyr-1.jpg',
+'legacy-docking-approach-5.jpg',
+'legacy-leaves-earth-55.jpg',
+'legacy-orbits-terra-nova-aa.jpg',
+'okafor-portrait-1.jpg',
+'parachute-2.jpg',
+'portal-view-of-terra-nova-3.jpg',
+'quantum-projector-1.jpg',
+'restricted-hallway-1.jpg',
+'restricted-hallway-beams-1.jpg',
+'ruins-solar-glass-1.jpg',
+'ruins-solar-glass-2.jpg',
+'settlement-1.jpg',
+'shadow-beast-attacks-3.jpg',
+'shrine-5.jpg',
+'splash-4.jpg',
+'stein-portrait-2.jpg',
+'stone-tower-1.jpg',
+'stone-tower-interior-3.jpg',
+'sundown-1.jpg',
+'telescope-damaged-1.jpg',
+'tower-animation.gif',
+'tower-summit-4.jpg',
+'tunnel-2-beetle.jpg',
+'tunnel-2.jpg',
+'tunnel-3.jpg',
+'tunnel-beast-robot-3.jpg',
+'tunnel-beast-robot-freed-3.jpg',
+'unblocked-tunnel-b.jpg',
+'volcano-landscape-3.jpg',
+'well-1.jpg',
+'zephyrs-landing-ruins-6.jpg'
+];
+
+function preloadImages(imageFiles) {
+imageFiles.forEach(function(file) {
+const img = new Image();
+img.src = "img/" + file;
+});
+}
+
+console.error('Preloading images...');
+preloadImages(imageArray);
 </script>
 </div>
 
