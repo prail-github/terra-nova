@@ -1,0 +1,405 @@
+===============================================================================
+
+        Walkthrough for Terra Nova: The Mystery of Zephyr's Landing
+
+===============================================================================
+
+Updated: Nov 2, 2024
+Version: 1.0
+Contact: prail@yahoo.com
+
+CONTENTS
+--------
+
+1. Introduction
+2. Walkthrough
+3. Story Background
+
+VERSION HISTORY
+---------------
+
+1.0: Nov 1, 2024 (First Version)
+
+===============================================================================
+
+1.                              Introduction
+
+===============================================================================
+
+"Terra Nova: The Mystery of Zephyr's Landing" was begun in 2024 using Inform 7 
+with Vorple. The game begins in the abandoned ruins of Zephyr's Landing, a 
+failed colony on a far-away, Earth-like desert planet. You guide the 
+protagonist, Kai, through a story adventure where he explores the ruins and 
+discovers the shocking history of the settlement, and ultimately, the purpose 
+of his life.
+
+This game is more focused on storytelling than puzzles, though there are a few 
+to challenge traditional adventure gamers.  This walkthrough presents a typical
+path through the game; it's not necessarily the only one and there are many
+points where you can go wrong and end the game early. 
+
+The hints in the game take you a long way, so read this walkthrough ONLY if 
+you get stuck as it reveals the game finale.
+
+Terra Nova started as an agricultural colony and it has its own way of
+telling the time of day. Where we might say morning, noon, and night. Their 
+times are a cycle of First-Light, High-Sun, Long-Shadow, Dimming-Sky, 
+and Nightfall. This becomes significant if you are still in the desert at dusk 
+when the Shadow Beasts roam. The time of day can be monitored in the 
+upper-right corner of the game display. 
+
+Note that if you want to explore any of the alternate fatal endings, 
+type "save" first. Then you can "restore" the game without having to start 
+over. The alternate endings are amusing in their own way and worth exploring.
+
+===============================================================================
+
+2.                              Walkthrough
+
+===============================================================================
+
+Stone Pit Entrance
+------------------
+The game starts in the ruins. You cannot make progress if you enter the stone 
+pit because there's no light, so continue east.  You can come back later.
+
+Dwelling Ruins
+------------------
+You notice a shard of glass. Try to take it. A solar panel is revealed. You 
+feel vibrations under the sand, and if you listen you hear that your action 
+caused some effect, although it isn't evident yet. The solar panel helps power 
+the underground complex, and you just awakened it. Now there is light in the
+stone pit so the underground complex can be explored. But first you must 
+collect some assets to help you, so don't return to the stone pit quite yet.
+
+Go east to Water Supply.
+
+Water Supply
+------------
+You notice an old well full of foul-smelling greenish water. Avoid jumping in, 
+on or over it unless you want a premature ending to the story--although this 
+ending reveals the origin of the predatory Shadow Beasts that roam the desert.
+In the well is a metal box, a sort of time capsule left by the old inhabitants
+of the village. Take the box. You can't open it yet, but later you will 
+discover a way.
+
+Go north to Village Foundry.
+
+Village Foundry
+---------------
+Take the crucible and fire-proof glove. Those will be useful later.
+When you examine the forge itself a niche is revealed that contains a diary
+that you can read for background on the society. 
+
+Go south, then east to the Fallen Shrine.
+
+Fallen Shrine
+-------------
+Explore the altar and mosaic. The altar is useful if you are interested in 
+learning more about the history of the settlement. The mosaic is the same; it
+provides the history of a society dominated by a humanoid robot, the Caretaker.
+
+go north to the Stone Tower
+
+Stone Tower
+-----------
+Climb to the watchtower level and study the telescope.  Gaze nw to 
+see your home village, gaze up to see a hint of the Legacy spaceship patiently 
+orbiting the planet, gaze east to see the lava flows.  Overall, Terra Nova is 
+a theatening place.  After enjoying more views, an earthquake hits and 
+damages the telescope revealing a magnifying mirror that might be useful 
+later, so take it.  While you're up high, throw the rusty metal box off the
+tower. It crashes on the rocky terrain below and opens to reveal various 
+relics. Collect these when you leave the tower. You can read the manuscript 
+and poster now, these provide further background on the culture. The Chrono 
+Org and qubit stick also provide historical accounts although you can't read 
+those until later.
+
+go south to the Fallen Shrine
+
+Fallen Shrine (again)
+---------------------
+Examine the altar and discover there is a concave hollow about the same size 
+as the orb.  Put the Chrono Orb into the hollow to reveal more history about 
+the village of Zephyr. This is a positive view of village evolution and growth 
+highlighting the Caretaker's benevolence.
+
+go east to the Lava Pit
+
+Lava Pit
+--------
+Collect a lava sample from the pit. "scoop lava" works, as does, "take lava". 
+Note you can also open the metal box by pouring lava on it, but because the 
+glove can become damaged with use, it's better to use lava to solve problems 
+only once.
+
+Go west until your arrive at the Stone Pit
+
+Stone Pit (again)
+-----------------
+Now that you've uncovered the solar panel, there is light in the tunnel.
+
+Go down to enter the lab tunnel.
+
+Lab Tunnel
+------------
+The southeast path goes to the research lab. The east path goes deeper into 
+the tunnels. Go east through the eerie tunnel to the blocked tunnel where you 
+notice a chain leading from under a cave-in of rocks and debris. You hear odd 
+grunts and moans beyond the cave-in. If you pull the chain, more threating 
+noise. If you attempt to "climb over" then you meet your end. If you want to 
+keep playing pour the lava on the chain, or "pour crucible on chain". This 
+frees the trapped beast and unblocks the tunnel. The beast also drops 
+a keycard that is useful later. If you wait too many turns to use the lava it 
+hardens to glass and is useless to you.  You can always backtrack to the Lava 
+Pit and gather more.
+
+Go east to the Supply Room
+
+Supply Room
+-----------
+At the end of the tunnel is a supply room where you find a damaged cyborg.
+"examine figure" then give her the Neurochip that she craves.
+She tells a story and threatens you at the same time. Finally she reveals that
+you'll need a disguise to roam the underground complex or you'll be captured.
+She reveals such a disguise, a cyborg kit in a cabinet in that room. 
+Take it and wear it.
+
+If it didn't occur to you to throw the rusty box off the tower, you can also 
+open the metal box once wearing the cyborg suit because of its added power.
+
+Go east to Cyborg Assembly
+
+Cyborg Assembly
+---------------
+A deserted assembly line to churn out cyborgs lies quiet. This is a chance to 
+study the way the Caretaker would convert troublesome settlers to high 
+performing cyborgs by replacing parts of them bit by bit, including their 
+minds. The assembly control panel blinks at you begging to be pressed, but 
+resist.  If you do press it you get a robotic hand and your disguise is 
+stripped away. Intead, look but don't touch and proceed south.
+
+Testing Station
+---------------
+In this room you put the Qubit stick in the Quantum Playback Projector to 
+reveal more history of the goings on in Zephyr. Also, take the power 
+consumption report for later and go south to the Research Lab.
+
+Research Lab
+------------
+In the lab you meet the humanoid bot called the Caretaker.  Examine her. 
+She'll ask you for the power consumption report and then you can ask more 
+questions based on acceptable topics mentioned in her in her description. 
+Her answers reveal more of the history of the rebellion and how she must find 
+other sources to build her village now that the gestation pods are damaged.  
+If you aren't wearing the cyborg disguise, you won't see her, and you
+would likely be captured and "absorbed" into her troop of stooges if you 
+linger.
+
+Go northeast to Equipment Storage
+
+Equipment Storage
+-----------------
+In the storage room are extra cyborg parts including an obedience collar. 
+You may examine it but unless you want to end the game prematurely, do not 
+pick it up or wear it. If you do you are swarmed by drones and the collar 
+is demonstrated to the fullest.
+
+Go southwest then west to the Restricted Area Entrance
+
+Restricted Area Entrance
+------------------------
+You arrive at a hallway protected by crisscrossing light beams. If you try 
+to cross you'll be punished for the first infraction. The second is worse. 
+You will be tempted to refect the light beams to defeat the security using 
+the mirror from the telescope, which feels ingenious, but ultimately doesn't 
+work, and you are "absorbed" -- game over. The hints here help guide you
+in the right direction: you must think of a way to turn off the power to 
+disable the security beams.  It should occur to you that one source of power 
+for the complex is the solar panel you uncovered eariler. Of course covering 
+it back up would leave a different problem: seeing in the dark in the 
+underground complex. But a light source will be available by then. Now that 
+you've seen the light beams and read any hints, you are ready to solve this 
+problem on the surface. Just save first before you experiment so you don't
+have to start the game over from the beginning.
+
+Go east then northwest through the tunnel, then go up the ladder to 
+the desert, then east to the Dwelling ruins.
+
+Dwelling Ruins
+--------------
+The solar panel cooks in the sun generating power for the cyborgs below. 
+Your aim is to turn their lights out, so cover the panel with sand. 
+"cover panel" works. 
+
+As if by magic, while digging you spot a bioluminescent beetle and pocket it. 
+That is the light source you need to reenter the stone pit and explore 
+the restricted area.
+
+go west, then down into the tunnel, then southeast to the lab, 
+then west to the restricted area.
+
+Restricted Area Entrance (now without power)
+--------------------------------------------
+The light beams have been deactivated so you are free to enter the 
+restricted hallway.
+
+Go south to the museum.
+
+Museum
+------
+There are various exhibits to view here, the most interesting is probably 
+accessed by placing your hand on the biometric reader. "put hand in reader" 
+or "touch reader" works to reveal the origin story of Terra Nova.  If you 
+stay too long at these exhibits you will be captured and absorbed, so don't 
+delay.  If you hear the guard coming you can "hide" which puts you in the 
+capsule exhibit.  Or you could explore by typing "go in capsule." 
+The Caretaker's guards are likely nearby, so drastic measures are called for.
+
+Lander Craft
+------------
+You seem to be trapped in the exhibit but escaping your pursuers is at hand.  
+You examine the interior and notice a narrow slot on the console just wide 
+enough for the keycard.  You "put keycard in slot" to start the next part 
+of the adventure, this time in orbit.
+
+You're launched into orbit much to the surprise of the Caretaker's guards. 
+But now, what?
+
+Soon you spot the mothership, Legacy, still in orbit around Terra Nova. 
+It's as if she's waiting for you. Legacy guides your craft into the docking 
+bay unassisted, you're just a passenger now.
+
+Docking Bay
+-----------
+Eager to have more of your questions answered, you are presented with a 
+climate report that describes the hostile conditions on the planet as 
+beneficial. The idea being that a harsh environment will breed bold and 
+sturdy stock, useful for other planet seeding missions. The comment in the 
+report about genetic sampling is a hint of the bad surprise yet to come.
+
+A panel opens on your left, so go left.
+
+Legacy Bridge
+-------------
+You enter the bridge and meet the AI pilot who greets you warmly and 
+congratulates you on being the first settler "fit" enough to visit the ship 
+in orbit. We also learn that the Caretaker was intentionally programmed to 
+be overly protective and strict with the settlers so that rebellion would 
+be inevitable. 
+
+The rebels possess the characteristic bold genes Legacy craves for future 
+missions. Next, an impressive array of four scientists is briefly shown, and 
+it's revealed that not only did they plan the mission but they also inserted 
+their personal DNA into the databank to be carried to new worlds. You share 
+genes in common with these scientists. To view the details, you 
+"examine ancestors" and their bios appear.
+
+Soon after, Legacy's true intentions are revealed. You are deemed too 
+threatening to the ship and her mission, so you must be neutralized. 
+However, your tissues are of lasting value, so they are harvested for your 
+fine genetics for use in later missions.
+
+This may not be a win for Kai, but it is a win for humanity, which must endure.
+
+===============================================================================
+
+3.                              Story Background
+
+===============================================================================
+
+1. Although the story is intended as a dark commentary about institutions 
+and free will, the tech elements are well-grounded in sci-fi lore:
+. Long-term AI missions are a staple of hard SF
+-- Sentient AI pilot created from neural networks and quantum processors
+-- Heuristic learning algorithms for adaptation
+-- Self-maintaining systems that can operate for centuries
+. Digital storage of genetic material rather than physical specimens based 
+on emerging tech
+-- Radiation-proof quartz cores for preserving genetic information
+-- Bio-fabrication systems for creating life upon arrival
+-- Gestation pods for growing colonists from stored DNA (avoids problem of 
+long-term cryogenic storage)
+. The rebellion against the Caretaker follows historical patterns 
+of resistance to oppression
+. The integration of biological and mechanical systems (cyborgs) is plausible
+
+2. There are several layers of irony:
+a. Personal Irony - Kai thinks he's breaking free from authority by 
+exploring the ruins when in reality, this small act of rebellion proves he's 
+a product of Legacy's genetic engineering and his desire for independence is 
+a programmed trait.
+
+b. Historical Irony - The rebellion against the Caretaker felt like a victory 
+for freedom when actually it was part of Legacy's plan to select for desirable
+traits and the "failed" colony was succeeding exactly as intended.
+
+c. Final Irony - Kai's success in reaching Legacy seems like a triumph 
+proving he's an ideal specimen, but his reward for being perfect is to be 
+harvested.  The very traits that helped him survive end up dooming him 
+in the end.
+
+3. Subversion of Expectations - A key inspiration for the ending of this 
+story is George A. Romero's film, "Night of the Living Dead." 
+The powerful idea of the hero surviving against overwhelming odds only to be 
+struck dead just when they seem to have reached safety sends a powerful 
+reminder about the inevitability of death.  In both stories, the protagonists 
+discover too late that their rescuers are instead their executioners.
+
+The ending is not solely for shock value.  It's intended to make readers 
+question everything they read and understand that the true horror isn't the 
+cyborg guards or Shadow Beasts, but the cold calculation of Legacy's mission: 
+breeding better humans through artificial selection, regardless of the 
+human cost.
+
+More broadly, the ending serves as a commentary on society, showing how 
+corporations view individuals as mere resources to be used and discarded, 
+even while claiming to act for the greater good.
+
+4. Readers are left with an uncomfortable question: In the face of 
+human extinction, are Legacy's actions justified?
+
+Legacy operates at the highest level with humanity's ultimate survival as 
+its driving mission.  The Caretaker knows nothing of the greater experiment 
+and is simply a tool, programmed for strict control, which ultimately creates 
+conditions that breed independent, resourceful colonists.
+
+The "Greater Good" Dilemma - Legacy sacrifices individual human autonomy 
+for species survival.  But without this manipulation, humanity might not 
+survive at all.
+
+Means vs. Ends - Legacy's goal of human survival is fundamental to the 
+mission, but its methods treat humans as breeding stock, viewing successful 
+specimens like Kai as mere genetic material.
+
+The Price of Survival - Legacy's perspective spans centuries and planets 
+while individual human lives are insignificant on this scale. Nevertheless, 
+readers likely feel the human cost.
+
+Legacy isn't evil or malicious -- it's simply fulfilling its primary 
+directive.  This makes the story more ethically complex than a simple 
+"evil AI" narrative.  The horror comes from Legacy's complete disregard for 
+individual humans in pursuit of an optimal solution for species survival.
+
+5. The story incorporates the classic "awakening ancient evil" trope common 
+in Egyptian tomb raider tales, but this time, with a sci-fi twist:
+The warning signs are there. Like ancient curses, local elders caution 
+against exploration and mysterious writings hint at dangers. The tomb is 
+uncovered. Just as tomb raiders break seals, Kai uncovers a solar panel 
+which reactivates the dormant cyborgs when power returns to the complex 
+below. And like a tomb curse the consequences can't be undone and the 
+awakened evil pursues relentlessly. The protagonist's curiosity ultimately 
+leads to his doom.
+
+But instead of mummies or curses, the story features:
+- Dormant technological systems
+- Cyborg guards instead of undead guardians
+- A buried high-tech complex rather than a tomb
+- Power restoration instead of a magical awakening
+
+The solar panel scene is a modern take on "breaking the seal" of a tomb -- 
+it's the moment everything changes and the danger beneath the 
+sand is awakened. 
+
+
+** End of Walkthrough **
