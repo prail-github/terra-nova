@@ -7,7 +7,11 @@
   <meta name="author" content="P.Rail">
   <link rel="stylesheet" href="style.css">
   
-  <meta name="robots" content="noindex, nofollow">
+  <link rel="apple-touch-icon" sizes="180x180" href="/terra-nova/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/terra-nova/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/terra-nova/favicon-16x16.png">
+<link rel="manifest" href="/terra-nova/site.webmanifest">
+<meta name="robots" content="noindex, nofollow">
 <meta name="googlebot" content="noindex, nofollow">
 <meta name="robots" content="noimageindex">
 <meta name="robots" content="noarchive">
@@ -733,15 +737,78 @@ const soundFiles = [
 'terra-nova-intro.mp3'
 ];
 
-function preloadSounds(soundFiles) {
-soundFiles.forEach(function(file) {
+function preloadSounds(soundFiles, concurrentLimit = 6) {
+// Create a queue of files to load
+const queue = [...soundFiles];
+const loading = new Set();
+const errors = [];
+
+function loadNext() {
+// If queue is empty or we've hit the concurrent limit, return
+if (queue.length === 0 || loading.size >= concurrentLimit) {
+return;
+}
+
+// Get next file from queue
+const file = queue.shift();
 const audio = new Audio();
+
+// Add to loading set
+loading.add(file);
+
+// Set up event handlers
+audio.addEventListener('canplaythrough', () => {
+console.log(`Loaded: ${file}`);
+loading.delete(file);
+loadNext(); // Try to load another
+}, { once: true });
+
+audio.addEventListener('error', (e) => {
+console.error(`Error loading ${file}:`, e.message);
+errors.push(file);
+loading.delete(file);
+loadNext(); // Try to load another
+}, { once: true });
+
+// Start loading
+try {
 audio.src = "mp3/" + file;
+} catch (e) {
+console.error(`Exception loading ${file}:`, e);
+errors.push(file);
+loading.delete(file);
+loadNext(); // Try to load another
+}
+}
+
+// Start initial batch of loads
+for (let i = 0; i < concurrentLimit; i++) {
+loadNext();
+}
+
+// Return a promise that resolves when all files are loaded
+return new Promise((resolve) => {
+const checkComplete = setInterval(() => {
+if (queue.length === 0 && loading.size === 0) {
+clearInterval(checkComplete);
+if (errors.length > 0) {
+console.warn('Some sounds failed to load:', errors);
+}
+resolve(errors);
+}
+}, 100);
 });
 }
 
+async function initializeSounds() {
+const errors = await preloadSounds(soundFiles);
+if (errors.length > 0) {
+console.warn('Failed to load some sounds:', errors);
+}
+}
+
 console.error('Preloading sounds...');
-preloadSounds(soundFiles);
+initializeSounds();
 
 </script>
 
