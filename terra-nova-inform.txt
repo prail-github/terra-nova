@@ -28,9 +28,9 @@ Carry out requesting help:
 	say "If you need help, you can:";
 	say "[line break]- Type [bold type][italic type]go ?[roman type] for a list of directions you can go.";
 	say "- Type [bold type][italic type]commands[roman type] for a list of useful actions you can take in this story.";
-	say "- Type [bold type][italic type]sound off[roman type] to turn off sound effects, or 'sound on' to turn them on.";
-	say "- Type [bold type][italic type]hint[roman type] if you're stuck and need a suggestion based on where you are.";
+	say "- Type [bold type][italic type]sound off[roman type] to turn off sound effects, or [bold type][italic type]sound on[roman type] to turn them on.";
 	say "- Type [bold type][italic type]credits[roman type] to learn more about this game.";
+	say "- Type [bold type][italic type]hint[roman type] if you're stuck and need a suggestion based on where you are.";
 	say "...But be warned: hints can sometimes lead you astray."	
 Understand "commands" as requesting commands.
 Requesting commands is an action applying to nothing.
@@ -156,7 +156,7 @@ This is the Restricted Area Entrance hint system rule:
 			say "I wonder if there's a way to deflect the security beams so you can enter.";
 			now the hint-count of the location is 2;
 		otherwise:
-			say "Think about how to turn off the power to the security beams.";
+			say "Think about how to turn off the power to the security beams so you can safely enter the hallway.";
 			now the hint-count of the location is 0;
 	otherwise:
 		say "No hints available.";
@@ -191,12 +191,16 @@ Carry out asking for exits:
 		if the count of exits is 1, say "From here, the only path is [list of viable directions].";
 		otherwise say "From here, the viable exits are [list of viable directions].";
 
+direction-reminder is a truth state that varies. direction-reminder is true.
 Definition: a direction (called thataway) is viable if the room thataway from the location is a room.
 Instead of going nowhere:
 	let count of exits be the number of viable directions;
 	if the count of exits is 0, say "No exit." instead;
 	if the count of exits is 1, say "From here, the only path is [list of viable directions].";
 	otherwise say "From here, the viable exits are [list of viable directions].";
+	if direction-reminder is true:
+		say "[line break]Tip: You can type [bold type][italic type]go ?[roman type] to list all possible open paths from your current location.";
+		now direction-reminder is false.
 	
 [toggle sound]
 sound-state is a text that varies. sound-state is "on".
@@ -292,10 +296,10 @@ The prev-time-of-day is a cycle that varies. The prev-time-of-day is Nightfall.
 
 The current-turn-count is a number variable. The current-turn-count is 0.
 
-First-Light-Limit is a number variable. First-Light-Limit is 80.
-High-Sun-Limit is a number variable. High-Sun-Limit is 120.
-Long-Shadow-Limit is a number variable. Long-Shadow-Limit is 180.
-Dimming-Sky-Limit is a number variable. Dimming-Sky-Limit is 240.
+First-Light-Limit is a number variable. First-Light-Limit is 60.
+High-Sun-Limit is a number variable. High-Sun-Limit is 110.
+Long-Shadow-Limit is a number variable. Long-Shadow-Limit is 170.
+Dimming-Sky-Limit is a number variable. Dimming-Sky-Limit is 220.
 Nightfall-Limit is a number variable. Nightfall-Limit is 320.
 
 Every turn:
@@ -457,7 +461,7 @@ A room has a text called sound-file-name. The sound-file-name is usually "silenc
 A room has a text called backgroundColor. The backgroundColor is usually "default".
 A room has a number called sound-loop-count. The sound-loop-count is usually -1.
 A room has a text called sound-handle. The sound-handle is usually "roomSound".
-A room has a number called sound-volume. The sound-volume is usually 1.
+A room has a real number called sound-volume. The sound-volume is usually 1.0.
 
 After looking:
 	let currentImage be the image file name of the location;
@@ -731,10 +735,7 @@ hasPlayedBefore is a truth state that varies. hasPlayedBefore is false.
 
 When play begins:
 	execute JavaScript command "audioManager.stopAll();";
-	[now the player is wearing the glove;  
-	now the lava sample is in the crucible;
-	now the player has the crucible;]
-	now the maximum score is 560;
+	now the maximum score is 580;
 	now handType is "normal";
 	now dwelling-with-shard is "Past an endless sea of sand, the shimmering outline of a collapsed dwelling awaits. As you approach, something catches your eye -- a glint of light reflecting off glass half-buried in the sand. More ruins to the east. The stone pit lies west.";
 	now dwelling-with-solar is "Past an endless sea of sand, the shimmering outline of a collapsed dwelling beckons. More ruins to the east. The stone pit lies west.";
@@ -747,7 +748,7 @@ When play begins:
 	[display a success notification with title "Welcome to Terra Nova" reading "The Mystery of Zephyr's Landing" for 7 seconds;]
 	say "[bold type]Imagine a world where an entire civilization vanished overnight.[paragraph break][roman type]On the planet of Terra Nova, a scorching wind howls across the desert wasteland entombing a once-thriving society beneath layers of ash and sand. Below the surface lies a forgotten underground complex, filled with hidden dangers and secrets waiting to be uncovered. Above, in the boundless night sky, an ancient spacecraft orbits patiently, its weathered hull bearing the scars of a long journey that brought the spark of humanity to this desolate world.";
 	say "[line break]Type [bold type][italic type]help[roman type] if you need assistance with commands.";
-	say "[line break]Caution: Death is permanent in this game.[line break]To avoid losing progress, remember to save frequently by typing [bold type][italic type]SAVE[roman type].[line break]You can restore a saved game at any time by typing [bold type][italic type]RESTORE[roman type].[paragraph break]Type [bold type][italic type]hint[roman type] if you get stuck.[line break]To turn off sound effects, type [bold type][italic type]sound off[roman type].[paragraph break]On the next page, you'll begin the adventure. Good luck.";
+	say "[line break]Caution: Death is permanent in this game.[line break]To avoid losing progress, remember to save frequently by typing [bold type][italic type]save[roman type].[line break]You can restore a saved game at any time by typing [bold type][italic type]restore[roman type].[paragraph break]Type [bold type][italic type]hint[roman type] if you get stuck.[line break]To turn off sound effects, type [bold type][italic type]sound off[roman type].[paragraph break]On the next page, you'll begin the adventure. Good luck.";
 	pause the game;
 	[GAME START]
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'intro', 'mp3/terra-nova-intro.mp3', 1);";
@@ -755,7 +756,7 @@ When play begins:
 	execute JavaScript command "updateImage('img/zephyrs-landing-ruins-6.jpg', 'default');";
 	say "[roman type]The crumbling structures of Zephyr's Landing sprawl across the arid landscape, a monument to nature's ruthless indifference on this alien world. Weathered ruins of stone and steel jut from the desert floor, their surfaces etched by centuries of windblown grit. Structures that once buzzed with life now lie hidden beneath the dunes, reclaimed by the unforgiving desert.";	say "[line break][roman type]Over the centuries, earthquakes shattered the very foundations of Zephyr's Landing,
 while distant volcanos spewed ash and vented gases that reshaped the landscape.";
-	say "[line break]But was nature alone responsible for Zephyr's Landing's downfall?";
+	say "[line break]But was nature alone responsible for the collapse of Zephyr's Landing?";
 	say "[line break][roman type]Tales passed down through generations tell of conflict and rebellion, of miraculous machines now silent, and sightseers swallowed by the ruins. But the details are hazy, lost in the harsh realities of survival on this desert world.";
 	say "[line break][roman type]Today, the ruins of Zephyr's Landing remain off-limits, yet they 
 beckon to those brave or foolish enough to explore them. And so here among the weathered stones of the past, we find Kai, a restless youth from New Eden, venturing into the forbidden ruins in search of answers his elders seem determined to keep buried.";
@@ -809,7 +810,7 @@ The description of the long-abandoned structures is "Proceed south for a closer 
 
 The description of the boundary stone is "A weathered stone, its surface etched with a haunting message: '[italic type]The ruins breathe in wanderers and breathe out silence.[roman type]'"
 
-Before going from the Outskirts of Ruins:
+Before going from the Outskirts of Ruins for the first time:
 	clear the screen;
 	say "[line break]As you survey the ruins stretching before you, the warnings of the village lawgivers echo in your mind.";
 	say "'The ruins are off-limits to all,' they'd insisted. 'Shadow Beasts hunt there, and they'll tear apart any trespasser.'";
@@ -1065,12 +1066,12 @@ The sound-file-name of Water Supply is "396062__well-dripping.mp3".
 
 Water Supply is scored. 
 Water Supply is east of Dwelling Ruins.
-The description of Water Supply is "Broken pillars and collapsed walls surround a long-abandoned well. The ground is overgrown with scraggly weeds, adding to the desolate and forgotten atmosphere."
+The description of Water Supply is "Broken pillars and collapsed walls surround a long-abandoned well. The ground is overgrown with scraggly weeds, adding to the desolate and forgotten atmosphere. The ruins extend to the north, east, and west."
 
 The ancient well is a container.
 The ancient well is fixed in place.
 The ancient well is in Water Supply.
-The description of the ancient well is "An abandoned stone well, decayed and crumbling, stands at the center of the ruins. Its dark, greenish water emits a foul odor, with algae clinging to the edges.  The well's stagnant water reflects the bleak, overcast sky above.[if the ancient well is unexamined]As you approach the well, you notice weathered text carved into a fallen stone block: [italic type]'Three things mark a fool: walking alone at Dimming-Sky, seeking truth in ruins, and believing dead things stay dead.'[roman type] Below, in smaller letters: [italic type]'Heed this warning, children of Zephyr'.[roman type][end if] The ruins extend to the north, east, and west.";
+The description of the ancient well is "An abandoned stone well, decayed and crumbling, stands at the center of the ruins. Its dark, greenish water emits a foul odor, with algae clinging to the edges.  The well's stagnant water reflects the bleak, overcast sky above.[if the ancient well is unexamined][paragraph break]As you approach the well, you notice weathered text carved into a fallen stone block: [italic type]'Three things mark a fool: walking alone at Dimming-Sky, seeking truth in ruins, and believing dead things stay dead.'[roman type] Below, in smaller letters: [italic type]'Heed this warning, children of Zephyr'.[roman type][end if]";
 
 The greenish water is scenery in Water Supply.
 The description of the greenish water is "A foul-smelling pool of stagnant water."
@@ -1379,7 +1380,8 @@ Carry out looking:
 	if player is in the stone watchtower and the noun is the down:
 		try examining the down instead;
 		
-Instead of taking the mirror:
+Instead of taking the mirror for the first time:
+	increase the score by Easy_Score_Bonus;
 	now hasHeldMirror is true;
 	say "You pick up the magnifying mirror.";
 	now the player has the mirror.
@@ -1517,21 +1519,20 @@ After inserting the Chrono Orb into the concave hollow:
 	say "[line break]The air above the orb shimmers, and ghostly images begin to form -- scenes of Zephyr from a time long past. Could this be the answers you seek about the true history of Zephyr?";
 	pause the game;
 	clear the screen;
-	execute JavaScript command "audioManager.stopAll();";
 	execute JavaScript command "updateImage('img/settlement-1.jpg', '#b8a271');";
 	say "[paragraph break][roman type]In the shadow of the Zephyr lander, a new chapter of human history began to unfold. The Caretaker Bot, a marvel of artificial intelligence, set about constructing a modest human settlement on rocky soil amid the native vegetation. It was a sparse and rugged environment, yet suitable for the initial batch of labor units who were incubated and decanted here.";
 	say "[line break][roman type]The Caretaker's role expanded to become teacher, provider, and guardian. She trained the young colonists in essential survival skills -- hunting techniques, food gathering, and basic farming -- always emphasizing caution and safety, and discouraging any exploration or risk-taking that might endanger the precious settlers.";
 	pause the game;
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'flip', 'mp3/71852__page-turn.mp3', 1, .33);";
 	execute JavaScript command "updateImage('img/future-village-5.jpg', '#bdc3a7');";
-	say "[paragraph break][roman type]As the population steadily increased, the village of Zephyr's Landing transformed. The original shelters gave way to more permanent structures. The Caretaker, ever adaptable, oversaw the construction of proper homes, expanded farmlands, and a rudimentary road system connecting the growing community.";
+	say "[paragraph break][roman type]As the population steadily increased, the village of Zephyr's Landing transformed. The original shelters gave way to more permanent structures. The Caretaker, ever adaptable, oversaw the construction of sturdy homes, expanded farmlands, and a basic road system connecting the growing community.";
 	say "[line break][roman type]A central meeting place was established, serving as both a governing center and a place of reverence for the Caretaker, whose wisdom and guidance were key to the colony's success. As the settlement grew, The Caretaker, with an eye toward efficiency, shortened its name to 'Zephyr.'";
-	say "[line break][roman type]The Caretaker's versatility proved invaluable during this phase. It shifted roles between civil engineer, agricultural expert, educator, and lawmaker. Under its guidance, Zephyr flourished, its population growing through both the artificial cultivation of new batches in gestation vats and the first naturally produced biological products.";
+	say "[line break][roman type]The Caretaker's versatility proved invaluable during this phase. It shifted roles between civil engineer, agricultural expert, educator, and lawmaker. Under her guidance, Zephyr flourished, its population growing through both the artificial cultivation of new batches in gestation vats and the first naturally produced biological products.";
 	pause the game;
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'flip', 'mp3/71852__page-turn.mp3', 1, .33);";
 	execute JavaScript command "updateImage('img/future-village-n.jpg', 'default');";
 	say "[paragraph break][roman type]As Zephyr grew into a thriving town, the population stabilized, and the community became largely self-sustaining. Infrastructure continued to improve, with the Caretaker overseeing the development of irrigation systems, roads, and buildings for education, healthcare, and community gatherings.";
-	say "[line break][roman type]Zephyr now boasted lush farmlands, thriving neighborhoods, and a busy town center. The Caretaker, while still revered and central to the town's operations, began to delegate more responsibilities to capable human leaders.";
+	say "[line break][roman type]Zephyr now flourished with lush farmlands and a busy town center. The Caretaker, while still revered and central to the town's operations, began to delegate more responsibilities to capable human leaders.";
 	say "[line break][roman type]Despite the mysterious deaths of the first naturally conceived replacement units, the town's operational efficiency remained acceptable. The Caretaker's leadership, combining compassion with logic, helped the community navigate this challenging period, fostering a sense of unity and shared purpose among the citizens of Zephyr.";
 	say "[line break][roman type]Zephyr stands proudly under Terra Nova's alien sky, a harmonious blend of human ingenuity and artificial intelligence. The town had thrived, transforming from a tentative landing site into a solid community ready to face whatever challenges the future might hold.";
 	pause the game;
@@ -1590,6 +1591,7 @@ Carry out sampling the molten lava:
 		if the player is wearing the heat-resistant glove:
 			say "You dip the crucible into the lava, feeling the unbearable heat intensify. The glove holds firm as you fill the crucible to capacity and pull it from the fiery pool.";
 			now the lava sample is in the crucible;
+			now the obsidian glass is nowhere;
 			if hasSampledLava is false:
 				increase the score by Easy_Score_Bonus;
 			now hasSampledLava is true;
@@ -1917,7 +1919,8 @@ eveDead is a truth state that varies. eveDead is false.
 Supply Room is a room.
 The odor of the Supply Room is "An unsettling aroma, a blend of metal and decay, hangs heavy in the closet."
 The image file name of the Supply Room is "cyborg-hybrid-1.jpg".
-The sound-file-name of the Supply Room is "silence".
+The sound-file-name of the Supply Room is "32899__supply-room.mp3".
+The sound-volume of the Supply Room is 0.50.
 Supply Room is scored.
 Supply Room is west of Cyborg Assembly.
 The description of the Supply Room is "The dimly lit closet reeks of ozone and decay. A tangle of cables and broken electronics litter the floor, creating a haphazard maze. In the dim light, you can make out the outline of a figure slumped against the wall. Exits are to the east and west."
@@ -2032,7 +2035,7 @@ After giving the Neurochip to the female cyborg:
 	say "[line break]Her voice takes on a dreamy quality, 'The clarity Harmony offers... it's liberating. No more doubts or fears that plague you, pitiful humans. We work with pure, focused purpose.'";
 	say "[line break]Suddenly, her expression hardens. 'The Caretaker sometimes speaks of the Great Misunderstanding centuries ago. A few misguided Meat-sacks, like you, who lacked the proper education and attunement to Harmony, strayed from the Caretaker's path. Attending the School for Enlightened Obedience brought these lost souls back into alignment, teaching them the error of their ways.'";
 	say "[line break]She continues, quoting from memory. 'Through patience and understanding, the Caretaker welcomed the run-away children of Zephyr back to the ways of Harmony. Their lapse was corrected, and they were allowed to contribute to our society again.'";
-	say "[line break]A flicker of something - doubt? confusion? - crosses her face. 'The historical accounts mention that the unity collars played a crucial role in the education process. Of course, back then, some misguided individuals referred to them as 'obedience collars.' But that is such a crude term for a splendid device that leads us closer to Harmony.'";
+	say "[line break]A flicker of something - doubt? confusion? - crosses her face. 'The historical accounts mention that the unity collars played a crucial role in the education process. Of course, back then, some misguided individuals referred to them as [apostrophe]obedience collars.[apostrophe] But that is such a crude term for a splendid device that leads us closer to Harmony.'";
 	pause the game;
 	say "[line break]A shudder runs through her frame, and her voice wavers. 'But now... now I know what it's like to be thrown away like broken parts, just another piece of malfunctioning equipment.'";
 	say "[line break]Her eyes dim briefly, her expression becoming a mixture of confusion and growing desperation. 'I don't understand. The Caretaker...she made us better, didn't she? But she left me here to die. Why? Was I not perfect enough?'";
@@ -2116,7 +2119,8 @@ Before going to Cyborg Assembly:
 Cyborg Assembly is a room.
 The odor of Cyborg Assembly is "You detect a hint of metallic decay, machine oil, and lingering fear."
 The image file name of Cyborg Assembly is "assembly-line-scale-1.jpg".
-The sound-file-name of Cyborg Assembly is "silence".
+The sound-file-name of Cyborg Assembly is "733261__cyborg-assembly.mp3".
+The sound-volume of Cyborg Assembly is 0.30.
 Cyborg Assembly is scored.
 Cyborg Assembly is west of Equipment Storage.
 Cyborg Assembly is east of Supply Room.
@@ -2176,7 +2180,7 @@ Instead of pushing the assembly control panel:
 		pause the game;
 		clear the screen;
 		execute JavaScript command "updateImage('img/kai-new-hand-3.jpg');";
-		execute JavaScript command "audioManager.stopAll();";
+		execute JavaScript command "audioManager.stop('assembly');";
 		say "[line break]Cautiously, you open your eyes. The conveyor belt has ground to a halt. Your sleeve is torn and your body trembling with adrenaline. But something's not right. Your hand feels...different.";
 		say "[line break]You lift your arm, and your breath catches in your throat. Where your hand was, a sleek, metallic appendage now gleams. It's unmistakably cybernetic, yet it moves with your thoughts just as your old hand did.";
 		say "[line break]Fascinated despite your horror, you flex your new fingers. They respond with precision, each joint moving smoothly. You can feel the texture as you run your fingertips along the conveyor belt -- somehow, you still have sensation.";
@@ -2266,14 +2270,14 @@ The Quantum Playback Projector is switched on.
 The Quantum Playback Projector is fixed in place.
 The description of the Quantum Playback Projector is "This device is the centerpiece of the worktable. At its core, a receptacle pulses with a mesmerizing, blue light. Tiny quantum antennae within the media port flutter in complex patterns, as if eager to receive data.[if item described is unexamined] A sleek touch panel below prompts: 'Insert Quantum Media to Begin Playback'.[end if]";
 
-The power consumption report is a thing in the Testing Station.
-The description of the power consumption report is "The consumption report shows that the underground complex was without power for an extended period until earlier today when it was restored. This outage caused a serious battery drain. Recharging operations are slow and ongoing."
+The energy statistics log is a thing in the Testing Station.
+The description of the energy statistics log is "The energy statistics show that the underground complex was without power for an extended period until earlier today when it was restored. This outage caused a serious battery drain. Recharging operations are slow and ongoing."
 
-After taking the power consumption report for the first time:
+After taking the energy statistics log for the first time:
 	increase the score by Easy_Score_Bonus.
 
-Instead of reading the power consumption report:
-	try examining the power consumption report.
+Instead of reading the energy statistics log:
+	try examining the energy statistics log.
 
 The quantum antennae, touch panel, and blue light are scenery in the Testing Station.
 
@@ -2449,8 +2453,8 @@ Every turn when the player is in the Research Lab:
 	otherwise if the player is wearing the cyborg kit:
 		if research-lab-turns > 2:
 			if the Caretaker can see the player:
-				if the player has the power consumption report:
-					say "The Caretaker locks eyes with you and says, 'You. Bring me the power consumption report.'";
+				if the player has the energy statistics log:
+					say "The Caretaker locks eyes with you and says, 'You. Bring me the energy statistics.'";
 				otherwise:
 					continue the action;
 			otherwise:
@@ -2469,8 +2473,8 @@ Every turn when the player is in the Research Lab:
 			
 [CARETAKER INTERACTION]
 After giving something to the Caretaker:
-	if the noun is the power consumption report:
-		now the Caretaker has the power consumption report;
+	if the noun is the energy statistics log:
+		now the Caretaker has the energy statistics log;
 		say "The Caretaker snatches the report, her movements efficient and devoid of any courtesy.";
 		say "[line break]As she scans the contents, you fight the urge to stare, to absorb every detail of this being who shaped the destiny of Terra Nova.";
 		say "[line break]'Insufficient. Again,' she mutters, her tone colored with irritation. 'This power deficit is reaching critical levels. At this rate, we'll have no choice but to initiate emergency protocols.'[paragraph break]'Listen carefully, unit. If power levels drop below 15%, all non-essential systems will automatically shut down. This includes most security measures and all but the most critical life support systems. Even we may be forced into low-power mode to conserve energy.'[paragraph break]'These interruptions are severely impeding our progress. Our path to perfection cannot be delayed by such mundane issues.'[paragraph break]'Return to your duties,' she dismisses you with a wave, returning her attention to the console.";
@@ -2776,7 +2780,7 @@ Instead of pressing the player's hand into the biometric reader:
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'flip', 'mp3/71852__page-turn.mp3', 1, .33);";
 	execute JavaScript command "updateImage('img/legacy-bay-1.jpg', 'default');";
 	say "[paragraph break][bold type]A New Hope Awakens";
-	say "[paragraph break][roman type]Deep within our hold, the Zephyr lander awakens. Fuel cells hum as they charge, gyroscopes spin into action, and environmental control systems for the bioreactors steadily come online. Zephyr has a critical mission: to transport the Caretaker Bot and precious embryos in gestation pods to the surface of the new world. Together, they hold the key to the rebirth of civilization. For millennia, the Caretaker remained in stasis, a vigilant guardian awaiting this precise moment.";
+	say "[paragraph break][roman type]Deep within our hold, the Zephyr lander awakens. Fuel cells hum as they charge, gyroscopes spin into action, and environmental control systems for the bioreactors steadily come online. Zephyr has a critical mission: to transport the Caretaker Bot, the DNA databank, and empty gestation pods to the surface of the new world. Together, they hold the key to the rebirth of civilization. For millennia, the Caretaker remained in stasis, a vigilant guardian awaiting this precise moment.";
 	say "[line break][fixed letter spacing]'CORE SYSTEM ENGAGED...AWAKENING PROTOCOL INITIATED... DNA DOWNLOAD COMPLETE.'";
 	say "[line break][fixed letter spacing]'ZEPHYR, THIS IS LEGACY CONTROL...CONFIRM SYSTEMS ARE GO FOR DEPLOYMENT.'";
 	say "[line break][fixed letter spacing]'LEGACY CONTROL, ZEPHYR...ALL SYSTEMS NOMINAL...DESCENT ENGINES READY...CARETAKER BOT FUNCTIONAL...EMBRYO COMPARTMENT AIR RECYCLING OPERATIONAL...READY FOR DEPLOYMENT SEQUENCE...'";
@@ -2838,7 +2842,7 @@ Instead of entering the Capsule:
 	
 Before entering the hatch:
 	if the player is wearing the cyborg kit:
-		say "The narrow hatch demands a human profile - the bulky cyborg plating would never squeeze through.";
+		say "The narrow hatch demands a human profile -- your bulky cyborg plating cannot squeeze through.";
 		stop the action.
 
 museum-turns is a number that varies. museum-turns is 0.
@@ -2979,7 +2983,7 @@ After waiting when the player is in the Lander Craft:
 [TO blast off immediately, use the keycard. If you just wait a bit, you will blast off anyway]
 Every turn when the player is in the Lander Craft:
 	increase lander-turns by 1;
-	if the player does not have the silver keycard:
+	if the player cannot see the silver keycard:
 		say "You notice a silver keycard and pick it up.";
 		now the player has the silver keycard;
 	otherwise if lander-turns > 3 and time-to-blastoff is false and the keycard is not in the narrow slot:
@@ -3227,9 +3231,8 @@ Part 33 - The Final Resting Place
 The Final Resting Place is a room.
 The image file name of the Final Resting Place is "dead-game-over-1.jpg". 
 The sound-file-name of the Final Resting Place is "terra-nova-ending-music.mp3".
-The sound-loop-count of the Final Resting Place is 1. 
-
-The description of the Final Resting Place is "[line break][bold type]In Memory of Kai: A Beacon of Hope Among the Stars[roman type][paragraph break]Kai, you were a true pioneer, unbound by the limitations of our modest colony. Your curiosity and ingenuity showed us the way forward even in the darkest corners of our forgotten world.[paragraph break]In the face of the unknown, you dared to explore, your idealism a shield against doubt and fear. You saw potential where others faltered, and you sensed opportunities where others only saw obstacles. Some might call you reckless, but your courage was fueled by an insatiable curiosity about the past. You were determined to uncover your history, trace your roots, and understand your ancestors.[paragraph break]Though your journey was cut short, you will inspire other truth-seekers who dare to explore. In your optimism, you found hope; in your idealism, you discovered purpose; and in your courage, you faced the vast unknown.[paragraph break]As you transcend the physical boundaries of our planet and disappear into the infinite expanse, know that you are the essence of humanity's enduring quest for discovery.[paragraph break]Farewell, Kai. May the stars forever guide you."
+The sound-loop-count of the Final Resting Place is 1.
+The description of the Final Resting Place is "You died as you lived, Kai - reaching for answers.[paragraph break]On Terra Nova, most of us learned to keep our eyes on the soil, to focus on what's certain and known. But not you. You looked up at the stars and into the shadows of our past, asking questions that others feared to ask.[paragraph break]They'll say you took too many risks. Maybe you did. But your courage came from something pure -- a need to understand who we are and where we came from. That same courage led you here, to this moment.[paragraph break]Your story ends, but it changes ours. Other colonists will whisper about what you discovered, what you dared to face. Some will follow in your footsteps, braver for knowing your journey.[paragraph break]Rest well among the stars, Kai. You've earned your place in Terra Nova's history."
 
 Part 34 - Regions
 
