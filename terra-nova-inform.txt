@@ -38,7 +38,6 @@ Requesting commands is an action applying to nothing.
 Carry out requesting commands:
 	say "Use these commands for this story:";
 	say "[line break]ask ___ about ___";
-	say "[line break]catch ___";
 	say "[line break]climb ___ (up, down, object)";
 	say "[line break]close ___";
 	say "[line break]dig";
@@ -62,6 +61,7 @@ Carry out requesting commands:
 	say "[line break]take ___ / drop ___ / give ___";
 	say "[line break]throw ___";
 	say "[line break]uncover ___ / bury ___";
+	say "[line break]wait 10 turns / wait until Dimming-Sky";
 	say "[line break]wear ___";
 	say "[line break]Less common commands: save, restore, undo, quit";
 
@@ -234,6 +234,61 @@ Carry out turning sound off:
 	now sound-state is "off";
 	execute JavaScript command "audioManager.stopAll();";
 	say "Sound turned off.".
+	
+[wait 10 turns]
+Waiting for a specified number of turns is an action applying to one number.
+Understand "wait [number] turns" as waiting for a specified number of turns.
+
+Carry out waiting for a specified number of turns:
+	let N be the number understood;
+	repeat with counter running from 1 to N:
+		follow the turn sequence rules;
+	say "Time passes for [N] turns, total turns so far [turn count] ctc: [current-turn-count]."
+
+[wait for Night-fall or wait until night-fall]
+Waiting for daytime is an action applying to one topic.
+Understand "wait until [text]" as waiting for daytime.
+Understand "wait for [text]" as waiting for daytime.
+
+Carry out waiting for daytime:
+	let target text be the topic understood;
+	if target text matches "First-Light" or target text matches "first light":
+		if the time-of-day is First-Light:
+			say "It is already First-Light.";
+			stop;
+		while the time-of-day is not First-Light:
+			follow the turn sequence rules;
+		say "Now it is First-Light.";
+	otherwise if target text matches "High-Sun" or target text matches "high sun":
+		if the time-of-day is High-Sun:
+			say "It is already High-Sun.";
+			stop;
+		while the time-of-day is not High-Sun:
+			follow the turn sequence rules;
+		say "Now it is High-Sun.";
+	otherwise if target text matches "Long-Shadow" or target text matches "long shadow":
+		if the time-of-day is Long-Shadow:
+			say "It is already Long-Shadow.";
+			stop;
+		while the time-of-day is not Long-Shadow:
+			follow the turn sequence rules;
+		say "Now it is Long-Shadow.";
+	otherwise if target text matches "Dimming-Sky" or target text matches "dimming sky":
+		if the time-of-day is Dimming-Sky:
+			say "It is already Dimming-Sky.";
+			stop;
+		while the time-of-day is not Dimming-Sky:
+			follow the turn sequence rules;
+		say "Now it is Dimming-Sky.";
+	otherwise if target text matches "Nightfall" or target text matches "nightfall":
+		if the time-of-day is Nightfall:
+			say "It is already Nightfall.";
+			stop;
+		while the time-of-day is not Nightfall:
+			follow the turn sequence rules;
+		say "Now it is Nightfall.";
+	otherwise:
+		say "You must specify a valid time: First-Light, High-Sun, Long-Shadow, Dimming-Sky, or Nightfall."
 	
 Part 2 - Global Rules
 
@@ -810,6 +865,8 @@ The description of the long-abandoned structures is "Proceed south for a closer 
 
 The description of the boundary stone is "A weathered stone, its surface etched with a haunting message: '[italic type]The ruins breathe in wanderers and breathe out silence.[roman type]'"
 
+Understand "glyphs" or "passage" or "text" as the boundary stone.
+
 Before going from the Outskirts of Ruins for the first time:
 	clear the screen;
 	say "[line break]As you survey the ruins stretching before you, the warnings of the village lawgivers echo in your mind.";
@@ -1173,6 +1230,7 @@ The cracked stone walls, sturdy structure, and roof are scenery in the Village F
 The heat-resistant glove is in Village Foundry.
 The heat-resistant glove is wearable.
 The heat-resistant glove is required.
+glove-is-useless is a truth state that varies. glove-is-useless is false.
 The description of the heat-resistant glove is "Its leather exterior is scorched and scarred from battling intense heat. The glove's fingers, once supple and nimble, are now stiff and misshapen." 
 
 The rusty forge is scenery in the Village Foundry.
@@ -1409,6 +1467,8 @@ Understand "throw [something] off tower" as throwing.
 Understand "drop [something] off tower" as throwing.
 Understand "drop [something] from tower" as throwing.
 Understand "throw [something] from tower" as throwing.
+Understand "throw [something] off parapet" as throwing.
+Understand "drop [something] off parapet" as throwing.
 
 Understand "toss [something]" as throwing.
 Understand "toss [something] off tower" as throwing.
@@ -1581,17 +1641,58 @@ Sampling is an action applying to one thing. Understand "sample [something]" as 
 Scooping is an action applying to one thing. Understand "scoop [something]" as taking.
 Collecting is an action applying to one thing. Understand "collect [something]" as taking.
 
+Scooping it into is an action applying to two things. 
+Understand "scoop [something] into [something]" as scooping it into.
+Understand "scoop [something] in [something]" as scooping it into.
+Understand "collect [something] in [something]" as scooping it into.
+
+Filling it with is an action applying to two things.
+Understand "fill [something] with [something]" as filling it with.
+Understand "dip [something] in [something]" as filling it with.
+
+Instead of scooping the molten lava into the crucible:
+	try sampling the molten lava.
+
+Instead of scooping the lava sample into the crucible:
+	try sampling the molten lava.
+
+Instead of filling the crucible with the molten lava:
+	try sampling the molten lava.
+	
+Instead of filling the crucible with the molten lava:
+	try sampling the molten lava.
+	
+Instead of filling the crucible with the lava sample:
+	try sampling the molten lava.
+
+Instead of scooping something into something:
+    say "That action will do you no good."
+
+hasSampledLava is a truth state that varies. hasSampledLava is false.
+
+Instead of taking the lava sample:
+	if the player is in the Lava Pit:
+		try sampling the molten lava.
+		
 Instead of taking the molten lava:
 	try sampling the molten lava.
 	
-hasSampledLava is a truth state that varies. hasSampledLava is false.
+Before sampling the molten lava:
+	if glove-is-useless is true:
+		say "The heat-resistant glove is too damaged to protect you. The crucible remains empty.";
+		stop the action;
+	if the lava sample is in the crucible:
+		say "The crucible is already filled to capacity with lava.";
+		stop the action;
+	while something (called the item) is in the crucible:
+		now the item is in the location;
+		say "You remove [the item] from the crucible.";
 
 Carry out sampling the molten lava:
 	if the player carries the crucible:
 		if the player is wearing the heat-resistant glove:
 			say "You dip the crucible into the lava, feeling the unbearable heat intensify. The glove holds firm as you fill the crucible to capacity and pull it from the fiery pool.";
 			now the lava sample is in the crucible;
-			now the obsidian glass is nowhere;
 			if hasSampledLava is false:
 				increase the score by Easy_Score_Bonus;
 			now hasSampledLava is true;
@@ -1605,25 +1706,12 @@ Carry out sampling the molten lava:
 	otherwise:
 		say "It's too hot.";
 		stop the action;
-		
-Instead of taking the lava sample:
-	if the player is in the Lava Pit:
-		try sampling the molten lava.
 
 Every turn when the player can see the crucible and the lava sample is in the crucible for more than 5 turns:	Say "The glow of the lava sample within the crucible is going dim.";
 
 Every turn when the player can see the crucible and the lava sample is in the crucible for 12 turns:
-	Say "The lava sample has hardened to glass in the crucible.";
-	now the lava sample is nowhere;
-	now the chunk of obsidian glass is in the crucible;
-
-The chunk of obsidian glass is a thing. 
-The chunk of obsidian glass is nowhere.	
-The description of the chunk of obsidian glass is "The hardened lava now cooled, is smooth as glass."
-
-Instead of attacking the chunk of obsidian glass:
-	say "The obsidian glass shatters into dust.";
-	now the obsidian glass is nowhere.
+	Say "The lava sample has hardened to stone in the crucible.";
+	now the lava sample is nowhere.
 
 Instead of jumping into the molten lava when the player is in the Lava Pit:
 	say "You reconsider ending your life. You have much left to do."
@@ -1638,7 +1726,7 @@ Instead of inserting something into the molten lava:
 	if the noun is required:
 		say "You reconsider vaporizing [the noun].";
 	otherwise:
-		say "The [the noun] disappears with a sizzling hiss.";
+		say "[The noun] disappears with a sizzling hiss.";
 		now the noun is nowhere.
 	
 Instead of entering the molten lava for the first time:
@@ -1848,6 +1936,7 @@ Report pouring the lava sample on the rusty box:
 		say "Balancing the crucible of lava in a steady hand, you carefully pour the molten lava onto the rusty box. An immediate hiss fills the air. The box glows red-hot, then with a final, resounding snap, it breaks open revealing its contents.";
 		say "[line break]It appears to be a time capsule containing historical relics. Inside you find: [a list of things in the rusty box].[paragraph break]";
 		now the rusty box is open;
+		now the lava sample is nowhere;
 		increase the score by Easy_Score_Bonus;
 	otherwise:
 		stop the action.
@@ -1894,6 +1983,8 @@ Report pouring the lava sample on the chain:
 		now the player has the silver keycard;
 		now hasHeldKeycard is true;
 		now the rusty chain is nowhere;
+		now the lava sample is nowhere;
+		now glove-is-useless is true;
 		now the description of the heat-resistant glove is "The glove is now a charred husk. Its leather has cracked and peeled, with gaping holes at the fingertips and palm making it useless.";
 		[The Blocked Passage has no path to it, so it is logically deleted from this world]
 		now the Unblocked Tunnel is mapped east of the Eerie Tunnel;
@@ -2581,36 +2672,6 @@ Carry out reflecting:
 			say "[line break]You take your place among the others. You have found your rightful place in Zephyr."; 
 			now playerAbsorbed is true;
 			stop the action;
-		otherwise if the second noun is the chunk of obsidian glass:
-			clear the screen;
-			say "The fragile obsidian glass glints in the dim light as you carefully angle it to redirect the light beam back on its receptor. The reflected beam wavers then steadies as you make tiny adjustments. Your breath catches as the light hits its target precisely. No alarms sound, and you exhale slowly, a tentative sense of triumph rising in your chest.";
-			say "[line break]The receptor blinks green, seemingly to signal success. Emboldened, you step forward -- right onto a metal floor plate. A sharp click is the only warning before a surge of electricity races up your legs, seizing your muscles.";
-			now the chunk of obsidian glass is nowhere;
-			pause the game;
-			if entry-attempts is zero:
-				increase entry-attempts by 1;
-				clear the screen;
-				execute JavaScript command "updateImage('img/caretaker-closeup-4.jpg', '#303030');";
-				execute JavaScript command "audioManager.playSound('[sound-state]', 'alarm', 'mp3/586384__alarm.mp3', -1);";
-				say "[line break] A piercing alarm shatters the silence as the obsidian glass slips from your fingers and shatters on the cold stone floor.";
-				say "[line break]As you lie there, twitching and gasping, the Caretaker's voice echoes through the hallway, a mixture of disappointment and warning: 'That was unwise. The shock you experienced is a reminder that the restricted area is off-limits. Your safety is our priority. I can forgive such a transgression only once.'";
-				pause the game;
-				clear the screen;
-				execute JavaScript command "audioManager.stop('alarm');";
-				execute JavaScript command "updateImage('img/equipment-storage-3.jpg', 'default');";
-				say "[line break]When you regain consciousness you find yourself in a storage room.";
-				now the player is in Equipment Storage;
-				increase the score by Easy_Score_Bonus;
-				stop the action;
-			otherwise:
-				clear the screen;
-				execute JavaScript command "updateImage('img/caretaker-closeup-4.jpg', '#303030');";
-				execute JavaScript command "audioManager.playSound('[sound-state]', 'alarm', 'mp3/586384__alarm.mp3', -1);";
-				say "You feel a sudden sharp pain in your neck -- an injection. The last thing you see is the Caretaker's impassive face looming over you. She says, 'You remind me of Kael: stubborn and defiant...Initiating Termination Protocol.'";
-				pause the game;
-				execute JavaScript command "audioManager.stop('alarm');";
-				now playerDead is true;
-				stop the action;
 		otherwise:
 			say "Your action has no effect.";
 			stop the action;
@@ -3363,5 +3424,4 @@ hasSeenLegacyHistory is a truth state that varies. hasSeenLegacyHistory is false
 hasSeenClimateReport is a truth state that varies. hasSeenClimateReport is false.
 hasWornGear is a truth state that varies. hasWornGear is false.
 hasSeenOrbContents is a truth state that varies. hasSeenOrbContents is false.
-
 
