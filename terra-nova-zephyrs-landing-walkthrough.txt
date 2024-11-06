@@ -401,8 +401,12 @@ The solar panel scene is a modern take on "breaking the seal" of a tomb --
 it's the moment everything changes and the danger beneath the 
 sand is awakened. 
 
-The story builds on a breakthrough from our time: 
+6. The story builds on a breakthrough from our time: 
 Scientists store human genome on a ‘memory crystal’ that lasts billions of years
 https://www.popsci.com/technology/memory-crystal-dna/
+
+7. If you want to meet the danger that looms after dark in the desert, you can
+wait by typing, "wait until Nightfall"  -- you should probably save your 
+progress first.
 
 ** End of Walkthrough **
