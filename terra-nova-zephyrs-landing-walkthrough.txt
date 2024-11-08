@@ -151,7 +151,7 @@ noise. If you attempt to "climb over" then you meet your end. If you want to
 keep playing pour the lava on the chain, or "pour crucible on chain". This 
 frees the trapped beast and unblocks the tunnel. The beast also drops 
 a keycard that is useful later. If you wait too many turns to use the lava it 
-hardens to glass and is useless to you.  You can always backtrack to the Lava 
+hardens and is useless to you.  You can always backtrack to the Lava 
 Pit and gather more.
 
 Go east to the Supply Room
@@ -408,5 +408,11 @@ https://www.popsci.com/technology/memory-crystal-dna/
 7. If you want to meet the danger that looms after dark in the desert, you can
 wait by typing, "wait until Nightfall"  -- you should probably save your 
 progress first.
+
+8. To learn the origin of Shadow Beasts, jump over the well.
+
+9. To learn what happened to Kael the leader of the rebellion enter the research lab, without
+freeing the Shadow Beast from the blocked passage, then go northeast to the equipment 
+storage room, then west to the assembly line. Kael is there.
 
 ** End of Walkthrough **
