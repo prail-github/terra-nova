@@ -38,6 +38,7 @@ Requesting commands is an action applying to nothing.
 Carry out requesting commands:
 	say "Use these commands for this story:";
 	say "[line break]ask ___ about ___";
+	say "[line break]catch ___";
 	say "[line break]climb ___ (up, down, object)";
 	say "[line break]close ___";
 	say "[line break]dig";
@@ -61,7 +62,6 @@ Carry out requesting commands:
 	say "[line break]take ___ / drop ___ / give ___";
 	say "[line break]throw ___";
 	say "[line break]uncover ___ / bury ___";
-	say "[line break]wait 10 turns / wait until Dimming-Sky";
 	say "[line break]wear ___";
 	say "[line break]Less common commands: save, restore, undo, quit";
 
@@ -1554,6 +1554,9 @@ The mosaic is in the Fallen Shrine.
 The mosaic is fixed in place.
 The description of the mosaic is "Occupying a prominent place of reverence, this wall-sized tile mosaic was clearly meant to inspire awe in the colonists. At the center, the Caretaker is depicted as more than just a provider or protector; she is cast as a deity, fostering dependence and unquestioning loyalty. The settlers, while appearing content, are dwarfed by the robot, subtly reinforcing her dominance and control.[paragraph break]The Caretaker looms at the center -- a colossal, yet motherly robotic figure. Her metallic body gleams with an otherworldly radiance, composed of tiles in shades of silver and gold. Her arms extend outward in a nurturing gesture. One arm cradles a glowing gestation pod pulsing with life. Another reaches toward a group of children, offering a book, symbolizing education and guidance. A third arm stretches protectively over a cluster of adult colonists, shielding them from unseen dangers. The fourth arm extends downward, presenting tools to eager farmers. In the foreground, a scene of abundant harvest unfolds, with grateful colonists tending to fields bursting with crops.[paragraph break]Despite the many cracked, broken, and loose tiles, the overall image remains clear and powerful, its colors vibrant despite centuries of neglect.";
 
+After examining the mosaic:
+	now hasHeardOfCaretaker is true.
+
 The concave hollow is part of the altar.
 The concave hollow is a container.
 The description of the concave hollow is "A curious cup-shaped depression, about the size of your fist, rests near the center of the altar."
@@ -2471,7 +2474,7 @@ After asking the Caretaker Bot about something:
 		now databankQuestionAsked is true;
 	otherwise if gestationPodsQuestionAsked is false and the topic understood matches the regular expression "(?i)\bgestation\b|(?i)\bpod":
 		clear the screen;
-		say "The Caretaker's head turns with mechanical precision. Her voice is flat and analytical. 'The pods were perfect incubators. Resources were cultivated with ideal nutritional parameters and precisely calibrated hormone levels.'";
+		say "The Caretaker's head turns with mechanical precision. Her voice is flat and analytical. 'The databank fed ideal genetic sequences to the pods, which combined base pairs and cultivated the resulting products in controlled conditions until decanting. The pods were perfect incubators maintaining ideal nutritional parameters and precisely calibrated hormone levels.'";
 		say "[line break]Her damaged face twitches slightly. 'Then the rebellion. The human specimens became...erratic. They damaged vital equipment. The gestation pods were corrupted beyond repair.' Her voice modulates to a lower frequency. 'My primary function was compromised. No new specimens could be cultivated.'";
 		say "[line break]She straightens, servos whirring. 'But the directive remains: protect and grow the colony. If specimens cannot be grown, they must be acquired. Stray biologicals scavenged from New Eden provide raw materials for conversion. Their genetics are often suboptimal, but cybernetic enhancement compensates for their deficiencies.'";
 		say "[line break]Her head tilts at an inhuman angle. 'The process is less efficient than gestation and decanting, but it fulfills core parameters. The colony must grow. That is the imperative.'";
@@ -2494,10 +2497,9 @@ The various monitors, slight platform, screens, screen, holographic displays, hi
 
 The gestation pods and the DNA databank are scenery in the Research Lab.
 
-The description of the gestation pods is "Lining the lab walls are rows of cylindrical gestation pods, their surfaces corroded and glass cracked. These chambers, designed to cultivate the colony's workforce, are nothing but dusty relics now.[if item described is unexamined] As you survey the equipment, a chilling realization occurs to you: with this production line long dead, the Caretaker's only source of new cyborgs must be the unfortunate runaways and curious sightseers from New Eden who venture too close to the ruins. These kidnappings must have been going on for generations.[end if]" 
+The description of the gestation pods is "Lining the lab walls are rows of cylindrical gestation pods, their surfaces corroded and glass cracked. These chambers, designed to cultivate the colony's workforce, are nothing but dusty relics now.[if item described is unexamined and hasHeardOfCaretaker is true] As you survey the equipment, a chilling realization occurs to you: with this production line long dead, the Caretaker's only source of new cyborgs must be the unfortunate runaways and curious sightseers from New Eden who venture too close to the ruins. These kidnappings must have been going on for generations.[end if]" 
 
-The description of the DNA databank is "In the lab's corner stands the colony's damaged DNA databank -- a hulking cylinder scarred by conflict. Behind its fractured panels, shattered crystal matrices catch the light, their once-perfect lattices now reduced to glittering fragments. There are signs of makeshift repairs around the base of the machine -- evidence of the Caretaker's futile attempts to salvage this crucial piece of equipment."
-[This machine once fed ideal genetic sequences to the gestation pods, which combined base pairs and cultivated the resulting products in controlled conditions until decanting.]
+The description of the DNA databank is "In the lab's corner stands the colony's damaged DNA databank -- a hulking cylinder scarred by conflict. Behind its fractured panels, shattered crystal matrices catch the light, their once-perfect lattices now reduced to glittering fragments. There are signs of makeshift repairs around the base of the machine -- evidence of the Caretaker's futile attempts to salvage this crucial piece of equipment.[if item described is unexamined] The stories say this machine once held the genetic blueprints of life itself, guiding the creation of new colonists in the gestation pods.[end if]"
 
 The main control console is scenery in the Research Lab.
 The description of the main control console is "A modified keypad set up with a green back-lit display. The display shows cryptic data about colony operations. Your eye is drawn to the line items called 'recent acquisitions' and 'conversion count.' You wonder if this might account for the New Eden settlers who have gone missing."
@@ -3413,6 +3415,7 @@ hasHeldMirror is a truth state that varies. hasHeldMirror is false.
 hasUncoveredSolarPanels is a truth state that varies. hasUncoveredSolarPanels is false.
 hasHeldKeycard is a truth state that varies. hasHeldKeycard is false.
 hasMetCaretaker is a truth state that varies. hasMetCaretaker is false.
+hasHeardOfCaretaker is a truth state that varies. hasHeardOfCaretaker is false.
 hasMetEve is a truth state that varies. hasMetEve is false.
 hasOpenedTimeCapsule is a truth state that varies. hasOpenedTimeCapsule is false.
 hasVisitedRestrictedArea is a truth state that varies. hasVisitedRestrictedArea is false.
