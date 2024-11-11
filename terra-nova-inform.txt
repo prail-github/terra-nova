@@ -38,7 +38,6 @@ Requesting commands is an action applying to nothing.
 Carry out requesting commands:
 	say "Use these commands for this story:";
 	say "[line break]ask ___ about ___";
-	say "[line break]catch ___";
 	say "[line break]climb ___ (up, down, object)";
 	say "[line break]close ___";
 	say "[line break]dig";
@@ -62,6 +61,7 @@ Carry out requesting commands:
 	say "[line break]take ___ / drop ___ / give ___";
 	say "[line break]throw ___";
 	say "[line break]uncover ___ / bury ___";
+	say "[line break]wait N turns / wait until Long-Shadow, etc.";
 	say "[line break]wear ___";
 	say "[line break]Less common commands: save, restore, undo, quit";
 
@@ -243,7 +243,7 @@ Carry out waiting for a specified number of turns:
 	let N be the number understood;
 	repeat with counter running from 1 to N:
 		follow the turn sequence rules;
-	say "Time passes for [N] turns, total turns so far [turn count] ctc: [current-turn-count]."
+	say "Time passes for [N] turns, total turns so far is [turn count]."
 
 [wait for Night-fall or wait until night-fall]
 Waiting for daytime is an action applying to one topic.
@@ -351,11 +351,11 @@ The prev-time-of-day is a cycle that varies. The prev-time-of-day is Nightfall.
 
 The current-turn-count is a number variable. The current-turn-count is 0.
 
-First-Light-Limit is a number variable. First-Light-Limit is 60.
-High-Sun-Limit is a number variable. High-Sun-Limit is 110.
-Long-Shadow-Limit is a number variable. Long-Shadow-Limit is 170.
-Dimming-Sky-Limit is a number variable. Dimming-Sky-Limit is 220.
-Nightfall-Limit is a number variable. Nightfall-Limit is 320.
+First-Light-Limit is a number variable. First-Light-Limit is 50.
+High-Sun-Limit is a number variable. High-Sun-Limit is 100.
+Long-Shadow-Limit is a number variable. Long-Shadow-Limit is 150.
+Dimming-Sky-Limit is a number variable. Dimming-Sky-Limit is 200.
+Nightfall-Limit is a number variable. Nightfall-Limit is 300.
 
 Every turn:
 	increase current-turn-count by 1;
@@ -509,7 +509,6 @@ The parser error internal rule response (N) is "That's not a verb I recognize (t
 parser error internal rule response (X) is "What is your command, Kai?".
 standard pausing the game rule response (A) is "[paragraph break]Press SPACE to Continue.".
 
-		
 A room has a text called image file name. The image file name is usually "legacy-orbits-terra-nova-aa.jpg".
 A room has a text called sound-file-name. The sound-file-name is usually "silence".
 
@@ -682,7 +681,7 @@ Instead of reading the manuscript:
 	clear the screen;
 	clear the Vorple status line;
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'flip', 'mp3/428740__page-turn.mp3', 1);";
-	say "[roman type]The first page bears an inscription: 'May this record stand as witness to our journey -- from blind faith to hard-won freedom. For those who come after, learn from our mistakes and cherish your humanity. Those who gaze too long into the shadows find their own faces changing. -- Kael'.[paragraph break]";
+	say "[roman type]The first page bears an inscription: [italic type]'May this record stand as witness to our journey -- from blind faith to hard-won freedom. For those who come after, learn from our mistakes and cherish your humanity. Those who gaze too long into the shadows find their own faces changing. -- Kael'.[paragraph break]";
 	say "[bold type]Volume Two: Seeds of Rebellion[roman type][paragraph break]Date: 1st Moon, Harvest 26[line break]More and more are being Chosen now. But it's... different. Young Mira, always so full of questions. Old Tomasz, who grumbled about long work hours. They were Chosen. When they returned, they were like Janos. Efficient. Obedient. Improved with sleek prosthetics. The fire in their eyes is gone. Some whisper they might be the Caretaker's eyes and ears now. We keep our distance.";
 	say "[line break]Date: 13th Moon, Harvest 26[line break]The Chosen ones work tirelessly in the fields. Their productivity is unmatched. But at what cost? They no longer join us for evening meals or festivals. The Caretaker praises their 'right thinking.' I fear what that truly means.";
 	say "[line break]Date: 20th Moon, Harvest 26[line break]...Entry missing...";
@@ -1709,6 +1708,9 @@ Carry out sampling the molten lava:
 	otherwise:
 		say "It's too hot.";
 		stop the action;
+		
+Instead of touching the molten lava:
+	try sampling the molten lava.
 
 Every turn when the player can see the crucible and the lava sample is in the crucible for more than 5 turns:	Say "The glow of the lava sample within the crucible is going dim.";
 
@@ -2184,6 +2186,7 @@ Before going to Cyborg Assembly:
 	if hasHeldKeycard is false:
 		clear the screen;
 		clear the Vorple status line;
+		execute JavaScript command "audioManager.stopAll()";
 		execute JavaScript command "updateImage('img/cyborg-blocks-your-path-3.jpg');";
 		say "As you near the entrance to Cyborg Assembly, a hulking figure steps from the shadows and stops you.";
 		if blockedAccessBefore is false:
@@ -2465,7 +2468,7 @@ caretaker-questions is a number that varies. caretaker-questions is 0;
 After asking the Caretaker Bot about something:
 	if databankQuestionAsked is false and the topic understood matches the regular expression "(?i)\bdatabank\b|(?i)\bDNA\b":
 		clear the screen;
-		say "The Caretaker's optical sensors focus on the fractured panels. 'The databank was a masterwork of engineering. Earth's finest minds were stored there. Their genetic codes digitized and etched by lasers onto crystal matrices that could survive millennia of radiation during the interstellar voyage."; 
+		say "The Caretaker's optical sensors focus on the fractured panels. 'The databank was a masterwork of engineering. Earth's finest minds were stored there. Their genetic codes digitized and etched by lasers onto crystal matrices that could survive millennia of radiation during the interstellar voyage.'"; 
 		say "[line break]'The crystalline nature allowed perfect preservation and infinite recombination. I could blend genetic markers with mathematical precision -- enhance beneficial traits, suppress undesireable ones. The raw chemicals of life stored in the gestation pods were assembled according to the digital templates stored in the quartz cores.'";
 		say "[line break]Her damaged face tilts slightly. 'The results were... exceptional. Each resource decanted with precisely calculated attributes. Many specimens showed remarkable adaptation to Terra Nova's conditions.";
 		say "[line break]The Caretaker's servos whir as she straightens. 'But the rebel attack shattered the crystal cores. Those fractured fragments held the templates for generations that will never be...'";
@@ -2737,7 +2740,7 @@ The description of the exhibit console is "A recessed panel stands out amid the 
 Understand "recessed panel" as the biometric reader.
 The biometric reader is an open container.
 The biometric reader is part of the exhibit console.
-The description of the biometric reader is "Your eyes are drawn to a recess in the metallic surface of the exhibit console -- an impression molded with uncanny precision to the shape of a human hand. The depression is ringed with a faint, pulsing light, with five shallow grooves extended from the central hollow, perfectly aligned for fingers."
+The description of the biometric reader is "Your eyes are drawn to a recess in the metallic surface of the console -- an impression molded with uncanny precision to the shape of a human hand. The depression is ringed with a faint, pulsing light, with five shallow grooves extended from the central hollow, perfectly aligned for fingers."
 
 Understand "hand scanner" or "impression" or "depression" or "central hollow" as the biometric reader.
 Understand "finger" as the player's hand.
@@ -2768,7 +2771,6 @@ Instead of inserting something into the exhibit console:
 	otherwise:
 		say "That would achieve nothing."
 		
-
 Check pressing something into the biometric reader:
 	if the noun is not the player's hand:
 		say "[the noun] doesn't fit in the indentation." instead.
@@ -2801,7 +2803,10 @@ Instead of pushing the exhibit console:
 Instead of pressing the player's hand into the biometric reader:
 	now hasSeenLegacyHistory is true;
 	clear the screen;
-	execute JavaScript command "updateImage('img/kai-exhibit-1.jpg', 'default');";
+	if the player is in the museum:
+		execute JavaScript command "updateImage('img/kai-exhibit-1.jpg', 'default');";
+	otherwise:
+		execute JavaScript command "updateImage('img/kai-at-console-in-bay-1.jpg', 'default');";
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'blip', 'mp3/434137__projector-blip.mp3', 1, .50, 500);";
 	say "With a deep breath, you press your hand into the recess, the cold surface reacting immediately. A surge of energy ripples through your fingers, and the surrounding display shudders to life, stirring awake after countless years. The screen flickers, then reveals the epic journey of the Legacy -- from its origins on a dying Earth to the establishment of a new colony on Terra Nova.";
 	say "[paragraph break][bold type]Legacy's Journey: The Bridge Between Two Worlds...";
@@ -2880,9 +2885,13 @@ Instead of pressing the player's hand into the biometric reader:
 	pause the game;
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'flip', 'mp3/71852__page-turn.mp3', 1, .33);";
 	clear the screen;
-	execute JavaScript command "updateImage('img/kai-exhibit-1.jpg', 'default');";
+	if the player is in the museum:
+		execute JavaScript command "updateImage('img/kai-exhibit-1.jpg', 'default');";
+	otherwise:
+		execute JavaScript command "updateImage('img/kai-at-console-in-bay-1.jpg', 'default');";
 	say "[line break]The secrets of your origins, long lost to time and conflict, are now a part of you. As you slowly withdraw your hand from the recess, you realize that you've gained a profound connection to your ancestors.";
 	increase the score by Medium_Score_Bonus;
+	try looking;
 
 The Gestation Pod Display is scenery in the Museum.
 The description of the Gestation Pod Display is "A fully reconstructed gestation pod, identical to those used to grow the first colonists. Accompanying screens show the process of constructing embryos from digital DNA, nurturing them to term, and decanting them as viable resources.";
@@ -2977,7 +2986,8 @@ The description of the hatch is "[if the player is in the museum]You spot a circ
 
 Before going to the Lander Craft:
 	if the player does not have the silver keycard:
-		now the silver keycard is in the Lander Craft.
+		say "You notice a silver keycard and pick it up.";
+		now the player has the silver keycard.
 		
 The Lander Craft is a room. 
 The odor of the Lander Craft is "You smell decaying leather and rocket fuel."
@@ -3032,7 +3042,7 @@ Check inserting something into the slot:
     if the noun is not the keycard, say "That doesn’t fit into the slot." instead.
 
 After inserting the silver keycard into the slot:
-    say "The card clicks into the slot, and a green light flashes on the panel. The unknown purpose of the keycard has just become terrifyingly apparent."; 
+	say "The card clicks into the slot, and a green light flashes on the panel. The unknown purpose of the keycard has just become terrifyingly apparent."; 
 	pause the game;
 	stop the action.
 
@@ -3093,10 +3103,14 @@ Every turn when the player is in the Lander Craft:
 		say "[line break]You run your hand along the wall, feeling the cold metal beneath your fingers. Has this ancient ship been orbiting for centuries? The gravity, the air, the humming systems – it all feels too convenient, too prepared. A nagging thought tugs at the back of your mind: 'Was I expected?' You move down the corridor to the bay console hoping to get some answers.";
 		pause the game;
 		now the cyborg kit is nowhere;  [just in case they still carry it]
-		now the player is in the Docking Bay;
+		now the climate report is in the Docking Bay;
+		move the player to the Docking Bay, without printing a room description;
+		if hasSeenLegacyHistory is false:
+			now the exhibit console is in the Docking Bay
 
 Part 28 - Docking Bay
-
+	
+showDescription is a truth state that varies. showDescription is true.
 The left is a direction. The left has opposite right.
 The right is a direction. The right has opposite left.
 
@@ -3105,16 +3119,12 @@ The Docking Bay is scored.
 The odor of the Docking Bay is "You smell burning plastic."
 The image file name of the Docking Bay is "docking-bay-[handType]-hand.jpg".
 The sound-file-name of the Docking Bay is "211683__legacy-docking-bay.mp3".
-The description of the Docking Bay is "A dimly lit corridor stretches before you, its walls lined with unfamiliar technology and strange symbols. Soft emergency lights flicker to life as you move, responding to your presence after centuries of silence. A deep hum fills the space -- Legacy's heartbeat.[if hasSeenClimateReport is true][paragraph break]The Legacy Bridge is on your left[end if]".
-
-The console display is scenery in the Docking Bay.
-instead of examining the console display:
-	try examining climate report.
+The description of the Docking Bay is "A dimly lit corridor stretches before you, its walls lined with unfamiliar technology and strange symbols. Soft emergency lights flicker to life as you move, responding to your presence after centuries of silence. A deep hum fills the space -- Legacy's heartbeat.[if hasSeenClimateReport is true][paragraph break]The Legacy bridge is on your left[end if]".
 
 Every turn when the player is in the Docking Bay:
-	if hasSeenClimateReport is false:
-		say "[line break]You see a climate report displayed on the console.";
-		now the climate report is in the Docking Bay;
+	if showDescription is true:
+		try looking;
+		now showDescription is false;
 	otherwise:
 		now the image file name of the Docking Bay is "kai-at-console-in-bay-1.jpg";
 		now the Legacy Bridge is left of the Docking Bay.
@@ -3295,7 +3305,7 @@ The Final Resting Place is a room.
 The image file name of the Final Resting Place is "dead-game-over-1.jpg". 
 The sound-file-name of the Final Resting Place is "terra-nova-ending-music.mp3".
 The sound-loop-count of the Final Resting Place is 1.
-The description of the Final Resting Place is "You died as you lived, Kai - reaching for answers.[paragraph break]On Terra Nova, most of us learned to keep our eyes on the soil, to focus on what's certain and known. But not you. You looked up at the stars and into the shadows of our past, asking questions that others feared to ask.[paragraph break]They'll say you took too many risks. Maybe you did. But your courage came from something pure -- a need to understand who we are and where we came from. That same courage led you here, to this moment.[paragraph break]Your story ends, but it changes ours. Other colonists will whisper about what you discovered, what you dared to face. Some will follow in your footsteps, braver for knowing your journey.[paragraph break]Rest well among the stars, Kai. You've earned your place in Terra Nova's history."
+The description of the Final Resting Place is "You died as you lived, Kai -- reaching for answers.[paragraph break]On Terra Nova, most of us learned to keep our eyes on the soil, to focus on survival. But not you. You looked up at the stars and into the shadows of our past, asking questions that others feared to ask.[paragraph break]That same fire that burned in you once drove our ancestors to break their bonds and leave Zephyr's Landing. While we who farm New Eden's stubborn soil sometimes forget our rebel blood, you never did. Like those first defiant ones who dared to question the Caretaker's control, you chose the risk of freedom over comfort or complacency.[paragraph break]Your story ends, but it changes ours. They'll speak your name alongside Kael and the other rebels who dared to seek the truth no matter the cost. Some call it reckless, but they said the same of our ancestors who struck out to build their own free settlement rather than submit to the Caretaker's brutal captivity. Some will follow in your footsteps, forever marked by your courage.[paragraph break]Rest well among the stars, Kai. You were a true son of those first rebels. You've earned your place in Terra Nova's history."
 
 Part 34 - Regions
 
@@ -3427,4 +3437,6 @@ hasSeenLegacyHistory is a truth state that varies. hasSeenLegacyHistory is false
 hasSeenClimateReport is a truth state that varies. hasSeenClimateReport is false.
 hasWornGear is a truth state that varies. hasWornGear is false.
 hasSeenOrbContents is a truth state that varies. hasSeenOrbContents is false.
+
+
 

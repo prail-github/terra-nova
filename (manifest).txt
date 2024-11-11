@@ -44,6 +44,11 @@ g
 ! to be) "story.zblorb.js".
 
 [INTERPRETERHEAD]
+<link rel="apple-touch-icon" sizes="180x180" href="/terra-nova/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/terra-nova/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/terra-nova/favicon-16x16.png">
+<link rel="manifest" href="/terra-nova/site.webmanifest">
+<link rel="shortcut icon" type="image/x-icon" href="/terra-nova/favicon.ico">
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
     <meta name="robots" content="noimageindex">
@@ -134,24 +139,21 @@ g
 // and automatic cleanup of completed sounds
 class AudioManager {
     constructor() {
-        this.activeAudio = new Map(); // Maps handles to their Audio objects
-        this.fadeOutDuration = 500; // Default fade out duration in milliseconds
-        this.pendingOperations = new Map(); // Track pending operations for each handle
+        this.activeAudio = new Map();
+        this.fadeOutDuration = 500;
+        this.pendingOperations = new Map();
     }
 
     async playSound(audible, audioHandle, filePath, loopCount = 1, initialVolume = 1, delay = 0) {
-        // Cancel any pending operations for this handle
         if (this.pendingOperations.has(audioHandle)) {
             clearTimeout(this.pendingOperations.get(audioHandle));
             this.pendingOperations.delete(audioHandle);
         }
 
-        // If there's no delay, keep existing behavior
         if (delay === 0) {
             return this.playSoundNow(audible, audioHandle, filePath, loopCount, initialVolume);
         }
 
-        // If there is a delay, return a promise that resolves after the delay
         return new Promise((resolve, reject) => {
             const timeoutId = setTimeout(async () => {
                 this.pendingOperations.delete(audioHandle);
@@ -162,27 +164,14 @@ class AudioManager {
                     reject(error);
                 }
             }, delay);
-            
+
             this.pendingOperations.set(audioHandle, timeoutId);
         });
     }
 
     async playSoundNow(audible, audioHandle, filePath, loopCount, initialVolume) {
-        // Create a unique operation ID for this play request
         const operationId = Symbol();
-        
-        // Store the current operation ID
-        const existingAudio = this.activeAudio.get(audioHandle);
-        const currentState = existingAudio ? { ...existingAudio } : {};
-        this.activeAudio.set(audioHandle, {
-            ...currentState,
-            currentOperation: operationId
-        });
 
-        // Clamp initial volume to valid range
-        initialVolume = Math.max(0, Math.min(1, initialVolume));
-
-        console.log('playing audio:', audioHandle, filePath);
         if (audible == 'off' || filePath.toLowerCase().includes("silence")) {
             if (this.activeAudio.has(audioHandle)) {
                 await this.fadeOutAndStop(audioHandle);
@@ -190,56 +179,42 @@ class AudioManager {
             return audioHandle;
         }
 
-        // If this handle exists AND it's playing the same file, just return
         if (this.activeAudio.has(audioHandle)) {
             const currentAudio = this.activeAudio.get(audioHandle);
             if (currentAudio.filePath === filePath) {
                 return audioHandle;
             }
-            // Otherwise, wait for fade out before playing new file
             await this.fadeOutAndStop(audioHandle);
         }
 
-        // Check if this operation is still valid
-        if (this.activeAudio.has(audioHandle) && 
-            this.activeAudio.get(audioHandle).currentOperation !== operationId) {
-            return audioHandle; // Another operation has taken over
-        }
-
         const audio = new Audio(filePath);
-        audio.volume = initialVolume;
+        audio.volume = Math.max(0, Math.min(1, initialVolume));
         let playCount = 0;
 
-        // For single plays, add an 'ended' event listener to auto-cleanup
-        if (loopCount === 1) {
+        // For infinite or multiple loops
+        if (loopCount === -1 || loopCount > 1) {
             audio.addEventListener('ended', () => {
-                if (this.activeAudio.has(audioHandle) && 
-                    this.activeAudio.get(audioHandle).currentOperation === operationId) {
-                    this.activeAudio.delete(audioHandle);
-                }
-            });
-        }
-        // For multiple or infinite loops, handle the timing
-        else if (loopCount > 1 || loopCount === -1) {
-            if (loopCount === -1) {
-                audio.loop = true;  // Use native looping for infinite
-            } else {
-                audio.addEventListener('ended', () => {
-                    if (this.activeAudio.has(audioHandle) && 
-                        this.activeAudio.get(audioHandle).currentOperation === operationId) {
+                if (this.activeAudio.has(audioHandle)) {
+                    if (loopCount !== -1) {
                         playCount++;
                         if (playCount >= loopCount) {
                             this.activeAudio.delete(audioHandle);
                             return;
                         }
-                        audio.currentTime = 0;
-                        audio.play().catch(error => console.error('Error restarting audio:', error));
                     }
-                });
-            }
+                    audio.currentTime = 0;
+                    audio.play().catch(error => console.error('Error restarting audio:', error));
+                }
+            });
+        } else {
+            // Single play
+            audio.addEventListener('ended', () => {
+                if (this.activeAudio.has(audioHandle)) {
+                    this.activeAudio.delete(audioHandle);
+                }
+            });
         }
 
-        // Store the audio object with its handle
         this.activeAudio.set(audioHandle, {
             audio: audio,
             filePath: filePath,
@@ -249,15 +224,11 @@ class AudioManager {
             currentOperation: operationId
         });
 
-        // Start playing and await the Promise
         try {
             await audio.play();
         } catch (error) {
             console.error('Error playing audio:', audioHandle, error);
-            if (this.activeAudio.has(audioHandle) && 
-                this.activeAudio.get(audioHandle).currentOperation === operationId) {
-                this.activeAudio.delete(audioHandle);
-            }
+            this.activeAudio.delete(audioHandle);
             throw error;
         }
 
@@ -265,14 +236,12 @@ class AudioManager {
     }
 
     stop(audioHandle) {
-        // Cancel any pending operations
         if (this.pendingOperations.has(audioHandle)) {
             clearTimeout(this.pendingOperations.get(audioHandle));
             this.pendingOperations.delete(audioHandle);
         }
 
         if (this.activeAudio.has(audioHandle)) {
-            console.log("stopping", audioHandle);
             const audioObj = this.activeAudio.get(audioHandle);
             audioObj.audio.pause();
             audioObj.audio.currentTime = 0;
@@ -281,20 +250,17 @@ class AudioManager {
     }
 
     stopAll() {
-        // Cancel all pending operations
         for (const [handle, timeoutId] of this.pendingOperations.entries()) {
             clearTimeout(timeoutId);
         }
         this.pendingOperations.clear();
 
-        // Stop all playing audio
         for (const handle of this.activeAudio.keys()) {
             this.stop(handle);
         }
     }
 
     fadeOutAndStop(audioHandle) {
-        // Cancel any pending operations
         if (this.pendingOperations.has(audioHandle)) {
             clearTimeout(this.pendingOperations.get(audioHandle));
             this.pendingOperations.delete(audioHandle);
@@ -303,7 +269,6 @@ class AudioManager {
         return new Promise((resolve) => {
             if (this.activeAudio.has(audioHandle)) {
                 const audioObj = this.activeAudio.get(audioHandle);
-                // Safety check to ensure audio object exists and has volume property
                 if (!audioObj || !audioObj.audio) {
                     this.activeAudio.delete(audioHandle);
                     resolve();
@@ -311,7 +276,7 @@ class AudioManager {
                 }
 
                 const audio = audioObj.audio;
-                const originalVolume = audio.volume || 0;  // Default to 0 if volume is undefined
+                const originalVolume = audio.volume || 0;
                 const fadeSteps = 20;
                 const fadeInterval = this.fadeOutDuration / fadeSteps;
 
@@ -319,8 +284,7 @@ class AudioManager {
 
                 const fadeTimer = setInterval(() => {
                     currentStep++;
-                    // Additional safety check in case audio was removed during fade
-                    if (!this.activeAudio.has(audioHandle) || !this.activeAudio.get(audioHandle).audio) {
+                    if (!this.activeAudio.has(audioHandle)) {
                         clearInterval(fadeTimer);
                         resolve();
                         return;
@@ -343,7 +307,7 @@ class AudioManager {
 
     isPlaying(audioHandle) {
         return this.activeAudio.has(audioHandle) &&
-               !this.activeAudio.get(audioHandle).audio.paused;
+            !this.activeAudio.get(audioHandle).audio.paused;
     }
 
     setVolume(audioHandle, volume) {
@@ -731,6 +695,7 @@ const soundFiles = [
     '211683__legacy-docking-bay.mp3',
     '211683__research-lab.mp3',
     '315769__beast-growl.mp3',
+    '32899__supply-room.mp3',
     '396062__well-dripping.mp3',
     '415609__lava-bubbles.mp3',
     '428740__page-turn.mp3',
@@ -751,6 +716,7 @@ const soundFiles = [
     '723973__absorbed.mp3',
     '724217__kai-in-orbit.mp3',
     '73607__assembly-line.mp3',
+    '733261__cyborg-assembly.mp3', 
     '738438__beast-grunt-2.mp3', 
     '699928__beast-grunt-4.mp3', 
     '738439__beast-grunt-3.mp3', 
@@ -763,15 +729,78 @@ const soundFiles = [
     'terra-nova-intro.mp3'
 ];
 
-function preloadSounds(soundFiles) {
-    soundFiles.forEach(function(file) {
+function preloadSounds(soundFiles, concurrentLimit = 6) {
+    // Create a queue of files to load
+    const queue = [...soundFiles];
+    const loading = new Set();
+    const errors = [];
+
+    function loadNext() {
+        // If queue is empty or we've hit the concurrent limit, return
+        if (queue.length === 0 || loading.size >= concurrentLimit) {
+            return;
+        }
+
+        // Get next file from queue
+        const file = queue.shift();
         const audio = new Audio();
-        audio.src = "mp3/" + file;
+        
+        // Add to loading set
+        loading.add(file);
+
+        // Set up event handlers
+        audio.addEventListener('canplaythrough', () => {
+            console.log(`Loaded: ${file}`);
+            loading.delete(file);
+            loadNext(); // Try to load another
+        }, { once: true });
+
+        audio.addEventListener('error', (e) => {
+            console.error(`Error loading ${file}:`, e.message);
+            errors.push(file);
+            loading.delete(file);
+            loadNext(); // Try to load another
+        }, { once: true });
+
+        // Start loading
+        try {
+            audio.src = "mp3/" + file;
+        } catch (e) {
+            console.error(`Exception loading ${file}:`, e);
+            errors.push(file);
+            loading.delete(file);
+            loadNext(); // Try to load another
+        }
+    }
+
+    // Start initial batch of loads
+    for (let i = 0; i < concurrentLimit; i++) {
+        loadNext();
+    }
+
+    // Return a promise that resolves when all files are loaded
+    return new Promise((resolve) => {
+        const checkComplete = setInterval(() => {
+            if (queue.length === 0 && loading.size === 0) {
+                clearInterval(checkComplete);
+                if (errors.length > 0) {
+                    console.warn('Some sounds failed to load:', errors);
+                }
+                resolve(errors);
+            }
+        }, 100);
     });
 }
 
+async function initializeSounds() {
+    const errors = await preloadSounds(soundFiles);
+    if (errors.length > 0) {
+        console.warn('Failed to load some sounds:', errors);
+    }
+}
+
 console.error('Preloading sounds...');
-preloadSounds(soundFiles);
+initializeSounds();
 
 </script>
 
