@@ -182,14 +182,14 @@ stripped away. Intead, look but don't touch and proceed south.
 Testing Station
 ---------------
 In this room you put the Qubit stick in the Quantum Playback Projector to 
-reveal more history of the goings on in Zephyr. Also, take the power 
-consumption report for later and go south to the Research Lab.
+reveal more history of the goings on in Zephyr. Also, take the energy 
+statistics log for later and go south to the Research Lab.
 
 Research Lab
 ------------
 In the lab you meet the humanoid bot called the Caretaker.  Examine her. 
-She'll ask you for the power consumption report and then you can ask more 
-questions based on acceptable topics mentioned in her in her description. 
+She'll ask you for the energy statistics log and then you can ask more 
+questions based on acceptable topics mentioned in her description. 
 Her answers reveal more of the history of the rebellion and how she must find 
 other sources to build her village now that the gestation pods are damaged.  
 If you aren't wearing the cyborg disguise, you won't see her, and you
@@ -276,7 +276,9 @@ Eager to have more of your questions answered, you are presented with a
 climate report that describes the hostile conditions on the planet as 
 beneficial. The idea being that a harsh environment will breed bold and 
 sturdy stock, useful for other planet seeding missions. The comment in the 
-report about genetic sampling is a hint of the bad surprise yet to come.
+report about genetic sampling is a hint of the bad surprise yet to come. 
+If you didn't learn about the voyage of Legacy from a dying Earth in the
+museum, you will have an opportunity to access that history here too.
 
 A panel opens on your left, so go left.
 
