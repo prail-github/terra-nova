@@ -798,7 +798,7 @@ hasPlayedBefore is a truth state that varies. hasPlayedBefore is false.
 
 When play begins:
 	execute JavaScript command "audioManager.stopAll();";
-	now the maximum score is 580;
+	now the maximum score is 640;
 	now handType is "normal";
 	now dwelling-with-shard is "Past an endless sea of sand, the shimmering outline of a collapsed dwelling awaits. As you approach, something catches your eye -- a glint of light reflecting off glass half-buried in the sand. More ruins to the east. The stone pit lies west.";
 	now dwelling-with-solar is "Past an endless sea of sand, the shimmering outline of a collapsed dwelling beckons. More ruins to the east. The stone pit lies west.";
@@ -1138,9 +1138,15 @@ The ancient well is fixed in place.
 The ancient well is in Water Supply.
 The description of the ancient well is "An abandoned stone well, decayed and crumbling, stands at the center of the ruins. Its dark, greenish water emits a foul odor, with algae clinging to the edges.  The well's stagnant water reflects the bleak, overcast sky above.[if the ancient well is unexamined][paragraph break]As you approach the well, you notice weathered text carved into a fallen stone block: [italic type]'Three things mark a fool: walking alone at Dimming-Sky, seeking truth in ruins, and believing dead things stay dead.'[roman type] Below, in smaller letters: [italic type]'Heed this warning, children of Zephyr'.[roman type][end if]";
 
-The greenish water is scenery in Water Supply.
-The description of the greenish water is "A foul-smelling pool of stagnant water."
-Understand "algae" as the greenish water.
+The molten lava is an enterable container in the Lava Pit. 
+The molten lava is undescribed.
+The description of molten lava is "Intense heat radiates from the fiery orange molten liquid."
+
+The greenish water sample is a thing.
+The greenish water sample is in the ancient well.
+The indefinite article of the greenish water sample is "a".
+The description of the greenish water sample is "A foul-smelling pool of stagnant water."
+Understand "algae" as the greenish water sample.
 
 The broken pillars, collapsed walls, and scraggly weeds are scenery in Water Supply.
 
@@ -1212,6 +1218,12 @@ Instead of jumping on something:
 		try jumping over the ancient well;
 	otherwise:
 		say "Your reconsider jumping on [the noun].";
+		
+Instead of taking the greenish water sample:
+	clear the screen;
+	say "The well's rim, worn smooth by the passage of time, feels solid enough as you perch on its edge and stretch out. You reach deeper toward the greenish water below, then you hear it. The first grinding sound. It's faint, like a groan echoing up from the earth itself. Then comes the shudder of ancient mortar giving way.[paragraph break]The weathered masonry lurches suddenly and throws you forward into the stinking depths. Icy water floods into your nose and mouth, carrying the taste of decay. You claw at the walls, fingernails scraping raw against the algae-slicked stones, but each desperate grip betrays you, sliding you deeper into darkness.[paragraph break]Your waterlogged clothes drag you under like lead weights, and your lungs scream for air. The last thing you see is a warped circle of light far above, growing dimmer as the murk consumes you.";
+	pause the game;
+	now the player is in Kai Transformed.
 
 Part 10 - Village Foundry
 
@@ -1670,8 +1682,7 @@ Scooping is an action applying to one thing. Understand "scoop [something]" as t
 Collecting is an action applying to one thing. Understand "collect [something]" as taking.
 
 Scooping it into is an action applying to two things. 
-Understand "scoop [something] into [something]" as scooping it into.
-Understand "scoop [something] in [something]" as scooping it into.
+Understand "scoop [something] into/with/in [something]" as scooping it into.
 Understand "collect [something] in [something]" as scooping it into.
 
 Filling it with is an action applying to two things.
@@ -1692,6 +1703,9 @@ Instead of filling the crucible with the molten lava:
 	
 Instead of filling the crucible with the lava sample:
 	try sampling the molten lava.
+	
+Instead of scooping the greenish water into the crucible:
+	try taking the greenish water sample.
 
 Instead of scooping something into something:
     say "That action will do you no good."
@@ -3466,6 +3480,3 @@ hasSeenLegacyHistory is a truth state that varies. hasSeenLegacyHistory is false
 hasSeenClimateReport is a truth state that varies. hasSeenClimateReport is false.
 hasWornGear is a truth state that varies. hasWornGear is false.
 hasSeenOrbContents is a truth state that varies. hasSeenOrbContents is false.
-
-
-
