@@ -1142,11 +1142,11 @@ The molten lava is an enterable container in the Lava Pit.
 The molten lava is undescribed.
 The description of molten lava is "Intense heat radiates from the fiery orange molten liquid."
 
-The greenish water sample is a thing.
-The greenish water sample is in the ancient well.
-The indefinite article of the greenish water sample is "a".
-The description of the greenish water sample is "A foul-smelling pool of stagnant water."
-Understand "algae" as the greenish water sample.
+The greenish water is a thing.
+The greenish water is in the ancient well.
+The greenish water is undescribed.
+The description of the greenish water is "A foul-smelling pool of stagnant water."
+Understand "algae" as the greenish water.
 
 The broken pillars, collapsed walls, and scraggly weeds are scenery in Water Supply.
 
@@ -1219,7 +1219,7 @@ Instead of jumping on something:
 	otherwise:
 		say "Your reconsider jumping on [the noun].";
 		
-Instead of taking the greenish water sample:
+Instead of taking the greenish water:
 	clear the screen;
 	say "The well's rim, worn smooth by the passage of time, feels solid enough as you perch on its edge and stretch out. You reach deeper toward the greenish water below, then you hear it. The first grinding sound. It's faint, like a groan echoing up from the earth itself. Then comes the shudder of ancient mortar giving way.[paragraph break]The weathered masonry lurches suddenly and throws you forward into the stinking depths. Icy water floods into your nose and mouth, carrying the taste of decay. You claw at the walls, fingernails scraping raw against the algae-slicked stones, but each desperate grip betrays you, sliding you deeper into darkness.[paragraph break]Your waterlogged clothes drag you under like lead weights, and your lungs scream for air. The last thing you see is a warped circle of light far above, growing dimmer as the murk consumes you.";
 	pause the game;
@@ -1705,7 +1705,7 @@ Instead of filling the crucible with the lava sample:
 	try sampling the molten lava.
 	
 Instead of scooping the greenish water into the crucible:
-	try taking the greenish water sample.
+	try taking the greenish water.
 
 Instead of scooping something into something:
     say "That action will do you no good."
@@ -3480,3 +3480,6 @@ hasSeenLegacyHistory is a truth state that varies. hasSeenLegacyHistory is false
 hasSeenClimateReport is a truth state that varies. hasSeenClimateReport is false.
 hasWornGear is a truth state that varies. hasWornGear is false.
 hasSeenOrbContents is a truth state that varies. hasSeenOrbContents is false.
+
+
+
