@@ -4,7 +4,7 @@
 
 ===============================================================================
 
-Updated: Nov 11, 2024
+Updated: Nov 20, 2024
 Version: 1.0
 Contact: prail@yahoo.com
 
@@ -409,8 +409,8 @@ it's the moment everything changes and the danger beneath the
 sand is awakened. 
 
 6. The story builds on a breakthrough from our time: 
-Scientists store human genome on a ‘memory crystal’ that lasts billions of years
-https://www.popsci.com/technology/memory-crystal-dna/
+Scientists store human genome on a ‘memory crystal’ that lasts billions of 
+years https://www.popsci.com/technology/memory-crystal-dna/
 
 7. If you want to meet the danger that looms after dark in the desert, you can
 wait by typing, "wait until Nightfall"  -- you should probably save your 
@@ -418,8 +418,8 @@ progress first.
 
 8. To learn the origin of Shadow Beasts, jump over the well.
 
-9. To learn what happened to Kael the leader of the rebellion enter the research lab, without
-freeing the Shadow Beast from the blocked passage, then go northeast to the equipment 
-storage room, then west to the assembly line. Kael is there.
+9. To learn what happened to Kael the leader of the rebellion enter the research 
+lab, without freeing the Shadow Beast from the blocked passage, then go northeast 
+to the equipment storage room, then west to the assembly line. Kael is there.
 
 ** End of Walkthrough **
