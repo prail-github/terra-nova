@@ -19,6 +19,7 @@ VERSION HISTORY
 ---------------
 
 1.0: Nov 1, 2024 (First Version)
+1.0: Nov 20, 2024 (Updates)
 
 ===============================================================================
 
@@ -99,7 +100,7 @@ Explore the altar and mosaic. The altar is useful if you are interested in
 learning more about the history of the settlement. The mosaic is the same; it
 provides the history of a society dominated by a humanoid robot, the Caretaker.
 
-go north to the Stone Tower
+Go north to the Stone Tower
 
 Stone Tower
 -----------
@@ -108,14 +109,14 @@ see your home village, gaze up to see a hint of the Legacy spaceship patiently
 orbiting the planet, gaze east to see the lava flows.  Overall, Terra Nova is 
 a theatening place.  After enjoying more views, an earthquake hits and 
 damages the telescope revealing a magnifying mirror that might be useful 
-later, so take it.  While you're up high, throw the rusty metal box off the
-tower. It crashes on the rocky terrain below and opens to reveal various 
-relics. Collect these when you leave the tower. You can read the manuscript 
-and poster now, these provide further background on the culture. The Chrono 
-Org and qubit stick also provide historical accounts although you can't read 
-those until later.
+later, so take it.  Behind the plaque you find a manuscript. You can read more 
+history from Kael there. While you're up high, throw the rusty metal box off 
+the tower.  It crashes on the rocky terrain below and opens to reveal various 
+relics. Collect these when you leave the tower. You can read the manuscript and 
+poster now, these provide further background on the culture. The Chrono Org and 
+Qubit stick also provide historical accounts, but you can't read those until later.
 
-go south to the Fallen Shrine
+Go south to the Fallen Shrine
 
 Fallen Shrine (again)
 ---------------------
@@ -124,7 +125,7 @@ as the orb.  Put the Chrono Orb into the hollow to reveal more history about
 the village of Zephyr. This is a positive view of village evolution and growth 
 highlighting the Caretaker's benevolence.
 
-go east to the Lava Pit
+Go east to the Lava Pit
 
 Lava Pit
 --------
@@ -177,13 +178,17 @@ study the way the Caretaker would convert troublesome settlers to high
 performing cyborgs by replacing parts of them bit by bit, including their 
 minds. The assembly control panel blinks at you begging to be pressed, but 
 resist.  If you do press it you get a robotic hand and your disguise is 
-stripped away. Intead, look but don't touch and proceed south.
+stripped away. Intead, look but don't touch. 
+
+Go south.
 
 Testing Station
 ---------------
 In this room you put the Qubit stick in the Quantum Playback Projector to 
 reveal more history of the goings on in Zephyr. Also, take the energy 
-statistics log for later and go south to the Research Lab.
+statistics log for later. 
+
+Go south to the Research Lab.
 
 Research Lab
 ------------
@@ -236,7 +241,7 @@ As if by magic, while digging you spot a bioluminescent beetle and pocket it.
 That is the light source you need to reenter the stone pit and explore 
 the restricted area.
 
-go west, then down into the tunnel, then southeast to the lab, 
+Go west, then down into the tunnel, then southeast to the lab, 
 then west to the restricted area.
 
 Restricted Area Entrance (now without power)
