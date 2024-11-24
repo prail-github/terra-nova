@@ -572,7 +572,7 @@ window.addEventListener('resize', function() {
         document.body.style.fontSize = "12pt";
     } else {
         containerDiv.style.gridTemplateColumns = '500px 1fr';  // Original layout for larger screens
-        document.body.style.fontSize = "14pt";
+        document.body.style.fontSize = "16pt";
     }
 
    var statusLine = document.getElementById('status-line-container');
@@ -591,12 +591,14 @@ const imageArray = [
    'blocked-tunnel-darker.jpg',
    'bot-assembly-4.jpg',
    'caretaker-closeup-4.jpg',
+   'colony-monitor-1.jpg',
    'crumbling-ruins.jpg',
    'cyborg-agony-1.jpg',
    'cyborg-blocks-your-path-3.jpg',
    'cyborg-hybrid-1.jpg',
    'dark-tunnel.jpg',
    'dead-game-over-1.jpg',
+   'dna-library-2.jpg',
    'docking-bay-normal-hand.jpg',
    'docking-bay-robotic-hand.jpg',
    'drone-attack-9.jpg',
