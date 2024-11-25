@@ -4,7 +4,7 @@
 
 ===============================================================================
 
-Updated: Nov 20, 2024
+Updated: Nov 24, 2024
 Version: 1.0
 Contact: prail@yahoo.com
 
@@ -20,6 +20,7 @@ VERSION HISTORY
 
 1.0: Nov 1, 2024 (First Version)
 1.0: Nov 20, 2024 (Updates)
+1.0: Nov 24, 2024 (More Updates)
 
 ===============================================================================
 
@@ -277,15 +278,35 @@ bay unassisted, you're just a passenger now.
 
 Docking Bay
 -----------
-Eager to have more of your questions answered, you are presented with a 
-climate report that describes the hostile conditions on the planet as 
-beneficial. The idea being that a harsh environment will breed bold and 
-sturdy stock, useful for other planet seeding missions. The comment in the 
-report about genetic sampling is a hint of the bad surprise yet to come. 
-If you didn't learn about the voyage of Legacy from a dying Earth in the
-museum, you will have an opportunity to access that history here too.
+You notice a repair bench here with a few objects on it.
+Two are red herrings (as noted in the fine print) and one is useful.
+Take the tarp for later.
 
-A panel opens on your left, so go left.
+Go west
+
+DNA Library
+-----------
+You find the crystal storage for the DNA data store. "examine storage units"
+to read the bios of famous contributors to the Legacy project.
+You can examine the genetic analysis station (or touch) it to learn about 
+your odd genetics and mutations from living on a harsh planet.
+
+Wear the tarp before you go south. It's reflective qualities let you pass
+the security without being turned back.
+
+Go south.
+
+Colony Monitoring Center
+------------------------
+This is a viewing area looking out on the planet. All the settlements are
+monitored from here, although our hero, Kai, thought his settlement was 
+the only one until now. You can get more information about the state of the 
+settlements by examining the map, a disturbing transformation display, and 
+finally the status monitor that shares the climate report.
+
+Once you've reviewed these items, you can advance to the final room.
+
+Go east
 
 Legacy Bridge
 -------------
@@ -295,12 +316,8 @@ in orbit. We also learn that the Caretaker was intentionally programmed to
 be overly protective and strict with the settlers so that rebellion would 
 be inevitable. 
 
-The rebels possess the characteristic bold genes Legacy craves for future 
-missions. Next, an impressive array of four scientists is briefly shown, and 
-it's revealed that not only did they plan the mission but they also inserted 
-their personal DNA into the databank to be carried to new worlds. You share 
-genes in common with these scientists. To view the details, you 
-"examine ancestors" and their bios appear.
+You can ask a few questions of the pilot and the answers clear up any loose
+ends.
 
 Soon after, Legacy's true intentions are revealed. You are deemed too 
 threatening to the ship and her mission, so you must be neutralized. 
@@ -308,6 +325,7 @@ However, your tissues are of lasting value, so they are harvested for your
 fine genetics for use in later missions.
 
 This may not be a win for Kai, but it is a win for humanity, which must endure.
+
 
 ===============================================================================
 
