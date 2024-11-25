@@ -284,12 +284,16 @@ Take the tarp for later.
 
 Go west
 
-DNA Library
------------
+Archives Chamber
+----------------
 You find the crystal storage for the DNA data store. "examine storage units"
 to read the bios of famous contributors to the Legacy project.
 You can examine the genetic analysis station (or touch) it to learn about 
 your odd genetics and mutations from living on a harsh planet.
+
+If you failed to learn the history of Legacy's journey from a dying Earth
+while you were in the museum, you have a second chance here by placing your
+hand in the biometric reader.
 
 Wear the tarp before you go south. It's reflective qualities let you pass
 the security without being turned back.
