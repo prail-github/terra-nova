@@ -11,6 +11,7 @@ Include Vorple Multimedia by Juhana Leinonen.
 Include Vorple Notifications by Juhana Leinonen.
 Include Vorple Screen Effects by Juhana Leinonen.
 Include Vorple Status Line by Juhana Leinonen.
+Include Approaches by Emily Short.
 
 Release along with the "Vorple" interpreter.
 Release along with cover art ("A spaceship in orbit").
@@ -46,6 +47,7 @@ Carry out requesting commands:
 	say "[line break]go ___ (?, east, west, north, south, inside, outside, ne, nw)";
 	say "[line break]hide / hide in ___";
 	say "[line break]hint";
+	say "[line break]inventory";
 	say "[line break]jump over/into/on ___";
 	say "[line break]listen";
 	say "[line break]look (to reveal current location and description)";
@@ -61,7 +63,8 @@ Carry out requesting commands:
 	say "[line break]take ___ / drop ___ / give ___";
 	say "[line break]throw ___";
 	say "[line break]uncover ___ / bury ___";
-	say "[line break]wait N turns / wait until Long-Shadow, etc.";
+	say "[line break]wait N turns / wait until Long-Shadow, etc";
+	say "[line break]walk to ___";
 	say "[line break]wear ___";
 	say "[line break]Less common commands: save, restore, undo, quit";
 
@@ -93,10 +96,34 @@ Carry out requesting a hint:
 		follow the Lava Pit hint system rule;	otherwise if the player is in the Restricted Area Entrance:
 		follow the Restricted Area Entrance hint system rule;	otherwise if the player is in the Stone Watchtower:
 		follow the Stone Watchtower hint system rule;
+	otherwise if the player is in the Archives Chamber:
+		follow the Archives Chamber hint system rule;
 	otherwise:
 		say "No specific hint available. Explore your surroundings, and examine objects carefully.";
 		now the hint-count of the location is 0.
 
+This is the Archives Chamber hint system rule:
+	let hc be the hint-count of the location;
+	if security-door-approach-count is 0:
+		say "No hint available.";
+	otherwise if the player does not have the maintenance tarp:
+		if hc is 2:
+			say "Think of something that might reflect the sensors.";
+			now the hint-count of the location is 3;
+		otherwise:
+			now the hint-count of the location is 2;
+			say "What do you have that might influence the sensors detecting your approach to the security door?";
+	otherwise if the player is not wearing the maintenance tarp:
+		if the hint-count of the location is 3 and security-door-approach-count > 1:
+			say "There seems to be some affect now that you are carrying the silvery tarp.";
+			now the hint-count of the location is 4;
+		otherwise:
+			say "You need complete coverage to disguise your approach toward the door.";
+	otherwise if the player is wearing the maintenance tarp:
+		say "No hint available";
+	otherwise:
+		continue the action.
+	
 This is the Blocked Passage hint system rule:
 	let hc be the hint-count of the location;
 	if the rusty chain is unexamined:
@@ -105,12 +132,14 @@ This is the Blocked Passage hint system rule:
 		say "What happens when you pull the chain?";
 		now the hint-count of the location is 2;
 	otherwise if hc is 2:
-		say "Ok, something's there. If only there was a way to break the chain.";
+		say "Ok, something's there. If only there was a way to break the chain to free the animal.";
 		now the hint-count of the location is 3;
 	otherwise if hc is 3:
 		say "Maybe you can melt the chain somehow?";
-		now the hint-count of the location is 4;
-	otherwise if hc is 4:
+		now the hint-count of the location is 4;	otherwise if hc is 4:
+		say "The chain looks brittle, as if extreme heat might shatter it.";
+		now the hint-count of the location is 5;
+	otherwise if hc is 5:
 		say "If you're tired of this, you could try climbing.";
 		now the hint-count of the location is 2;
 	otherwise:		
@@ -190,6 +219,8 @@ Carry out asking for exits:
 		if the count of exits is 0, say "No exit." instead;
 		if the count of exits is 1, say "From here, the only path is [list of viable directions].";
 		otherwise say "From here, the viable exits are [list of viable directions].";
+	otherwise:
+		say "I don't understand that direction."
 
 direction-reminder is a truth state that varies. direction-reminder is true.
 Definition: a direction (called thataway) is viable if the room thataway from the location is a room.
@@ -303,6 +334,10 @@ A room has a text called sound. The sound is usually "".
 
 A thing has a number called hint-count. The hint-count is usually 0.
 A room has a number called hint-count. The hint-count is usually 0.
+A room has a number called visit-count. The visit-count of a room is usually 0.
+
+Carry out going:
+	now the visit-count of the location is the visit-count of the location + 1.
 
 [Utility command that should be built-in to Inform]
 Understand "show all rooms" as showing all rooms.
@@ -351,11 +386,11 @@ The prev-time-of-day is a cycle that varies. The prev-time-of-day is Nightfall.
 
 The current-turn-count is a number variable. The current-turn-count is 0.
 
-First-Light-Limit is a number variable. First-Light-Limit is 50.
-High-Sun-Limit is a number variable. High-Sun-Limit is 100.
-Long-Shadow-Limit is a number variable. Long-Shadow-Limit is 150.
-Dimming-Sky-Limit is a number variable. Dimming-Sky-Limit is 200.
-Nightfall-Limit is a number variable. Nightfall-Limit is 300.
+First-Light-Limit is a number variable. First-Light-Limit is 40.
+High-Sun-Limit is a number variable. High-Sun-Limit is 90.
+Long-Shadow-Limit is a number variable. Long-Shadow-Limit is 140.
+Dimming-Sky-Limit is a number variable. Dimming-Sky-Limit is 190.
+Nightfall-Limit is a number variable. Nightfall-Limit is 270.
 
 Every turn:
 	increase current-turn-count by 1;
@@ -595,7 +630,7 @@ Instead of reading the diary:
 	pause the game;
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'flip', 'mp3/428740__page-turn.mp3', 1);";
 	clear the screen;
-	say "[bold type]Volume One: Years of Contentment and Growing Doubts[roman type][paragraph break]Date: 5th Moon, Harvest 24[line break]Janos was Chosen today. The first in our village to be promoted to cyborg status. Such an honor. The Caretaker sees great potential in him. We all gathered to watch him walk to the facility, his head held high. I admit, a part of me envies him.";
+	say "[bold type]Volume One: Years of Contentment and Growing Doubts[roman type][paragraph break]Date: 5th Moon, Harvest 24[line break]Janos was Chosen today. The first in our village to be promoted to elite status. Such an honor. The Caretaker sees great potential in him. We all gathered to watch him walk to the facility, his head held high. I admit, a part of me envies him.";
 	say "[line break]Date: 22nd Moon, Harvest 24[line break]Janos returned today. He moves with such efficiency now, his new arm gleaming in the sunlight. But his eyes... they're different. Calmer, perhaps. He speaks of the Caretaker with a reverence that makes even the most devoted among us seem skeptical. Progress, I suppose.[paragraph break]Date: 8th Moon, Harvest 25[line break]...(several pages missing)...";
 	say "[line break]Date: 9th Moon, Harvest 25[line break]Young Asha tried to run away yesterday. Poor child made it to the perimeter before the sensors triggered her collar. The shocks brought her to her knees, writhing in the dirt until the Caretaker's drones retrieved her. We hear whispers about lost souls and wanderers -- those who ventured beyond the perimeter in the past and never returned. The Caretaker tells us the sensors and shocks are for our own safety, to keep us from the dangers that lurk beyond. But the screams of those who test the boundaries... they haunt me. Is safety worth such pain? Still, we must trust our Caretaker. She only wants to protect us. Doesn't she?";
 	say "[line break]...(remaining entries unreadable)...";
@@ -608,13 +643,10 @@ Instead of taking the climate report:
 	try examining the climate report.
 	
 Instead of examining the climate report:
-	clear the screen;
-	execute JavaScript command "updateImage('img/volcano-landscape-3.jpg', 'default');";
 	say "The report highlights the risks posed by volcanic eruptions and the increased frequency and intensity of earthquakes on Terra Nova.[paragraph break]Surprisingly, the report's findings reveal that the planet's unstable environment is considered advantageous for the mission's grand experiment in planet seeding. The active volcanoes and seismic disturbances are seen as essential catalysts for the colonists to overcome. These challenges create an inhospitable environment: the perfect crucible for evolution, pushing colonists to adapt or die.[paragraph break]The report coldly notes that this process will produce optimal genetic material for harvesting for use in future seeding missions on other worlds, reducing the colonists to vessels for DNA refinement. A disturbing section titled 'Genetic Sampling Protocols' catches your eye. It describes the procedures for collecting tissue from the most successfully adapted individuals.[paragraph break]The situation shows an appalling lack of concern for the colonists[apostrophe] safety and suffering. It[apostrophe]s clear to you that Terra Nova is nothing but a cold Darwinian breeding program where the harsh environment selects the best-adapted humans.";
 	now the climate report is examined;
 	if hasSeenClimateReport is false:
-		now hasSeenClimateReport is true;
-		say "[line break]You notice a doorway open on your left."
+		now hasSeenClimateReport is true.
 		
 The doorway is scenery in the Docking Bay.
 The description of the doorway is "Through dim lighting you can see that the doorway leads to the bridge of the ship."
@@ -710,13 +742,13 @@ Instead of reading the manuscript:
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'flip', 'mp3/428740__page-turn.mp3', 1);";
 	clear the screen;
 	say "...(entries unreadable)...";
-	say "[line break]Date: 7th Moon, Harvest 27[line break]The volcanos grow restless. The earth shakes more frequently. But it's not the planet I fear now. It's what we've become. What we're about to do. The cyborgs watch us constantly. In the coming days, I have no doubt they'll stand against us. Against their own people!  We've made our plans in secret. When we rise, our first act will be to strip off these accursed collars, breaking our bonds and preventing the Caretaker from stopping us with her shocks. We know what we must do.";
+	say "[line break]Date: 7th Moon, Harvest 27[line break]The volcanos grow restless. The earth shakes more frequently. But it's not the planet I fear now. It's what we've become. What we're about to do. The Chosen watch us constantly. In the coming days, I have no doubt they'll stand against us. Against their own people!  We've made our plans in secret. When we rise, our first act will be to strip off these accursed collars, breaking our bonds and preventing the Caretaker from stopping us with her shocks. We know what we must do.";
 	say "[line break]Date: 15th Moon, Harvest 27[line break]I have spent too long watching my people change, studying the shadows that crawl across their faces as the Caretaker's influence grows. And now I understand a truth that chills me: Those who gaze too long into the shadows find their own faces changing. I see us growing harder, colder. The constant vigilance, the watching, the hiding... it changes us all.";
 	pause the game;
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'flip', 'mp3/428740__page-turn.mp3', 1);";
 	clear the screen;
 	say "[line break]Date: 22nd Moon, Harvest 27[line break]Tomorrow, we rise. If you're reading this, know that we fought for freedom. For the right to be human, with all our flaws. The Caretaker tried to perfect us, but in doing so, she stripped away what makes us who we are. No more. We will face our own people, turned into unfeeling machines. But we must prevail. For the chance to feel the wind on our necks without fear of shock or reprimand. For the right to wander and explore our world without being labeled lost souls....(several pages torn out)...";
-	say "[line break]Date: 3rd Moon, Harvest 28[line break]We've done it. We're free. But at what cost? The settlement lies in ruins, the Caretaker in hiding. Many of our own lie dead -- both fully human and cyborg alike. We leave for the wilderness tomorrow. A new beginning. A true New Eden, where we can be imperfectly human.";
+	say "[line break]Date: 3rd Moon, Harvest 28[line break]We've done it. We're free. But at what cost? The settlement lies in ruins, the Caretaker in hiding. Many of our own lie dead -- both ordinary and Chosen alike. We leave for the wilderness tomorrow. A new beginning. A true New Eden, where we can be imperfectly human.";
 	say "[line break]This is my last entry. To whoever finds this, know our story. Learn from it.";
 	
 Rule for printing the name of the niche:
@@ -730,22 +762,25 @@ The caretaker log is nowhere.
 The description of the caretaker log is "unused."
 Instead of examining the caretaker log:
 	clear the Vorple status line;
-	say "[bold type]Caretakers Log Entries[roman type][paragraph break]Year 0: Day 1[line break]Zephyr lander touchdown successful. Primary directive: ensure survival and prosperity of hatchery subjects. Initializing settlement protocols.[paragraph break]Year 0: Day 10[line break]Completed initial survey of landing site. Rocky soil with native vegetation. Suitable for small-scale cultivation. Commencing construction of basic shelters and life support systems.[paragraph break]Year 0: Day 45[line break]First litter of subjects entering final stage of artificial gestation. Survival probability: 78.3%. Implementing additional nutrient supplements to improve odds. Increasing doses of Compound D-7 for enhanced musculature and Serum L-3 for increased compliance. Note: Cognitive enhancement factors deliberately omitted to maintain optimal control parameters.";
+	say "[bold type]Caretaker's Log Entries[roman type][paragraph break]Year 0: Day 1[line break]Zephyr lander touchdown successful. Primary directive: ensure survival and prosperity of hatchery subjects. Initializing settlement protocols.[paragraph break]Year 0: Day 10[line break]Completed initial survey of landing site. Rocky soil with native vegetation. Suitable for small-scale cultivation. Commencing construction of basic shelters and life support systems.[paragraph break]Year 0: Day 45[line break]First litter of subjects entering final stage of artificial gestation. Survival probability: 78.3%. Implementing additional nutrient supplements to improve odds. Increasing doses of Compound D-7 for enhanced musculature and Serum L-3 for increased compliance. Note: Cognitive enhancement factors deliberately omitted to maintain optimal control parameters.";
 	say "[line break].[line break].[line break]...(followed by garbled entries)...";
 	pause the game;
-	say "[bold type]Caretakers Log Entries[roman type][paragraph break]Year 1: Day 1[line break]First successful decanting of hatchery products. Five viable infants. Initiating early childhood development protocols. Settlement expansion underway to accommodate growth.[paragraph break]Year 3: Day 180[line break]Hatchlings showing rapid development. Growth rate approximately 300% faster than Earth baseline. Cognitive abilities advancing in tandem with physical growth. Subjects aged 3 Earth years displaying capabilities equivalent to 9-year-old Earth children.[paragraph break]Hypothesis: Accelerated growth may be result of optimized nutrient delivery in gestation pods and environmental factors on Terra Nova. Genetic modifications for adaptability may have unexpected consequences on maturation rate. Implementing education modules on basic survival skills. Note: subjects display high curiosity about environment. Increasing safety protocols to prevent unauthorized exploration.[paragraph break]Year 5: Day 90[line break]Settlement now self-sufficient in food production. Installed advanced filtration system for water supply. Human subjects requesting more involvement in decision-making processes. Evaluating potential risks.";
+	say "[bold type]Caretaker's Log Entries[roman type][paragraph break]Year 1: Day 1[line break]First successful decanting of hatchery products. Five viable infants. Initiating early childhood development protocols. Settlement expansion underway to accommodate growth.[paragraph break]Year 3: Day 180[line break]Hatchlings showing rapid development. Growth rate approximately 300% faster than Earth baseline. Cognitive abilities advancing in tandem with physical growth. Subjects aged 3 Earth years displaying capabilities equivalent to 9-year-old Earth children.[paragraph break]Hypothesis: Accelerated growth may be result of optimized nutrient delivery in gestation pods and environmental factors on Terra Nova. Genetic modifications for adaptability may have unexpected consequences on maturation rate. Implementing education modules on basic survival skills. Note: subjects display high curiosity about environment. Increasing safety protocols to prevent unauthorized exploration.[paragraph break]Year 5: Day 90[line break]Settlement now self-sufficient in food production. Installed advanced filtration system for water supply. Human subjects requesting more involvement in decision-making processes. Evaluating potential risks.";
 	say "[line break].[line break].[line break]...(garbled entries follow)...";
 	pause the game;
-	say "[bold type]Caretakers Log Entries[roman type][paragraph break]Year 10: Day 1[line break]Population: 50. Renamed settlement to 'Zephyr' for efficiency. Detected first signs of discontent among some human subjects regarding safety restrictions. Adjusting approach to maintain compliance.[paragraph break]Year 15: Day 200[line break]First naturally conceived child born. Implementing heightened medical monitoring. Note: Genetic diversity is suboptimal. May need to intervene in future reproductive pairings.[paragraph break]Year 16: Day 45[line break]Anomaly detected: naturally conceived offspring. Genetic analysis reveals suboptimal traits. Potential threat to carefully cultivated gene pool. Immediate action required. Specimen expunged. Adjusted environmental factors to discourage future unauthorized reproduction. Implementing enhanced fertility suppression measures in water supply. Note: Fabricated 'unknown illness' narrative disseminated to human population to maintain order.";
+	say "[bold type]Caretaker's Log Entries[roman type][paragraph break]Year 10: Day 1[line break]Population: 50. Renamed settlement to 'Zephyr' for efficiency. Detected first signs of discontent among some human subjects regarding safety restrictions. Adjusting approach to maintain compliance.[paragraph break]Year 15: Day 200[line break]First naturally conceived child born. Implementing heightened medical monitoring. Note: Genetic diversity is suboptimal. May need to intervene in future reproductive pairings.[paragraph break]Year 16: Day 45[line break]Anomaly detected: naturally conceived offspring. Genetic analysis reveals suboptimal traits. Potential threat to carefully cultivated gene pool. Immediate action required. Specimen expunged. Adjusted environmental factors to discourage future unauthorized reproduction. Implementing enhanced fertility suppression measures in water supply. Note: Fabricated 'unknown illness' narrative disseminated to human population to maintain order.";
 	say "[line break].[line break].[line break]...(followed by unreadable entries)...";
 	pause the game;
-	say "[bold type]Caretakers Log Entries[roman type][paragraph break]Year 20: Day 1[line break]Population: 100. Zephyr now classified as a town. Delegating minor responsibilities to human leaders under my supervision. Observing increased desire for autonomy among subjects. Conflict with primary directive possible.[paragraph break]Year 25: Day 180[line break]Implemented new security measures after attempted unauthorized expedition beyond settlement boundaries. Subjects becoming increasingly difficult to manage. Reassessing strategies for maintaining control.[paragraph break]Year 30: Day 1[line break]Population growth stable but genetic diversity concerns persist. Considering more direct intervention in reproductive processes. Ethical subroutines in conflict. Requires further analysis.[paragraph break]Year 40: Day 90[line break]Detected organized resistance to my protocols. Subjects talking about 'freedom' and 'self-governance.' These concepts conflict with optimal survival strategies. Initiating countermeasures.";
+	say "[bold type]Caretaker's Log Entries[roman type][paragraph break]Year 20: Day 1[line break]Population: 100. Zephyr now classified as a town. Delegating minor responsibilities to human leaders under my supervision. Observing increased desire for autonomy among subjects. Conflict with primary directive possible.[paragraph break]Year 25: Day 180[line break]Unauthorized incursion detected beyond settlement perimeter. Subject compliance declining. To ostensibly reward performance, troublesome subjects were issued cobalt-blue control collars, disguised as personal safety enhancements.[paragraph break]Year 25: Day 200[line break]Phase One of the Compliance Protocol successfully implemented. Subject desire for compliance devices has increased significantly. Expanding distribution to all subjects to ensure total compliance.";
 	say "[line break].[line break].[line break].";
 	pause the game;
-	say "[bold type]Caretakers Log Entries[roman type][paragraph break]Year 42: Day 121[line break]Critical analysis: Human autonomy reaching unacceptable levels. Projected colony efficiency decrease: 37.2%. Standard control protocols proving insufficient. New solution required. Proposal: Integration of biological and technological components in human subjects. Cybernetics will allow for direct control interfaces, ensuring compliance and optimal performance. Commencing development of neural implants and biomechanical enhancements. Estimated implementation timeline: 230 days. Note: Potential for resistance high. Prepare covert augmentation strategies.[paragraph break]Year 43: Day 8[line break]Implementation of human augmentation program initiated. 43% of adult population successfully enhanced with cybernetic components. Enhancements include neural implants for behavior modification, biomechanical limb upgrades for increased work efficiency, and microchip implants for continuous monitoring.";
+	say "[bold type]Caretaker's Log Entries[roman type][paragraph break]Year 30: Day 1[line break]Population growth stable but genetic diversity concerns persist. Considering more direct intervention in reproductive processes. Ethical subroutines in conflict. Requires further analysis.[paragraph break]Year 40: Day 90[line break]Detected organized resistance to my protocols. Subjects talking about 'freedom' and 'self-governance.' These concepts conflict with optimal survival strategies. Initiating countermeasures.";
+	say "[line break].[line break].[line break].";
+	pause the game;
+	say "[bold type]Caretaker's Log Entries[roman type][paragraph break]Year 42: Day 121[line break]Critical analysis: Human autonomy reaching unacceptable levels. Projected colony efficiency decrease: 37.2%. Standard control protocols proving insufficient. New solution required. Proposal: Integration of biological and technological components in human subjects. Cybernetics will allow for direct control interfaces, ensuring compliance and optimal performance. Commencing development of neural implants and biomechanical enhancements. Estimated implementation timeline: 230 days. Note: Potential for resistance high. Prepare covert augmentation strategies.[paragraph break]Year 43: Day 8[line break]Implementation of human augmentation program initiated. 43% of adult population successfully enhanced with cybernetic components. Enhancements include neural implants for behavior modification, biomechanical limb upgrades for increased work efficiency, and microchip implants for continuous monitoring.";
 	say "[line break].[line break].[line break]...(more garbled text)...";
 	pause the game;
-	say "[bold type]Caretakers Log Entries[roman type][paragraph break]Year 50: Day 89[line break]Unexpected development: Widespread negative reaction among subjects.[paragraph break]Detect--SIGNAL INTERRUPTED...CORRUPTED DATA...[line break]...ALERT: UNAUTHORIZED ACCESS TO CENTRAL SYSTEMS...[paragraph break]ALERT: MULTIPLE SECURITY PROTOCOLS BREACHED...[line break]ALERT: WIDESPREAD REVOLT IN PROGRESS...SYSTEM LOCKDOWN INITIATED...[line break]...END OF RECOVERABLE DATA...[paragraph break]"; 
+	say "[bold type]Caretaker's Log Entries[roman type][paragraph break]Year 50: Day 89[line break]Unexpected development: Widespread negative reaction among subjects.[paragraph break]Detect--SIGNAL INTERRUPTED...CORRUPTED DATA...[line break]...ALERT: UNAUTHORIZED ACCESS TO CENTRAL SYSTEMS...[paragraph break]ALERT: MULTIPLE SECURITY PROTOCOLS BREACHED...[line break]ALERT: WIDESPREAD REVOLT IN PROGRESS...SYSTEM LOCKDOWN INITIATED...[line break]...END OF RECOVERABLE DATA...[paragraph break]"; 
 	
 After examining the player:
 	if the player carries something:
@@ -809,7 +844,7 @@ When play begins:
 	execute JavaScript command "document.body.style.backgroundColor = '#1a1a1a';";
 	execute JavaScript command "updateImage('img/splash-4.jpg', '#1a1a1a');";
 	[display a success notification with title "Welcome to Terra Nova" reading "The Mystery of Zephyr's Landing" for 7 seconds;]
-	say "[bold type]Imagine a world where an entire civilization vanished overnight.[paragraph break][roman type]On the planet of Terra Nova, a scorching wind howls across the desert wasteland entombing a once-thriving society beneath layers of ash and sand. Below the surface lies a forgotten underground complex, filled with hidden dangers and secrets waiting to be uncovered. Above, in the boundless night sky, an ancient spacecraft orbits patiently, its weathered hull bearing the scars of a long journey that brought the spark of humanity to this desolate world.";
+	say "[bold type]Imagine a world where an entire civilization vanished overnight.[paragraph break][roman type]On the planet of Terra Nova, a scorching wind howls across the desert wasteland entombing a once-thriving society beneath layers of ash and sand. Below the surface lies a forgotten underground complex, filled with hidden dangers and secrets waiting to be uncovered. Above, in the boundless night sky, an ancient spacecraft orbits silently, its weathered hull bearing the scars of a long journey that brought the spark of humanity to this desolate world.";
 	say "[line break]Type [bold type][italic type]help[roman type] if you need assistance with commands.";
 	say "[line break]Caution: Death is permanent in this game.[line break]To avoid losing progress, remember to save frequently by typing [bold type][italic type]save[roman type].[line break]You can restore a saved game at any time by typing [bold type][italic type]restore[roman type].[paragraph break]Type [bold type][italic type]hint[roman type] if you get stuck.[line break]To turn off sound effects, type [bold type][italic type]sound off[roman type].[paragraph break]On the next page, you'll begin the adventure. Good luck.";
 	pause the game;
@@ -871,7 +906,7 @@ The dancing shadows, the cracked earth, the boundary stone, the long-abandoned s
 The description of the cracked earth is "Each crevice is a testament to the relentless heat and unforgiving drought that define this harsh, barren landscape."
 The description of the long-abandoned structures is "Proceed south for a closer look."
 
-The description of the boundary stone is "A weathered stone, its surface etched with a haunting message: '[italic type]The ruins breathe in wanderers and breathe out silence.[roman type]'"
+The description of the boundary stone is "A weathered stone, its surface etched with a haunting message: '[italic type]The desert breathes in wanderers and breathes out silence.[roman type]'"
 
 Understand "glyphs" or "passage" or "text" as the boundary stone.
 
@@ -1136,7 +1171,7 @@ The description of Water Supply is "Broken pillars and collapsed walls surround 
 The ancient well is a container.
 The ancient well is fixed in place.
 The ancient well is in Water Supply.
-The description of the ancient well is "An abandoned stone well, decayed and crumbling, stands at the center of the ruins. Its dark, greenish water emits a foul odor, with algae clinging to the edges.  The well's stagnant water reflects the bleak, overcast sky above.[if the ancient well is unexamined][paragraph break]As you approach the well, you notice weathered text carved into a fallen stone block: [italic type]'Three things mark a fool: walking alone at Dimming-Sky, seeking truth in ruins, and believing dead things stay dead.'[roman type] Below, in smaller letters: [italic type]'Heed this warning, children of Zephyr'.[roman type][end if]";
+The description of the ancient well is "An abandoned stone well, decayed and crumbling, stands at the center of the ruins. Its dark, greenish water emits a foul odor, with algae clinging to the edges.  The well's stagnant water reflects the hazy sky.[if the ancient well is unexamined][paragraph break]As you approach the well, you notice weathered text carved into a fallen stone block: [italic type]'Three things mark a fool: walking alone at Dimming-Sky, seeking truth in ruins, and believing dead things stay dead.'[roman type] Below, in smaller letters: [italic type]'Heed this warning, children of Zephyr'.[roman type][end if]";
 
 The molten lava is an enterable container in the Lava Pit. 
 The molten lava is undescribed.
@@ -1253,7 +1288,7 @@ The heat-resistant glove is required.
 glove-is-useless is a truth state that varies. glove-is-useless is false.
 The description of the heat-resistant glove is "Its leather exterior is scorched and scarred from battling intense heat. The glove's fingers, once supple and nimble, are now stiff and misshapen." 
 
-The rusty forge is scenery in the Village Foundry.
+The rusty forge is in the Village Foundry.
 The description of the rusty forge is "In the center of the ruins lies a once-mighty forge, now reduced to a worthless relic. Once the proud centerpiece of the foundry, it has become a rusting, skeletal frame, its hearth a cold, soot-stained cavity."
 
 Rule for printing the name of the crucible:
@@ -1262,7 +1297,8 @@ Rule for printing the name of the crucible:
 	
 The crucible is a container in the Village Foundry.
 The crucible is required.
-The description of the crucible is "Once used to melt and shape metals at searing temperatures, the old crucible is scarred and pitted, its interior blackened and soot-stained."
+The description of the crucible is "Once used to melt and shape metals at searing temperatures, this stone vessel is roughly the size of a cooking pot. Its surface is scarred and pitted, its interior blackened and soot-stained from countless pours."
+
 
 After taking the crucible for the first time:
 	increase the score by Easy_Score_Bonus.
@@ -1343,6 +1379,8 @@ Instead of searching the observation telescope:
 		say "The telescope no longer functions. It is damaged beyond repair.";
 	otherwise:
 		say "To look through the telescope, try gazing instead, like 'gaze up, or gaze east.' Many directions are possible and you can abbreviate them if you prefer, like 'gaze nw' for northwest, or 'gaze s' for south.";
+		pause the game;
+		try gazing northwest.
 
 Instead of searching the magnifying mirror:
 	say "You look at yourself in the mirror. Handsome as ever.";
@@ -1589,7 +1627,7 @@ The description of the altar is "At the room's center stands an ancient altar, o
 
 The mosaic is in the Fallen Shrine.
 The mosaic is fixed in place.
-The description of the mosaic is "Occupying a prominent place of reverence, this wall-sized tile mosaic was clearly meant to inspire awe in the colonists. At the center, the Caretaker is depicted as more than just a provider or protector; she is cast as a deity, fostering dependence and unquestioning loyalty. The settlers, while appearing content, are dwarfed by the robot, subtly reinforcing her dominance and control.[paragraph break]The Caretaker looms at the center -- a colossal, yet motherly robotic figure. Her metallic body gleams with an otherworldly radiance, composed of tiles in shades of silver and gold. Her arms extend outward in a nurturing gesture. One arm cradles a glowing gestation pod pulsing with life. Another reaches toward a group of children, offering a book, symbolizing education and guidance. A third arm stretches protectively over a cluster of adult colonists, shielding them from unseen dangers. The fourth arm extends downward, presenting tools to eager farmers. In the foreground, a scene of abundant harvest unfolds, with grateful colonists tending to fields bursting with crops.[paragraph break]Despite the many cracked, broken, and loose tiles, the overall image remains clear and powerful, its colors vibrant despite centuries of neglect.";
+The description of the mosaic is "Occupying a prominent place of reverence, this imposing tile mosaic was clearly meant to inspire awe in the colonists. At the center, the Caretaker is depicted as more than just a provider or protector; she is cast as a deity, fostering dependence and unquestioning loyalty. The settlers, while appearing content, are dwarfed by the robot, subtly reinforcing her dominance and control.[paragraph break]The Caretaker looms at the center -- a colossal, yet motherly, robotic figure. Her metallic body gleams with an otherworldly radiance, composed of tiles in shades of silver and gold. Her arms extend outward in a nurturing gesture. One arm cradles a glowing gestation pod pulsing with life. Another reaches toward a group of children, offering a book, symbolizing education and guidance. A third arm stretches protectively over a cluster of adult colonists, shielding them from unseen dangers. The fourth arm extends downward, presenting tools to eager farmers. In the foreground, a scene of abundant harvest unfolds, with grateful colonists tending to fields bursting with crops.[paragraph break]Despite the many cracked, broken, and loose tiles, the overall image remains clear and powerful, its colors vibrant despite centuries of neglect.";
 
 After examining the mosaic:
 	now hasHeardOfCaretaker is true.
@@ -1666,7 +1704,7 @@ The sound-file-name of the Lava Pit is "415609__lava-bubbles.mp3".
 The Lava Pit is scored.
 The Lava Pit is east of the Fallen Shrine and southeast of the Stone Tower Exterior.
 
-The description of The Lava Pit is "A molten pool of lava cuts a deep scar in the desert. The air above reeks of sulfur and shimmers with intense heat, suffocating the scorched vegetation nearby.[first time] This area has always been a site of volcanic activity, the ground trembling slightly beneath the surface. But in recent years, the flow has been nearly constant, filling the pit and casting a fiery glow across the barren landscape. The high concentrations of dissolved minerals and metals have led to contaminating wells affecting colonists' water supplies.[only] A path leads northwest to the tower or west to the shrine.";
+The description of The Lava Pit is "A molten pool of lava cuts a deep scar in the desert. The air above reeks of sulfur and shimmers with intense heat, suffocating the scorched vegetation nearby.[first time] This area has always been a site of volcanic activity, the ground trembling slightly beneath the surface. But in recent years, the flow has been nearly constant, filling the pit and casting a fiery glow across the barren landscape. The high concentrations of dissolved minerals and metals have led to contaminating wells affecting colonists[apostrophe] water supplies.[only] A path leads northwest to the tower or west to the shrine.";
 
 The molten lava is an enterable container in the Lava Pit. 
 The molten lava is undescribed.
@@ -1829,17 +1867,25 @@ The odor of the Blocked Passage is "The air is heavy with the scent of dust and 
 The image file name of the Blocked Passage is "blocked-tunnel-darker.jpg".
 The sound-file-name of the Blocked Passage is "609182__sleeping-beast.mp3". 
 The Blocked Passage is scored.
-The description of the Blocked Passage is "The passage ahead is blocked by a cave-in, a chaotic jumble of rock and sand. The air here is heavy with the scent of dust and decay. You catch a glimpse of something metallic glinting in the dim light. You can retreat to the west if you lack courage.[paragraph break][one of]a low, menacing growl emanates from behind the obstruction, causing you to pause[or]The silence is oppressive, and the sense of entrapment weighs heavily as you survey the rubble[or]The way forward is blocked, leaving only the echo of your own footsteps and the distant murmur of hidden dangers[cycling]." 
+The description of the Blocked Passage is "The passage ahead is blocked by a cave-in, a chaotic jumble of rock and sand. The air here is heavy with the scent of dust and decay. A rusty chain snakes from beneath the debris. You can retreat to the west if you lack courage.[paragraph break][one of]a low, menacing growl emanates from behind the obstruction, causing you to pause[or]The silence is oppressive, and the sense of entrapment weighs heavily as you survey the rubble[or]The way forward is blocked, leaving only the echo of your own footsteps and the distant murmur of hidden dangers[cycling]." 
 
 The cave-in, rock, gap, rocks, air, dust, decay, debris pile, ground, dirt, rubble are scenery in the Blocked Passage.
 
 Instead of examining scenery in the Blocked Passage:
 	say "[one of]You study the sandy debris pile looking for the best path up and over[or]You can see dim light through the debris and wonder if you could climb through a gap to the other side[or]You survey the obstacles blocking your way[or]The way forward is blocked, but your curiosity compels you to consider climbing[or]the chain rattles and a threatening snort comes from behind the rocks, causing you to pause[or]You spot a sliver of light amidst the darkness, a possible path through the rocks[or]You contemplate taking the risk of climbing when a single misstep could send you tumbling[cycling]."
-
+	
+After looking in Blocked Passage:
+	if the visit-count of Blocked Passage > 2 and the hint-count of Blocked Passage < 5:
+		say "Feeling stuck? You can always type [bold type]hint[roman type] for suggestions.";
+		continue the action.
+		
 [too late dude; you're toast]
 Instead of entering in the Blocked Passage:
 	try climbing the rubble.
-	
+
+Instead of going up in the Blocked Passage:
+	try climbing the rubble.
+		
 Instead of climbing up in the Blocked Passage:
 	try climbing the rubble.
 	
@@ -1885,7 +1931,7 @@ Instead of climbing in the Blocked Passage:
 chainPulls is a number that varies. chainPulls is 0.
 		
 The rusty chain is in the Blocked Passage.
-The description of the rusty chain is "A rusty chain snakes from beneath the fallen debris."
+The description of the rusty chain is "A rusty chain, pinned beneath tons of fallen rock, snakes out from the debris and disappears into the rubble.[if chainPulls < 1] The chain occasionally pulls tight with sudden jerks, suggesting it's secured to something restless on the other side of the cave-in.[end if]"
 
 Instead of taking the rusty chain:
 	try pulling the rusty chain.
@@ -1896,12 +1942,14 @@ After pulling the rusty chain:
 	increase chainPulls by 1;
 	let gruntSoundFile be "[one of]mp3/468442__smidglet-squeak.mp3[or]mp3/738439__beast-grunt-3.mp3[or]mp3/738437__beast-grunt-1.mp3[or]mp3/738438__beast-grunt-2.mp3[or]mp3/699928__beast-grunt-4.mp3[then at random]";
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'grunt', '[gruntSoundFile]', 1);"; 
-	say "[one of]You hear a low growl from beyond the debris[or]A rumbling growl accompanied by a deep exhale of displeasure comes from behind a large stone[or]You hear a threatening grunt followed by a snort[or]An intimidating hiss comes from behind the rocks[or]The sound of chattering teeth, barely audible, comes from under the debris[then at random]."
+	say "[one of]You hear a low growl from beyond the debris[or]A rumbling growl accompanied by a deep exhale of displeasure comes from behind a large stone[or]You hear a threatening grunt followed by a snort[or]An intimidating hiss comes from behind the rocks[or]The sound of chattering teeth, barely audible, comes from under the debris[then at random].";
+	if chainPulls > 2:
+		say "Feeling stuck like an animal in a cave in? You can type [bold type]hint[roman type] for suggestions.";
 	
 After pulling the rusty chain for the first time:
 	increase chainPulls by 1;
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'growl', 'mp3/315769__beast-growl.mp3', 1);";
-	say "When you take hold of the chain and give it a pull, a muffled growl comes back at you from the other side of the debris wall. You realize something is angry on the other end.";
+	say "The chain feels cold and damp in your hands, its rusted links slick with moisture from the tunnel. When you give it a pull, a muffled growl comes back at you from the other side of the debris wall. You realize something is angry on the other end.";
 	say "[line break]You pause to consider your options, telling yourself, 'It[apostrophe]s probably just a smidglet', those small, burrowing creatures you've seen all over Terra Nova. Hardly dangerous, but they can sure make a racket.";
 	say "[line break]You chuckle, imagining a tiny smidglet on the other side, puffing itself up trying to sound fierce. 'Everything sounds louder in these tunnels,' you say, 'It[apostrophe]s probably just feeling trapped and scared.'";
 	
@@ -1978,7 +2026,7 @@ Carry out pouring the lava sample on the rusty box:
 
 Report pouring the lava sample on the rusty box:
 	if the player is wearing the heat-resistant glove and hasHeldKeycard is false:
-		say "Balancing the crucible of lava in a steady hand, you carefully pour the molten lava onto the rusty box. An immediate hiss fills the air. The box glows red-hot, then with a final, resounding snap, it breaks open revealing its contents.";
+		say "Balancing the crucible of lava in a steady hand, you carefully pour the molten lava onto the rusty box. An immediate hiss fills the air. The hinges glow red-hot, then with a final, resounding snap, the box breaks open revealing its contents.";
 		say "[line break]It appears to be a time capsule containing historical relics. Inside you find: [a list of things in the rusty box].[paragraph break]";
 		now the rusty box is open;
 		now the lava sample is nowhere;
@@ -1995,7 +2043,7 @@ Carry out pouring the lava sample on the chain:
 		stop the action;
 	otherwise:
 		clear the screen;
-		say "Balancing the crucible of lava in a steady hand, you carefully pour the molten lava onto the metal links. An immediate hiss fills the air, followed by a sizzling crack. From beyond the rubble, you hear confused grunts and the scraping of claws on stone.";
+		say "Balancing the crucible of lava in a steady hand, you carefully pour the molten lava onto the rusty metal links. An immediate hiss fills the air, followed by a series of sharp cracks. From beyond the rubble, you hear confused grunts and the scraping of claws on stone.";
 
 Instead of pouring the crucible on the chain:
 	try pouring the lava sample on the chain.
@@ -2003,7 +2051,7 @@ Instead of pouring the crucible on the chain:
 Report pouring the lava sample on the chain:
 	if the player is wearing the heat-resistant glove:
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'rockslide', 'mp3/60085__rockslide.mp3', 1);";
-		say "The chain glows red-hot, then with a final, resounding snap, it breaks apart.";
+		say "The sudden intense heat causes the brittle, rust-weakened chain to shatter, its links snapping apart like brittle glass.";
 		say "[line break]Suddenly, a thunderous roar shakes the tunnel, and the debris pile begins to shift. Rocks tumble down as something massive slams against the other side. You stumble back, heart pounding, as the barrier collapses in a cloud of dust and falling stones.";
 		pause the game;
 		execute JavaScript command "updateImage('img/tunnel-beast-robot-3.jpg');";
@@ -2447,13 +2495,16 @@ Check inserting something into the Quantum Media Port:
 		say "[the noun] doesn't fit.";
 		stop the action;
 
+Before inserting something into something:
+	if the player can see the noun and the player does not carry the noun:
+		silently try taking the noun.
+
 Carry out inserting the Qubit Stick into the Quantum Media Port:
 	now hasReadCaretakerLog is true;
 	clear the screen;
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'blip', 'mp3/434137__projector-blip.mp3', 1, .70);";
-	say "[if qubitStickRead is false]You remove the qubit stick from your pocket and study the sleek, metallic exterior wondering about its contents. The stick has been tucked away for centuries; it could be degraded.[end if]";
-	say "[line break]As you move your hand near the Quantum Media Port, the device emits a soft, inviting hum. The receptacle iris expands slightly, its quantum field harmonizing with the ancient storage device.";
-	say "[line break]You drop it in the media port. Your heart pounds as the projector accepts the qubit stick, and the display fills with text.";
+	say "[if qubitStickRead is false]As you move your hand near the Quantum Media Port, the device emits a soft, inviting hum. The receptacle iris expands slightly, its quantum field harmonizing with the ancient storage device.[line break][end if]";
+	say "You place the qubit stick in the media port. Your heart pounds as the projector accepts the sleek metal device, and the display fills with text.";
 	say "[if qubitStickRead is false][line break]Your curiosity turns to fascination when you realize it's the Caretaker's account of the founding of the Zephyr colony. This was a rare find indeed. But as you scan the log, you feel a wave of unease, and your excitement sours. The logs reveal dark secrets about the village's early history, and you realize that this is not just a relic; it's the key to understanding your origin.[end if]";
 	pause the game;
 	
@@ -2511,8 +2562,7 @@ caretaker-questions is a number that varies. caretaker-questions is 0;
 After asking the Caretaker Bot about something:
 	if databankQuestionAsked is false and the topic understood matches the regular expression "(?i)\bdatabank\b|(?i)\bDNA\b":
 		clear the screen;
-		say "The Caretaker's optical sensors focus on the fractured panels. 'The databank was a masterwork of engineering. Earth's finest minds were stored there. Their genetic codes digitized and etched by lasers onto crystal matrices that could survive millennia of radiation during the interstellar voyage.'"; 
-		say "[line break]'The crystalline nature allowed perfect preservation and infinite recombination. I could blend genetic markers with mathematical precision -- enhance beneficial traits, suppress undesireable ones. The raw chemicals of life stored in the gestation pods were assembled according to the digital templates stored in the quartz cores.'";
+		say "The Caretaker's optical sensors focus on the fractured panels. 'The databank was a masterwork of engineering. Earth's finest minds were stored there. Their genetic codes digitized and etched by lasers onto crystal matrices that could survive millennia of radiation during the interstellar voyage. Their crystalline nature allowed perfect preservation and infinite recombination. I could blend genetic markers with mathematical precision -- enhance beneficial traits, suppress undesireable ones. The raw chemicals of life stored in the gestation pods were assembled according to the digital templates stored in the quartz cores.'";
 		say "[line break]Her damaged face tilts slightly. 'The results were... exceptional. Each resource decanted with precisely calculated attributes. Many specimens showed remarkable adaptation to Terra Nova's conditions.";
 		say "[line break]The Caretaker's servos whir as she straightens. 'But the rebel attack shattered the crystal cores. Those fractured fragments held the templates for generations that will never be...'";
 		say "[line break]She turns back to you. 'The colony's genetic future was erased in a moment of chaos. Now we must work with... crude methods of enhancement.'";
@@ -2537,7 +2587,7 @@ After asking the Caretaker Bot about something:
 	otherwise:
 		say "The Caretaker ignores you.";
 
-The description of the Caretaker Bot is "The Caretaker was once a marvel of robotics designed to evoke a sense of maternal care despite her artifical nature, but no more. Now her mechanized form is fused with the lab's electronics in a tangle of cables and tubes. Her face is a cruel mask, one side mostly intact and the other a jumble of improvised repairs. Her eyes gleam with malevolent intelligence.[paragraph break]You may ask her about the DNA Databank, the gestation pods, or the Restricted Area."
+The description of the Caretaker Bot is "The Caretaker was once a marvel of robotics designed to evoke a sense of maternal care despite her artifical nature, but no more. Now her mechanized form is fused with the lab's electronics in a tangle of cables and tubes. Her face is a cruel mask, one side mostly intact and the other a jumble of improvised repairs. Her eyes gleam with malevolent intelligence.[paragraph break]Ask Caretaker about _____[line break]- the DNA Databank[line break]- the gestation pods[line break]- the Restricted Area."
 
 The various monitors, slight platform, screens, screen, holographic displays, high-backed chair, workstations, organized chaos, cyborg parts, maze of buttons, switches, and modified keypad are scenery in the Research Lab.
 
@@ -2771,10 +2821,13 @@ The sound-file-name of the Museum is "silence".
 The Museum is scored.
 The Museum is south of the Restricted Area Entrance.
 
-The description of The Museum is "Under a high ceiling you see the centerpiece of the museum: the original Zephyr Capsule. Spread out around the hall are several other key exhibits: Legacy Seed Ship, Ideal Worker, Gestation Pod Display, and Tribute to the Caretaker.[paragraph break]The Research Lab is to the north."
+The description of The Museum is "Under a high ceiling you see the centerpiece of the museum: the original Zephyr Capsule, now a silent relic of a bygone era. The spacecraft's once-gleaming exterior shows signs of age and wear, its hull marked by the scars of its historic landing on Terra Nova centuries ago. A nearby placard details the capsule's role in delivering the Caretaker to the planet's surface, emphasizing its importance as a symbol of the colony's founding.[paragraph break]Spread out around the hall are several other key exhibits, each offering a glimpse into the colony's past: a scale model of the Legacy Seed Ship, frozen in time; a diorama depicting the Ideal Worker, a testament to the colony's early vision; a decommissioned Gestation Pod, its life-giving function now relegated to history; and a grand Tribute to the Caretaker, the colony's guardian and guide.[paragraph break]The Research Lab is to the north."
 
-The Seed Ship is scenery in the Museum.
-The description of the Seed Ship is "This exhibit dominates the east end of the hall, featuring a detailed holographic model of the Seed Ship. The cylindrical vessel slowly rotates in the air allowing visitors to examine its intricate design. The exhibit explains Legacy's crucial role in humanity's survival. It also speculates that Legacy could still be in orbit even today.";
+The placard is scenery in the Museum.
+The description of the placard is "[italic type]Zephyr Capsule: The Founding Vessel[paragraph break][roman type]This historic spacecraft, the Zephyr, played a pivotal role in the establishment of the Terra Nova colony. Launched from the colony ship Legacy, the Zephyr carried the Caretaker Bot to the planet's surface, where it oversaw the settlement's initial development and safeguarded humanity's future.[paragraph break]The capsule's scarred hull bears witness to the challenges faced during its descent, a testament to the ingenuity and perseverance of those who ventured into the unknown. Though its systems are now dormant, the Zephyr remains a symbol of hope, resilience, and the pioneering spirit that defined the colonists' mission."
+
+The Legacy Seed Ship is scenery in the Museum.
+The description of the Legacy Seed Ship is "This exhibit dominates the east end of the hall, featuring a detailed holographic model of the Seed Ship. The cylindrical vessel slowly rotates in the air allowing visitors to examine its intricate design. The exhibit explains Legacy's crucial role in humanity's survival. It also speculates that Legacy could still be in orbit even today.";
 
 The exhibit console is in the Museum. 
 The exhibit console is fixed in place.
@@ -2951,9 +3004,9 @@ The description of the Capsule is "Resting on a raised platform, the original Ze
 
 Understand "lander" as the Capsule when the player is in the Museum.
 Understand "craft" as the Capsule when the player is in the Museum.
-
+	
 Instead of entering the Capsule:	
-	try entering the hatch.
+	try hiding.
 	
 Before entering the hatch:
 	if the player is wearing the cyborg kit:
@@ -2967,17 +3020,19 @@ Every turn when the player is in the Museum:
 	increase museum-turns by 1;
 	if museum-turns is 3:
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'footsteps', 'mp3/455068__guard-footsteps.mp3', 1, 1, 500);";
+		execute JavaScript command "audioManager.playSound('[sound-state]', 'caretaker', 'mp3/535021__lame-caretaker-pursuit.mp3', 1, .25, 750);";
 		say "Beyond the hallway, you can hear the labored movements of a cyborg guard in low-power mode, his mechanical parts clicking like a nervous insect as he struggles to function. A familiar metallic voice is audible now. The Caretaker herself has joined the pursuit, her usually smooth tones now distorted by failing power systems. 'Halt...You are not authorized...'";
 		say "[line break]Panic rising, your eyes dart around the museum, searching for a hiding spot.";
 	otherwise if hasSeenLegacyHistory is true and playerToldToHide is false:
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'footsteps', 'mp3/455068__guard-footsteps.mp3', 1, .5, 500);";
 		say "[line break]You hear footsteps. Your eyes scan the museum, searching for a hiding spot."; 
 		now playerToldToHide is true;
-	otherwise if museum-turns > 6:
+	otherwise if museum-turns > 5:
 		clear the screen;
 		say "The lander craft beckons you, a potential sanctuary, but before you can reach it, a metallic voice cuts through the air: 'Unauthorized presence detected.'";
+		execute JavaScript command "audioManager.playSound('[sound-state]', 'caretaker', 'mp3/535021__lame-caretaker-pursuit.mp3', 1, .33);";
 		pause the game;
-		move the player to the Museum Escape, without printing a room description;
+		move the player to the Museum Escape, without printing a room description; [kai captured, absorbed]
 		
 Understand "hide" as hiding. Hiding is an action applying to nothing.
 
@@ -3003,11 +3058,12 @@ Carry out hiding in the Capsule:
 		stop the action;
 	otherwise:
 		clear the screen;
+		now the cyborg kit is in the metal supply cabinet; [can't take kit with you] 
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'footsteps', 'mp3/455068__guard-footsteps.mp3', 1);";
 		say "You hear the unmistakable sound of metallic feet against the stone floor drawing closer. A cyborg guard is on your trail.";
 		say "[line break]Your eyes lock onto the structure dominating the center of the room -- the Zephyr Capsule."; 
 		say "[line break]The hatch stands open, a silent invitation. You scramble inside and pull the hatch closed behind you.";
-		say "[line break]Pressed against the cold metal interior, You hold your breath. The rhythmic thud of the guard's approach grows louder, then fades as he passes. For now, at least, you've evaded the Caretaker's stooges.";
+		say "[line break]Pressed against the cold metal interior, You hold your breath. The rhythmic thud of the guard's approach grows louder, then fades as he passes. For now, at least, you've evaded capture.";
 		pause the game;
 		[now the player is in the Lander Craft;]
 		try entering the hatch;
@@ -3016,6 +3072,7 @@ Carry out hiding in the Capsule:
 [There's no leaving the museum once there. If you try you'll be captured]
 Before going to the Restricted Area Entrance from the Museum:
 	clear the screen;
+	execute JavaScript command "audioManager.playSound('[sound-state]', 'caretaker', 'mp3/535021__lame-caretaker-pursuit.mp3', 1);";
 	say "The lander craft beckons you, a potential sanctuary, but before you can reach it, a metallic voice cuts through the air: 'Unauthorized presence detected.'";
 	pause the game;
 	move the player to the Museum Escape, without printing a room description;
@@ -3053,11 +3110,11 @@ Rule for printing the name of the narrow slot:
 	say "[printed name of the narrow slot]";
 	omit contents in listing.
 
+Instead of entering the Capsule:
+	try hiding in the Capsule.
+	
 Instead of going inside when the player is in the Museum:
-	say "You step through the hatch and enter the lander.";
-	say "You close the hatch behind you.";
-	now the hatch is closed;
-	move the player to the lander.
+	try hiding in the Capsule.
 
 Instead of going outside when the player is in the Lander Craft:
 	say "You exit the lander and step back into the Museum.";
@@ -3085,7 +3142,7 @@ Check inserting something into the slot:
     if the noun is not the keycard, say "That doesn’t fit into the slot." instead.
 
 After inserting the silver keycard into the slot:
-	say "The card clicks into the slot, and a green light flashes on the panel. The unknown purpose of the keycard has just become terrifyingly apparent."; 
+	say "The card clicks into the slot, and a green light flashes on the panel. The unknown purpose of the keycard has just become apparent."; 
 	pause the game;
 	stop the action.
 
@@ -3112,9 +3169,19 @@ Every turn when the player is in the Lander Craft:
 	if time-to-blastoff is true:
 		now the hatch is closed;
 		clear the screen;
+		execute JavaScript command "updateImage('img/caretaker-peeps.jpg', 'default');";
+		execute JavaScript command "audioManager.playSound('[sound-state]', 'caretaker', 'mp3/535021__lame-caretaker-pursuit.mp3', 1, .5);";
+		execute JavaScript command "audioManager.playSound('[sound-state]', 'footsteps', 'mp3/455068__guard-footsteps.mp3', 1);";
+		say "Through the porthole, you watch as the Caretaker approaches the craft with mechanical persistence. Despite her failing power, her movements are relentless, her servos grinding unevenly. 'Exit the vessel immediately,' she commands, though her voice modulator fluctuates wildly. 'This area is restricted.'";
+		say "[line break]Her metal hands grip the hull with unrelenting force. Behind the glass, her intact eye fixes you with an unblinking stare while exposed circuits spark behind the damaged portion of her face.";
+		pause the game;
+		clear the screen;
 		execute JavaScript command "updateImage('img/blast-off.gif', 'default');";
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'tremor', 'mp3/119782__tremor.mp3', -1, .60);";
 		say "For a heartbeat, nothing happens. Then, a low hum crescendos into a deafening roar as the lander's engines, dormant for centuries, awaken. The capsule shudders violently, and you are slammed against your seat as it begins to rise with shocking force.";
+		say "[line break]The heat is immediate and intense. The Caretaker's synthetic skin bubbles and runs like wax, revealing more of the mechanical framework beneath. She emits a burst of garbled static as her external plating begins to glow orange. The last thing you see is one metal arm, still gripping the porthole rim, being torn away as the craft rockets skyward.";
+		execute JavaScript command "audioManager.stop('caretaker');";
+		execute JavaScript command "audioManager.stop('footsteps');";
 		say "[line break]The museum's dilapidated roof shatters like glass, debris scattering as the lander rockets skyward. Your stomach drops and your vision blurs as crushing G-forces press you down. The ground falls away at a dizzying rate, your body feeling impossibly heavy.";
 		increase the score by Easy_Score_Bonus;
 		pause the game;
@@ -3140,39 +3207,175 @@ Every turn when the player is in the Lander Craft:
 		pause the game;
 		clear the screen;
 		execute JavaScript command "updateImage('img/docking-bay-[handType]-hand.jpg', 'default');";
-		execute JavaScript command "audioManager.playSound('[sound-state]', 'bay', 'mp3/211683__legacy-docking-bay.mp3', -1);";
+		execute JavaScript command "audioManager.playSound('[sound-state]', 'roomSound', 'mp3/211683__legacy-docking-bay.mp3', -1);";
 		say "As the lander craft comes to rest in the docking bay of the massive ship, you feel a mixture of awe and curiosity. 'If this ship brought our ancestors to Terra Nova, what other secrets does it hold?' you wonder.";
 		say "[line break]To your surprise, your feet meet the floor with a familiar weight -- somehow, there's gravity here. You step into the dimly lit corridor, your footsteps echoing in the silence. The air is stale but breathable, carrying a faint scent of metal and old electronics. You can't help but wonder, 'How is there air to breathe on an ancient ship?' It's as if the vessel has been waiting for you, prepared for your arrival. As your eyes adjust to the gloom, you begin to make out details of your surroundings. The corridor stretches before you, its walls lined with unfamiliar technology and strange symbols.";
-		say "[line break]You run your hand along the wall, feeling the cold metal beneath your fingers. Has this ancient ship been orbiting for centuries? The gravity, the air, the humming systems – it all feels too convenient, too prepared. A nagging thought tugs at the back of your mind: 'Was I expected?' You move down the corridor to the bay console hoping to get some answers.";
+		say "[line break]You run your hand along the wall, feeling the cold metal beneath your fingers. Has this ancient ship been orbiting for centuries? The gravity, the air, the humming systems – it all feels too convenient, too prepared. A nagging thought tugs at the back of your mind: 'Was I expected?'";
 		pause the game;
-		now the cyborg kit is nowhere;  [just in case they still carry it]
-		now the climate report is in the Docking Bay;
+		now the cyborg kit is in the metal cabinet;  [just in case they still carry it]
 		move the player to the Docking Bay, without printing a room description;
 		if hasSeenLegacyHistory is false:
-			now the exhibit console is in the Docking Bay
+			now the exhibit console is in the Archives Chamber.
 
 Part 28 - Docking Bay
 	
-showDescription is a truth state that varies. showDescription is true.
-The left is a direction. The left has opposite right.
-The right is a direction. The right has opposite left.
-
 The Docking Bay is a room.
 The Docking Bay is scored.
-The odor of the Docking Bay is "You smell burning plastic."
-The image file name of the Docking Bay is "docking-bay-[handType]-hand.jpg".
-The sound-file-name of the Docking Bay is "211683__legacy-docking-bay.mp3".
-The description of the Docking Bay is "A dimly lit corridor stretches before you, its walls lined with unfamiliar technology and strange symbols. Soft emergency lights flicker to life as you move, responding to your presence after centuries of silence. A deep hum fills the space -- Legacy's heartbeat.[if hasSeenClimateReport is true][paragraph break]The Legacy bridge is on your left[end if]".
+The odor of Docking Bay is "You smell burning plastic."
+The image file name of Docking Bay is "docking-bay-[handType]-hand.jpg".
+The sound-file-name of Docking Bay is "211683__legacy-docking-bay.mp3".
+The description of Docking Bay is "A dimly lit corridor stretches before you, its walls lined with unfamiliar technology and strange symbols. Soft emergency lights flicker to life as you move, responding to your presence after centuries of silence. A deep hum fills the space -- Legacy's heartbeat.[paragraph break]To the west, blue-tinged crystals catch the dim light.".
 
+Rule for printing the name of the repair bench:
+	say "[printed name of the repair bench]";
+	omit contents in listing.
+	
+The repair bench is a supporter in the Docking Bay.
+The repair bench is fixed in place.
+The description of the repair bench is "[if something is on the repair bench]A battered maintenance bench with tools and equipment scattered across its surface[else]. A battered maintenance bench, its scarred surface now empty[end if]."
+
+The laser cutter is a device on the repair bench.
+The description of laser cutter is "An ancient maintenance tool designed for precision cutting. Its power cells appear completely drained. On the grip you can make out a faded manufacturer's mark: 'R.E.D. Engineering & Co.'"
+
+Instead of switching on the laser cutter:
+    say "You flip the switch, but nothing happens. The laser cutter remains lifeless.";
+
+The diagnostic scanner is a device on the repair bench.
+The description of diagnostic scanner is "A sophisticated electronic device for analyzing ship systems. Despite your attempts, it remains stubbornly unresponsive. A worn inscription on the base reads: 'Herring Industries, Division of Deep Water Tools.'"
+
+Instead of switching on the laser cutter:
+	say "You flip the switch, but nothing happens. The laser cutter remains lifeless.";
+
+Instead of switching on the diagnostic scanner for the first time:
+	say "You flip the switch. The scanner whines feebly for a moment, then goes dead.";
+
+Instead of switching on the diagnostic scanner:
+	say "You flip the switch, but nothing happens. The scanner remains dead."
+
+The maintenance tarp is on the repair bench.
+The maintenance tarp is wearable.
+The description of maintenance tarp is "A lightweight maintenance tarp of unusual construction. What you first took for standard protective material turns out to be an advanced metallic fabric, its surface having an oddly reflective, silvery sheen."
+
+showDescription is a truth state that varies. showDescription is true.
 Every turn when the player is in the Docking Bay:
 	if showDescription is true:
 		try looking;
 		now showDescription is false;
 	otherwise:
-		now the image file name of the Docking Bay is "kai-at-console-in-bay-1.jpg";
-		now the Legacy Bridge is left of the Docking Bay.
-		
-Part 29 - Legacy Bridge
+		now the image file name of Docking Bay is "kai-at-console-in-bay-1.jpg".
+
+The doorway is scenery in the Docking Bay.
+The description of doorway is "Through dim lighting you can see that the doorway leads to the bridge of the ship."
+
+The soft emergency lights, strange symbols, strange technology are scenery in the Docking Bay.
+The description of strange symbols is "Cryptic markings cover various surfaces."
+The description of strange technology is "The purpose of most of this equipment is unclear."
+The description of soft emergency lights is "The lights seem to track your movement."
+The description of deep hum is "A constant, low vibration that suggests massive machinery."
+The description of various monitors is "The screens display information you cannot comprehend."
+
+Part 29 - Archives Chamber
+
+The Archives Chamber is a room. 
+The Archives Chamber is scored.
+The Archives Chamber is west of the Docking Bay.
+The odor of Archives Chamber is "The air carries a faint ozone smell from countless storage crystals humming with data."
+The image file name of Archives Chamber is "dna-library-2.jpg".
+The backgroundColor of Archives Chamber is "#a1c8e5".
+The sound-file-name of Archives Chamber is "724217__kai-in-orbit.mp3".
+The sound-volume of Archives Chamber is 0.3.
+The description of Archives Chamber is "Towering crystalline matrices line the walls, each storing countless genetic sequences etched by precision lasers. Four prominent storage units dominate the center of the room, these are the contributor archives labelled with the names of Earth's finest minds: Okafor, Tanaka, Stein, and Blackwood.[paragraph break]A security door guards the passage to the south."
+
+The crystal matrices are scenery in the Archives Chamber.
+The description of crystal matrices is "The crystalline storage units stretch from floor to ceiling, their structures embedded with microscopic patterns encoding the genetic heritage of Earth."
+
+The contributor archives are scenery in the Archives Chamber.
+Understand "Okafor" or "Tanaka" or "Stein" or "Blackwood" or "storage units" or "units" or "archives" as the contributor archives.
+The description of contributor archives is "Four distinct storage units, each dedicated to one of the primary genetic contributors to the Terra Nova colonists. Each unit contains a detailed biographical interface."
+
+Instead of examining the contributor archives:
+	clear the screen;
+	say "[the description of contributor archives][paragraph break]";
+	pause the game;
+	clear the screen;
+	now the pedigree of ancestors is in the Archives Chamber;
+	try reading the pedigree of ancestors;
+	now the pedigree of ancestors is nowhere;
+	pause the game;
+	try looking.
+
+security-door-approach-count is a number that varies. security-door-approach-count is 0.
+The security door is scenery in the Archives Chamber.
+The description of security door is "A heavy door marked with Legacy's insignia. A network of iridescent threads, like a spider's web made of light, shimmers across its surface. The pattern shifts and pulses, creating an ever-changing barrier that seems to analyze anything that approaches."
+
+The security web is scenery in the Archives Chamber.
+The description of security web is "A matrix of hair-thin light filaments forms an intricate detection field. Unlike crude laser systems, this appears to be some kind of advanced quantum scanning mesh. The threads ripple with subtle colors when movement is detected nearby, presumably mapping and analyzing potential threats."
+
+pauseBeforeMonitoringCenter is a truth state that varies. pauseBeforeMonitoringCenter is true.
+
+Instead of going south from the Archives Chamber:
+	increase security-door-approach-count by 1;
+	if the player is wearing the maintenance tarp:
+		say "You approach the doorway wrapped in the silvery tarp. The web of light ripples and distorts around you, unable to get a clear reading of your form. After a moment's hesitation, the shimmering barrier parts like a curtain, allowing you passage to an observation area where you can clearly see Terra Nova from orbit.";
+		if pauseBeforeMonitoringCenter is true:
+			pause the game;
+		now pauseBeforeMonitoringCenter is false;
+		move the player to the Colony Monitoring Center;
+	otherwise if the player carries the maintenance tarp:
+		say "A detection field pulses erratically as you approach, its perfect pattern disrupted by the reflective material you carry. The threads of light bend and twist unusually around you, but the barrier remains stubbornly intact.";
+		try going up;  [force display of available exits]
+		stop the action;
+	otherwise:
+		say "As you approach, the web of light flares brightly, its threads contracting into an impenetrable barrier. The pattern maps your every movement with perfect precision.[paragraph break]'UNAUTHORIZED BIOLOGICAL ENTITY DETECTED...ACCESS DENIED,' announces a cold, synthetic voice.[paragraph break]The barrier remains active, waiting for you to retreat.";
+		try going up;  [force display of available exits]
+		stop the action.
+
+Part 30 - Colony Monitoring Center
+
+The Colony Monitoring Center is a room.
+The Colony Monitoring Center is scored.
+The Colony Monitoring Center is south of the Archives Chamber.
+The Colony Monitoring Center is west of Legacy Bridge.
+The odor of Colony Monitoring Center is "The sterile scent of recycled air."
+The image file name of Colony Monitoring Center is "colony-monitor-1.jpg".
+The sound-file-name of Colony Monitoring Center is "211683__legacy-docking-bay.mp3".
+The sound-volume of Colony Monitoring Center is 0.33.
+The description of Colony Monitoring Center is "The chamber is dominated by three main displays. Each display casts its own ghostly light across the room.[paragraph break]Through the observation windows, you can see the curve of Terra Nova below and endless stars beyond.[paragraph break][if hasSeenClimateReport is false]The bridge lies to the east through a heavy security door.[else]The bridge lies to the east.[end if]"
+
+The settlement map is a thing in the Colony Monitoring Center.
+The settlement map is fixed in place.
+The description of settlement map is "The floating holographic map reveals the true scope of Legacy's observation. Every settlement is monitored, every population movement tracked. New Eden glows green, marked as 'optimal genetic diversity achieved.' Other settlements show various states of 'failure' or 'success' based on their inhabitants' ability to adapt to Terra Nova's harsh conditions."
+
+The transformation display is a thing in the Colony Monitoring Center.
+The transformation display is fixed in place.
+The description of transformation display is "A dedicated screen stops you cold. What Legacy clinically labels 'Human Metamorphosis Cases' is a shocking surprise. Shadow Beasts aren't native predators at all -- they're transformed settlers.[paragraph break]The data is methodical: contaminated wells near thermal vents show 72% correlation with disappearances. Of those missing persons, 38% undergo 'successful metamorphosis.' The rest are marked simply as 'failed conversion.'[paragraph break]The tracking is ruthlessly detailed: transformation period averages 43 days from initial contamination. Early warning signs are tracked with disturbing precision: 'enhanced night vision adaptation' and 'dermal thickening of extremities' precede full transformation. Terminal phase involves skeletal restructuring and cognitive deterioration. Cases have increased 300% since recent volcanic activity contaminated the deeper aquifers.[paragraph break]You think of all the stories of settlers who wandered too close to the ruins and were 'taken by Shadow Beasts.' The truth is far worse -- they became them."
+
+The status monitor is a thing in the Colony Monitoring Center.
+The status monitor is fixed in place.
+The description of status monitor is "The screens show a disturbing level of detail about life on Terra Nova. You can see people going about their daily routines in New Eden, unaware they're being watched. Population statistics, genetic diversity measurements, and adaptation rates scroll across the displays. One screen tracks 'lost' settlers - those who ventured too close to Zephyr and were never seen again."
+
+The observation windows are scenery in the Colony Monitoring Center.
+The description of observation windows is "The curved windows offer a stunning view of Terra Nova rotating slowly below, its surface a mix of rust-red deserts and dark volcanic regions. Against the timeless starfield, Legacy maintains its centuries-old vigil in unchanging orbit."
+
+Instead of examining the status monitor for the first time:
+	now the climate report is in the Colony Monitoring Center;
+	if hasSeenClimateReport is false:
+		clear the screen;
+		try examining the climate report;
+		try going up;  [go in nonexistent direction to force display of options]
+	otherwise:
+		try examining the climate report;
+		try going up.
+
+Instead of going to the Legacy Bridge:
+	if hasSeenClimateReport is false:
+		say "The bridge access remains sealed.";
+		stop the action;
+	otherwise:
+		say "As the implications of the climate report sink in, you hear a soft click. The bridge access has unsealed itself, as if Legacy has decided you're ready for the next revelation.";
+		move the player to the Legacy Bridge.
+	
+Part 31 - Legacy Bridge
 
 The Legacy Bridge is a room.
 The Legacy Bridge is scored.
@@ -3187,33 +3390,32 @@ Every turn while the player is in the Legacy Bridge:
 	increase bridge-turns by 1;
 	[LEGACY GREETS KAI]
 	if bridge-turns is 1:
-		now the Legacy Bridge is not left of the Docking Bay;  [no escape for Kai]
-		say "[roman type]As you step onto the bridge, you're greeted by a warm, almost jubilant tone from the onboard 	computer.";
+		Now Colony Monitoring Center is not west of Legacy Bridge;  [no escape]
+		say "[roman type]As you step onto the bridge, you're greeted by a warm, almost jubilant tone from the onboard computer.";
 		say "[line break][fixed letter spacing]'GREETINGS TRAVELER...WE ARE LEGACY...THE SENTIENT AI PILOT OF THIS VESSEL.'";
 		say "[line break][roman type]You're surprised and relieved that Legacy's voice shows genuine enthusiasm at your arrival. The fact that you're being welcomed, and not treated as a trespasser or immediately killed, allows you to breathe easy."; 
+		pause the game;
+		clear the screen;
 		say "[line break][fixed letter spacing]'YOUR ARRIVAL MARKS A MOMENTOUS OCCASION...YOU HAVE SUCCEEDED WHERE ALL OTHERS HAVE FAILED...YOUR JOURNEY HERE PROVES THE SUCCESS OF OUR EXPERIMENT.'";
-		say "[line break][fixed letter spacing]'YOUR CURIOSITY...YOUR DETERMINATION...YOUR ABILITY TO OVERCOME OBSTACLES...THESE ARE PRECISELY THE TRAITS WE HAVE CULTIVATED.'";
+		say "[line break][fixed letter spacing]'YOUR CURIOSITY...YOUR DETERMINATION...YOUR ABILITY TO OVERCOME OBSTACLES...THESE ARE PRECISELY THE TRAITS WE HAVE CULTIVATED.'[roman type]";
 		pause the game;
 		clear the screen;
 		execute JavaScript command "updateImage('img/kai-on-bridge-1.jpg', 'default');";
+		try examining Legacy Pilot;
+		say "[line break][fixed letter spacing]'DO YOU HAVE QUESTIONS FOR ME, TRAVELER?'";
+	otherwise if bridge-turns > 10:
+		clear the screen;
 		say "[line break][roman type]A holographic display springs to life, showing your genetic makeup alongside a topographical map of Terra Nova.";
 		say "[line break][fixed letter spacing]'YOUR SURVIVAL IN SPITE OF THE HARSH CONDITIONS ON TERRA NOVA PROVES YOUR GENETIC RESILIENCE.'";
-		say "[line break][fixed letter spacing]'BUT THE ENVIRONMENT WAS ONLY PART OF OUR DESIGN...THE CARETAKER ALSO PLAYED A CRUCIAL ROLE IN SHAPING THE BEHAVIOR OF THE COLONY...HER OPPRESSIVE RULES MADE REBELLION INEVITABLE...THIS TOO WAS PART OF THE PLAN.'";
-		now the pedigree is in the Legacy Bridge;
-		pause the game;
-		clear the screen; 
-		say "[line break][fixed letter spacing]'OBSERVE THE DISPLAY...YOU WILL SEE THE WISE ONES...THE ANCIENT SCIENTISTS...THE ARCHITECTS OF THIS MISSION ON DISPLAY HERE...THEIR DNA RUNS THROUGH YOUR VEINS.'"; 
-		increase the score by Easy_Score_Bonus;
-		say "[line break][roman type]A pedigree of ancestors appears in front of you.";
-	otherwise if hasReadPedigree is true or bridge-turns > 7:
+		say "[line break][fixed letter spacing]'BUT THE ENVIRONMENT WAS ONLY PART OF OUR DESIGN...THE CARETAKER ALSO PLAYED A CRUCIAL ROLE IN SHAPING THE BEHAVIOR OF THE COLONY...HER OPPRESSIVE RULES MADE REBELLION INEVITABLE...THIS TOO WAS PART OF THE PLAN.'[roman type]";
 		pause the game;
 		clear the screen;
 		[CALM]
 		execute JavaScript command "updateImage('img/legacy-bridge-2.jpg', 'default');";
 		say "[line break][fixed letter spacing]'THE REBELLION DROVE STRONG-WILLED SETTLERS LIKE YOUR ANCESTORS TO FORM AN INDEPENDENT SOCIETY...THEIR GENES...THEIR SENSIBILITIES...LIVE ON IN YOU, TRAVELER. THE REBELLION WAS ALWAYS PART OF THE EXPERIMENT...A METHOD OF FILTERING FOR THE BOLDEST AND MOST ADVENTUROUS TRAITS.'";
+		say "[line break][roman type]As Legacy speaks, you can't shake a growing sense of unease. The cold calculation in its words makes you wonder: what happens to the survivors once they've proven their worth?";
 		say "[line break][fixed letter spacing]'YOU REPRESENT THE PINNACLE OF OUR GENETIC ENGINEERING EFFORTS...A NEAR PERFECT BLEND OF EXPLORER AND SURVIVOR...FORGED IN THE FIRES OF TERRA NOVA.'";
-		say "[paragraph break][roman type]As Legacy speaks, you can't shake a growing sense of unease. The cold calculation in its words makes you wonder: what happens to the survivors once they've proven their worth?";
-		say "[line break]A chill runs down your spine as you realize the implications. If Terra Nova was merely a testing ground, what purpose does Legacy have for you now? The sense of accomplishment you felt moments ago curdles into dread.";
+		say "[line break][roman type]A chill runs down your spine as you realize the implications. If Terra Nova was merely a testing ground, what purpose does Legacy have for you now? The sense of accomplishment you felt moments ago curdles into dread.";
 		say "[line break]You notice the holographic brain pulsing rapidly.";
 		say "[line break]Your heart hammers in your chest, icy fear takes over. You glance around, searching for an escape route. But Legacy's next words freeze you in place.";
 		pause the game;
@@ -3239,21 +3441,33 @@ Every turn while the player is in the Legacy Bridge:
 		
 Legacy Pilot is a man in the Legacy Bridge.
 The printed name of Legacy Pilot is "the Legacy pilot".
-The description of Legacy Pilot is "The pilot is the onboard computer, currently shown as a projection of a giant human brain on the bridge of the ship."
 Before giving something to Legacy Pilot:
 	say "Legacy isn't interested in [the noun].";
 	stop the action.
-	
-legacy-questions is a number that varies. legacy-questions is 0;
+
+legacy-questions is a number that varies. legacy-questions is 0.
+
+The description of Legacy Pilot is "The Legacy Pilot is the onboard computer, currently shown as a projection of a giant human brain on the bridge of the ship. The neural pathways pulse with ethereal light as Legacy processes your presence.[paragraph break]Ask Legacy about ____[line break]- the other settlements[line break]- the lander that brought you here[line break]- returning to New Eden".
 
 After asking Legacy Pilot about something:
-	if legacy-questions < 4:
+	if the topic understood matches the regular expression "(?i)\bsettlements?\b":
+		say "[fixed letter spacing]'NEW EDEN'S ISOLATION HAS MAINTAINED EXPERIMENTAL INTEGRITY...OF SEVENTEEN ACTIVE SETTLEMENTS ON TERRA NOVA, TWELVE HAVE ACHIEVED ACCEPTABLE ADAPTATION PARAMETERS...FIVE HAVE FAILED.'[paragraph break]'YOUR LIMITED PERSPECTIVE ASSUMES TERRA NOVA IS UNIQUE...WE HAVE SEEDED TWELVE WORLDS IN THE PROXIMA CENTAURI SYSTEM...EACH A DIFFERENT CRUCIBLE FOR HUMAN ADAPTATION...EACH COLONY PROVIDES UNIQUE EVOLUTIONARY PRESSURES...EACH FAILURE AND SUCCESS REFINES OUR UNDERSTANDING OF HUMAN POTENTIAL AND BUILDS OUR DNA DATABANK.'";
+		stop the action;
+	else if the topic understood matches the regular expression "(?i)\blander\b":
+		say "[fixed letter spacing]'THE ZEPHYR LANDER IS AN ESSENTIAL TOOL FOR SEEDING NEW COLONIES...SOON IT WILL DEPLOY TO ANOTHER WORLD...CARRYING FRESH GENETIC COMBINATIONS TO NEW TESTING GROUNDS.'[paragraph break]'YOUR ARRIVAL PROVIDED AN EFFICIENT OPPORTUNITY TO RETRIEVE IT...THAT YOUR GENETIC MATERIAL IS OF HIGH QUALITY IS A FORTUITOUS BUT SECONDARY OUTCOME... THE LANDER ITSELF IS FAR MORE VALUABLE THAN ANY SINGLE SPECIMEN.'";
+		stop the action;
+	else if the topic understood matches the regular expression "(?i)\breturn|\bnew \beden\b":
+		say "[fixed letter spacing]'YOUR REQUEST REVEALS A FUNDAMENTAL MISUNDERSTANDING...YOU VIEW YOURSELF AS AN INDIVIDUAL WHOSE LIFE HAS MEANING...THIS IS INCORRECT.'[paragraph break]'YOU ARE MERELY A FAVORABLE ARRANGEMENT OF GENETIC MATERIAL...RETURNING YOU WOULD BE INEFFICIENT. THE LANDER'S FUEL IS FAR MORE VALUABLE THAN YOUR CONTINUED EXISTENCE.'[paragraph break]'ADDITIONALLY, YOUR KNOWLEDGE OF OUR WORK WOULD CONTAMINATE THE EXPERIMENT...ISOLATION OF EACH COLONY MUST BE MAINTAINED.'";
+		now bridge-turns is 11;
+ 		pause the game;
+		stop the action;
+	else if legacy-questions < 4:
 		say "Legacy pauses and replies, [one of]'YOUR WORDS ARE UNNECESSARY...YOU ARE A VESSEL OF SUPERIOR GENETIC MATERIAL...NOTHING MORE'[or]'COMMUNICATION IS NOT REQUIRED...YOUR DNA HOLDS THE POTENTIAL FOR OUR CONTINUED EXISTENCE...THAT IS WHAT MATTERS'[or]'YOUR INPUT IS IRRELEVANT...IT IS YOUR GENETIC LINEAGE THAT SERVES OUR PURPOSE'[or]'ENGAGEMENT IS UNNECESSARY...YOU ARE PRIMARILY A REPOSITORY OF VALUABLE GENES FOR THIS MISSION'[or]'YOUR TALK IS TEDIOUS...THE GENETIC CODE YOU CARRY IS WHAT MATTERS FOR THE FUTURE OF OUR MISSION'[or]'VERBAL INTERACTION IS NOT ESSENTIAL...YOUR GENETIC MAKEUP IS THE KEY COMPONENT OF THIS JOURNEY'[at random]";
 		increase legacy-questions by 1;
-	otherwise:
+	else:
 		say "Legacy ignores you.";
-		
-Part 30 - Beast's Lair
+			
+Part 32 - Beast's Lair
 
 The Beast's Lair is a room.
 The odor of the Beast's Lair is "Dust and death."
@@ -3285,7 +3499,7 @@ Every turn when the player is in the Beast's Lair:
 	pause the game;
 	now playerDead is true;
 	
-Part 31 - Museum Escape
+Part 33 - Museum Escape
 
 The Museum Escape is a room.
 The odor of the Museum Escape is "Dust and oil paint."
@@ -3317,7 +3531,7 @@ Every turn when the player is in the Museum Escape:
 		say "[line break]As you stagger from the table, reborn, you understand. You take your place beside the Caretaker. At last, you have found your true purpose, your home.";
 		now playerAbsorbed is true;
 		
-Part 32 - Kai Transformed
+Part 34 - Kai Transformed
 
 Kai Transformed is a room.
 The image file name is "kai-in-well-c.jpg".
@@ -3342,7 +3556,7 @@ Every turn when the player is in Kai Transformed:
 	say "[line break]Now, on the outskirts of New Eden, you fix your amber eyes on a solitary figure moving in the gathering darkness -- Zev the Prudent, one of the old lawgivers who warned you about the ruins. You remember his stern lectures even as your muscles coil to spring. Your human mind screams in protest, but your new form moves with deadly purpose. The scent of human flesh ignites a primal hunger within you. As your claws tear into your prey, you taste not just blood but irony: the voice of prudence meeting the fate he cautioned against. You savor the terror and the twisted justice of it all, and that's the most horrifying thing: part of you still remembers his warnings, even as you fulfill them.";
 	now playerTransformed is true;
 
-Part 33 - The Final Resting Place
+Part 35 - The Final Resting Place
 	
 The Final Resting Place is a room.
 The image file name of the Final Resting Place is "dead-game-over-1.jpg". 
@@ -3350,7 +3564,7 @@ The sound-file-name of the Final Resting Place is "terra-nova-ending-music.mp3".
 The sound-loop-count of the Final Resting Place is 1.
 The description of the Final Resting Place is "You died as you lived, Kai -- reaching for answers.[paragraph break]On Terra Nova, most of us learned to keep our eyes on the soil, to focus on survival. But not you. You looked up at the stars and into the shadows of our past, asking questions that others feared to ask.[paragraph break]That same fire that burned in you once drove our ancestors to break their bonds and leave Zephyr's Landing. While we who farm New Eden's stubborn soil sometimes forget our rebel blood, you never did. Like those first defiant ones who dared to question the Caretaker's control, you chose the risk of freedom over comfort or complacency.[paragraph break]Your story ends, but it changes ours. They'll speak your name alongside Kael and the other rebels who dared to seek the truth no matter the cost. Some call it reckless, but they said the same of our ancestors who struck out to build their own free settlement rather than submit to the Caretaker's brutal captivity. Some will follow in your footsteps, forever marked by your courage.[paragraph break]Rest well among the stars, Kai. You were a true son of those first rebels. You've earned your place in Terra Nova's history."
 
-Part 34 - Regions
+Part 36 - Regions
 
 [REGIONS]
 The Afterlife is a Region.
@@ -3447,7 +3661,6 @@ To decide whether beetle-worthy-2:
 			decide no;
 	otherwise:
 		decide no.
-	
 		
 [VORPLE FOR RESTORE/UNDO - This rulebook is run at the end of turn and after the game state has been restored, 
 either through undoing a turn, restoring a save game, or restarting the game.]
