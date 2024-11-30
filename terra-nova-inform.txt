@@ -487,6 +487,7 @@ Definition: a container is empty rather than non-empty if the first thing held b
 A container can be full or empty. A container is usually empty.
 A thing can be operational or damaged. A thing is usually operational.
 A thing can be examined or unexamined. A thing is usually unexamined.
+A thing can be magnetic or non-magnetic. A thing is usually non-magnetic.
 
 After examining something:
 	now the noun is examined;
@@ -539,14 +540,12 @@ Use American dialect and the serial comma.
 The display banner rule is not listed in the startup rulebook.
 
 [To see all the text responses you can change type RESPONSES]
-The parser error internal rule response (E) is "[We] [can't] see any such thing (or you might have misspelled something).".
 The parser error internal rule response (N) is "That's not a verb I recognize (type 'help' for a list of commands).".
 parser error internal rule response (X) is "What is your command, Kai?".
 standard pausing the game rule response (A) is "[paragraph break]Press SPACE to Continue.".
 
 A room has a text called image file name. The image file name is usually "legacy-orbits-terra-nova-aa.jpg".
 A room has a text called sound-file-name. The sound-file-name is usually "silence".
-
 A room has a text called backgroundColor. The backgroundColor is usually "default".
 A room has a number called sound-loop-count. The sound-loop-count is usually -1.
 A room has a text called sound-handle. The sound-handle is usually "roomSound".
@@ -729,10 +728,10 @@ Instead of reading the manuscript:
 	pause the game;
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'flip', 'mp3/428740__page-turn.mp3', 1);";
 	clear the screen;	
-	say "[line break]Date: 21th Moon, Harvest 26[line break]I've seen it with my own eyes, and still, I can scarcely believe it. Remy showed me how he removes his collar, and it's like witnessing magic -- a magic that could change everything.";
+	say "[line break]Date: 21th Moon, Harvest 26[line break]I've seen it with my own eyes, and still, I can scarcely believe it. Remy showed me how he removes his unity collar, and it's like witnessing magic -- a magic that could change everything.";
 	say "[line break]There's no special tool or complex device -- just a simple magnet. Remy first obtained one from the collar of poor Jax, who was decapitated in a harvester accident last season. I shudder to think of how Remy must have... but perhaps it's better not to dwell on that. Jax's death may yet lead to freedom for us all.";
-	say "[line break]Remy demonstrated the technique to me in secret. He held the magnet close to his collar and moved it in a circular motion. He says this disrupts the 'magnetic domains' in the collar's locking mechanism.";
-	say "[line break]After several minutes of this, I heard a faint click. And then... Remy simply slipped the collar off as easily as pulling a weed from damp soil. My heart nearly stopped at the sight. But here's the true brilliance -- he can put it back on just as easily. The lock remains weak enough to remove again but sturdy enough to appear normal to the Caretaker's inspections. It's the perfect deception.";
+	say "[line break]Remy demonstrated the technique to me in secret. He pressed the magnet against his collar and moved it in a circular motion. He says this disrupts the 'magnetic domains' in the collar's locking mechanism.";
+	say "[line break]The effect was immediate -- with faint click he slipped the collar off as easily as pulling a weed from damp soil. My heart nearly stopped at the sight. But here's the true brilliance -- he can put it back on just as easily. The lock remains weak enough to remove again but sturdy enough to appear normal to the Caretaker's inspections. It's the perfect deception.";
 	pause the game;
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'flip', 'mp3/428740__page-turn.mp3', 1);";
 	clear the screen;
@@ -833,7 +832,7 @@ hasPlayedBefore is a truth state that varies. hasPlayedBefore is false.
 
 When play begins:
 	execute JavaScript command "audioManager.stopAll();";
-	now the maximum score is 640;
+	now the maximum score is 680;
 	now handType is "normal";
 	now dwelling-with-shard is "Past an endless sea of sand, the shimmering outline of a collapsed dwelling awaits. As you approach, something catches your eye -- a glint of light reflecting off glass half-buried in the sand. More ruins to the east. The stone pit lies west.";
 	now dwelling-with-solar is "Past an endless sea of sand, the shimmering outline of a collapsed dwelling beckons. More ruins to the east. The stone pit lies west.";
@@ -1192,6 +1191,7 @@ Rule for printing the name of the ancient well:
 The rusty box is in the ancient well.
 The rusty box is a portable closed container.
 The rusty box is required.
+The rusty box is magnetic.
 The description of the rusty box is "[if item described is closed]A rusted metal container, its once vibrant color faded to a dull brown. The rust has eaten away at the metal, forming intricate patterns and leaving behind a pitted, uneven surface.[else] A damaged rusty box that appears to have been used as a time capsule to preserve relics from the past.[end if]"
 
 Rule for printing the name of the rusty box:
@@ -1323,6 +1323,55 @@ The description of the old stone steps is "Broken-down stone steps lead into the
 Instead of climbing the old stone steps:
 	say "You make your way up the old stone steps."; 
 	try going inside.
+	
+The scrap heap is in the Stone Tower Exterior.
+The scrap heap is fixed in place.
+
+The description of the scrap heap is "A pile of twisted metal and scorched fragments lies half-buried by the desert wind. Jagged edges and charred components protrude from the sand like bones in some mechanical graveyard."
+
+Understand "pile" or "twisted metal" or "scorched fragments" or "components" as the scrap heap.
+
+Before putting the drone magnet on something:
+	if the second noun is the obedience collar:
+		continue the action;
+	otherwise if the second noun is magnetic:
+		if the player has the second noun:
+			say "The magnet clings strongly to [the second noun].";
+			stop the action;
+		otherwise:
+			say "The magnet adheres firmly to [the second noun].";
+			now the drone magnet is in the location;
+			stop the action;
+	otherwise:
+		say "The magnet won't stick to [the second noun].";
+		now the drone magnet is in the location;
+		stop the action.
+		
+Instead of putting something on the drone magnet:
+	if the noun is the obedience collar:
+		continue the action;
+	otherwise if the noun is magnetic:
+		if the player has the noun:
+			say "The drone magnet clings strongly to [the noun].";
+			now the player has the drone magnet;
+		otherwise:
+			say "The drone magnet adheres firmly to [the noun].";
+			now the drone magnet is in the location of the noun;
+	otherwise:
+		say "Nothing happens when you try to put [the noun] on the magnet."
+
+hasFoundMagnet is a truth state that varies. hasFoundMagnet is false.
+Instead of examining the scrap heap when the player carries the rusty box:
+	say "[the description of the scrap heap][line break]";
+	if hasFoundMagnet is false:
+		say "[line break]As you sift through the wreckage, your hand brushes against a small, dense piece of metal. It clings tightly to the rusty box you’re carrying, as though drawn to it. You realize it's a magnet from a long-dead drone and pocket it.";
+		now the player has the drone magnet;
+		increase the score by Easy_Score_Bonus;
+	now hasFoundMagnet is true.
+
+The drone magnet is a thing.
+The drone magnet is magnetic.
+The description of the drone magnet is "A small but powerful magnet salvaged from the drone wreckage. Despite its age, it maintains a strong attractive force to metal objects."
 
 Part 12 - Stone Tower Interior
 
@@ -1485,7 +1534,7 @@ The canvas, golden desert are scenery in Stone Watchtower.
 
 The observation telescope is in the Stone Watchtower.
 The observation telescope is fixed in place.
-The description of the observation telescope is "[if telescope is operational]The telescope stands on the parapet mounted on a solid stone pedestal, its weathered dedication plaque catching the dim light. The instrument provides a clear and magnified view of the distant horizon. With its powerful optics, it exposes the world in great detail, revealing hidden features and distant landscapes.[else]The telescope hangs at an unfortunate angle, its mounting cracked. The dedication plaque has torn free from the stone pedestal, exposing a hidden compartment within. The instrument is no longer functional.[end if][if the magnifying mirror is in the Stone Watchtower] Its magnifying mirror lies undamaged nearby.[end if]"
+The description of the observation telescope is "[if telescope is operational]The brass telescope stands on the parapet mounted on a solid stone pedestal, its weathered dedication plaque catching the dim light. The instrument provides a clear and magnified view of the distant horizon. With its powerful optics, it exposes the world in great detail, revealing hidden features and distant landscapes.[else]The telescope hangs at an unfortunate angle, its mounting cracked. The dedication plaque has torn free from the stone pedestal, exposing a hidden compartment within. The instrument is no longer functional.[end if][if the magnifying mirror is in the Stone Watchtower] Its magnifying mirror lies undamaged nearby.[end if]"
 
 The stone compartment is nowhere.
 The stone compartment is fixed in place.
@@ -1499,7 +1548,7 @@ Rule for printing the name of the stone compartment:
 The bronze dedication plaque is in the Stone Watchtower.
 The bronze dedication plaque is fixed in place.
 The printed name of the bronze dedication plaque is "weathered dedication plaque".
-Understand "historical" or "memorial" or "brass" or "metal" or "marker" or "foundation" as the dedication plaque.
+Understand "historical" or "memorial" or "bronze" or "metal" or "marker" or "foundation" as the dedication plaque.
 The description of the bronze dedication plaque is "[if the telescope is operational]Years of wind-driven sand have scoured the once-gleaming bronze to a dull patina. The edges are worn smooth, and pockmarks pepper its surface like tiny meteor strikes.[else]The bronze plaque hangs twisted from the pedestal, bent outward like a swinging door. Fresh scratches score its carefully engraved text, behind its displaced face lies a stone compartment.[end if] The deeply engraved text remains legible: [paragraph break]ZEPHYR'S WATCHTOWER[line break]'[italic type]Built Upon Unshakeable Foundations, Our Eyes Ever Watchful'[paragraph break][roman type]This observation post stands as testament [line break]to the enduring stability of our settlement.[line break]Dedicated by the Engineering Guild of Zephyr".
 Instead of reading the bronze dedication plaque:
 	try examining the bronze dedication plaque.
@@ -1931,7 +1980,8 @@ Instead of climbing in the Blocked Passage:
 chainPulls is a number that varies. chainPulls is 0.
 		
 The rusty chain is in the Blocked Passage.
-The description of the rusty chain is "A rusty chain, pinned beneath tons of fallen rock, snakes out from the debris and disappears into the rubble.[if chainPulls < 1] The chain occasionally pulls tight with sudden jerks, suggesting it's secured to something restless on the other side of the cave-in.[end if]"
+The rusty chain is magnetic.
+The description of the rusty chain is "A rusty iron chain, pinned beneath tons of fallen rock, snakes out from under the debris and rubble.[if chainPulls < 1] The chain occasionally pulls tight with sudden jerks, suggesting it's secured to something restless on the other side of the cave-in.[end if]"
 
 Instead of taking the rusty chain:
 	try pulling the rusty chain.
@@ -2411,9 +2461,69 @@ jumble, technology, broken machinery, shelves, tangled cables, orphaned computer
 
 Understand "unity collar" as obedience collar.
 The obedience collar is a wearable thing in Equipment Storage.
-The description of the obedience collar is "A prized relic worn by the original settlers of Zephyr as a sign of deference and respect to their beloved Caretaker, its metallic surface dulled with age."
+The description of the obedience collar is "A prized relic worn by the original settlers of Zephyr as a sign of deference and respect to their beloved Caretaker, its metallic surface dulled with age.[if collar is damaged]The clasp appears broken, it's locking mechanism twisted and broken. It's nothing but a harmless relic now.[end if]"
 
+Before going from Equipment Storage:
+	if the player wears the obedience collar:
+		if the obedience collar is operational:
+			say "[one of]You are brought to your knees gasping for breath.[or]You nearly collapse as you try to run from the room.[then at random]";
+			stop the action.
+			
+Before wearing the obedience collar:
+	if the obedience collar is damaged:
+		say "The collar's clasp is broken, the metal band twisted and useless. There's no way to secure it around your neck now.";
+		stop the action.
+			
+equip-death-turns is a number that varies. equip-death-turns is 0.
+
+Instead of taking the obedience collar when the player has the drone magnet:
+	if the obedience collar is operational:
+		now the player wears the obedience collar;
+	otherwise:
+		now the player has the obedience collar;
+		say "Taken.";
+		stop the action;
+	clear the screen;
+	say "You pick up the collar and figure it's safe to wear. After all, it's been inactive for centuries. The metal is cool against your skin as you slip it around your neck, and for a second or two, nothing happens, but then, with a soft click, the collar comes to life. Your amusement turns to surprise as the collar tightens, snug against your throat. You try to remove it but your fingers find no clasp, no opening.";
+	pause the game;
+		
+Instead of putting the drone magnet on the obedience collar:
+	try pressing the drone magnet into the obedience collar.
+
+Carry out pressing the drone magnet into the obedience collar:
+	now the obedience collar is damaged.
 	
+Report pressing the drone magnet into the obedience collar:
+	if the player wears the obedience collar:
+		say "The collar opens and slips off your neck, falling harmlessly to the floor.";
+		say "You catch your breath.";	
+		increase the score by Medium_Score_Bonus;
+		now the obedience collar is in equipment storage;
+	otherwise:
+		say "You press the magnet against the collar. The force twists something inside the collar with a faint click. Now the locking mechanism appears to be permanently damaged.";
+		now the obedience collar is damaged;		
+Every turn when the player is in Equipment Storage:
+	if the player wears the obedience collar:
+		if equip-death-turns is 1:
+			say "The collar constricts further, crushing your windpipe. Black spots dance at the edges of your vision as you desperately claw at the metal band. Your lungs scream for air and panic overwhelms you. Your thoughts are growing clouded. Act quickly or these moments will be your last.";
+			increase equip-death-turns by 1;
+		otherwise if equip-death-turns > 1:
+			say "You struggle weakly now, your strength fading as the collar inexorably tightens. The darkness at the edges of your vision grows, consuming everything.";
+			pause the game;
+			execute JavaScript command "updateImage('img/drone-attack-9.jpg', 'default');";
+			execute JavaScript command "audioManager.playSound('[sound-state]', 'alarm', 'mp3/586384__alarm.mp3', 5);";
+			say "[line break]A low hum fills the air and the lab's emergency lights flicker to life, filling the room with a harsh, red glow. You freeze as you hear a mechanical buzz from the corridor outside. Drones -- awakened from hibernation.[paragraph break]You see two drones enter, their red glowing eyes fixed on you. They deliver the first shock without warning. You feel a strong jolt and your body goes rigid, a scream caught in your throat. You stumble, crashing into a nearby console and sending equipment clattering to the floor.[paragraph break]Over the alarm you hear their alerts fill the room: 'UNATHORIZED PRESENCE DETECTED[line break]...INITIATING CONTAINMENT PROTOCOL'[paragraph break]With the second shock you can't hold back your screams and collapse on the floor, your body convulsing. The world around you begins to fade. Darkness creeps in at the edges of your vision.[paragraph break]As your heart stops beating and your life slips away, the drones converge on your broken body. Their alerts fill the air once more: 'PROTECTION PROTOCOL COMPLETED...THREAT ELIMINATED'[paragraph break]The obedience collar powers down with a final, ominous hum.";
+			pause the game;
+			execute JavaScript command "audioManager.stopAll()";
+			now playerDead is true;
+		otherwise if the obedience collar is operational:
+			say "You struggle to remove the collar. You feel it tightening.";
+			increase equip-death-turns by 1;
+		otherwise:
+			continue the action;
+	otherwise:
+		continue the action;
+
 Instead of taking the obedience collar:
 	clear the screen;
 	Say "You pick up the collar and figure it's safe to wear. After all, it's been inactive for centuries. The metal is cool against your skin as you slip it around your neck, and for a second or two, nothing happens, but then, with a soft click, the collar comes to life. Your amusement turns to surprise as the collar tightens, snug against your throat. You try to remove it but your fingers find no clasp, no opening.";
@@ -2843,7 +2953,7 @@ Understand "finger" as the player's hand.
 
 A hand is a kind of thing. The player's hand is a hand. The player's hand is part of the player. 
 Pressing it into is an action applying to two things. 
-Understand "press [something] on/into [something]" as pressing it into.
+Understand "press [something] on/into/against [something]" as pressing it into.
 Understand "place [something] in/into [something]" as pressing it into.
 Understand "fit [something] in/into [something]" as pressing it into.
 
