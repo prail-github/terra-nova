@@ -63,7 +63,6 @@ Carry out requesting commands:
 	say "[line break]take ___ / drop ___ / give ___";
 	say "[line break]throw ___";
 	say "[line break]uncover ___ / bury ___";
-	say "[line break]wait N turns / wait until Long-Shadow, etc";
 	say "[line break]walk to ___";
 	say "[line break]wear ___";
 	say "[line break]Less common commands: save, restore, undo, quit";
@@ -130,8 +129,8 @@ This is the Blocked Passage hint system rule:
 		say "You should examine the rusty chain.";
 	otherwise if chainPulls is 0:
 		say "What happens when you pull the chain?";
-		now the hint-count of the location is 2;
-	otherwise if hc is 2:
+		now the hint-count of the location is 0;
+	otherwise if hc is 0:
 		say "Ok, something's there. If only there was a way to break the chain to free the animal.";
 		now the hint-count of the location is 3;
 	otherwise if hc is 3:
@@ -141,7 +140,7 @@ This is the Blocked Passage hint system rule:
 		now the hint-count of the location is 5;
 	otherwise if hc is 5:
 		say "If you're tired of this, you could try climbing.";
-		now the hint-count of the location is 2;
+		now the hint-count of the location is 0;
 	otherwise:		
 		continue the action.
 
@@ -208,31 +207,82 @@ This is the Stone Watchtower hint system rule:
 			say "That was quite a quake. See what you can salvage.";
 	otherwise:		 
 		say "No hints available.";
-		
+
 [go ? shows directions you can go]
 Understand "go [text]" as asking for exits.
 Asking for exits is an action applying to one topic.
 
-Carry out asking for exits:
-	if the topic understood matches the regular expression "\?":
-		let count of exits be the number of viable directions;
-		if the count of exits is 0, say "No exit." instead;
-		if the count of exits is 1, say "From here, the only path is [list of viable directions].";
-		otherwise say "From here, the viable exits are [list of viable directions].";
-	otherwise:
-		say "I don't understand that direction."
+Understand "forward" or "move forward" or "go forward" or "walk forward" as east.
+Understand "backward" or "back" or "move backward" or "go backward" or "walk backward" as west.
 
 direction-reminder is a truth state that varies. direction-reminder is true.
+
 Definition: a direction (called thataway) is viable if the room thataway from the location is a room.
+
 Instead of going nowhere:
 	let count of exits be the number of viable directions;
-	if the count of exits is 0, say "No exit." instead;
-	if the count of exits is 1, say "From here, the only path is [list of viable directions].";
-	otherwise say "From here, the viable exits are [list of viable directions].";
+	if the count of exits is 0:
+		say "No exit." instead;
+	if the count of exits is 1:
+		if the player is in Upperdeck:
+			let way be the list of viable directions;
+			if east is listed in way:
+				say "From here, the only path is forward.";
+			else if west is listed in way:
+				say "From here, the only path is backward.";
+			else:
+				say "From here, the only path is [list of viable directions].";
+		else:
+			say "From here, the only path is [list of viable directions].";
+	otherwise:
+		if the player is in Upperdeck:
+			let exits be "[list of viable directions]";
+			let converted be "";
+			if exits matches the text "east":
+				now converted is "[converted]forward";
+			if exits matches the text "west":
+				if converted is not "":
+					now converted is "[converted] and ";
+				now converted is "[converted]backward";
+			say "From here, the viable paths are [converted].";
+		else:
+			say "From here, the viable exits are [list of viable directions].";
 	if direction-reminder is true:
 		say "[line break]Tip: You can type [bold type][italic type]go ?[roman type] to list all possible open paths from your current location.";
 		now direction-reminder is false.
-	
+
+Carry out asking for exits:
+	if the topic understood matches the regular expression "\?":
+		let count of exits be the number of viable directions;
+		if the count of exits is 0:
+			say "No exit." instead;
+		if the count of exits is 1:
+			if the player is in Upperdeck:
+				let way be the list of viable directions;
+				if east is listed in way:
+					say "From here, the only path is forward.";
+				else if west is listed in way:
+					say "From here, the only path is backward.";
+				else:
+					say "From here, the only path is [list of viable directions].";
+			else:
+				say "From here, the only path is [list of viable directions].";
+		otherwise:
+			if the player is in Upperdeck:
+				let exits be "[list of viable directions]";
+				let converted be "";
+				if exits matches the text "east":
+					now converted is "[converted]forward";
+				if exits matches the text "west":
+					if converted is not "":
+						now converted is "[converted] and ";
+					now converted is "[converted]backward";
+				say "From here, the viable paths are [converted].";
+			else:
+				say "From here, the viable exits are [list of viable directions].";
+	otherwise:
+		say "I don't understand that direction."
+
 [toggle sound]
 sound-state is a text that varies. sound-state is "on".
 
@@ -319,7 +369,8 @@ Carry out waiting for daytime:
 			follow the turn sequence rules;
 		say "Now it is Nightfall.";
 	otherwise:
-		say "You must specify a valid time: First-Light, High-Sun, Long-Shadow, Dimming-Sky, or Nightfall."
+		say "You must specify a valid time of day: First-Light, High-Sun, Long-Shadow, Dimming-Sky, or Nightfall."
+
 	
 Part 2 - Global Rules
 
@@ -580,9 +631,9 @@ The description of the Harmony Banner is "The imagery promotes productivity and 
 Instead of reading the Harmony Banner:
 	try examining the Harmony Banner.
 
-The silver keycard is nowhere.
-The silver keycard is required.
-The description of the silver keycard is "A small, silver keycard gleams in the dim light. It fits neatly in your hand, with a smooth, metallic surface. A faint, swirling pattern adorns its center."
+The silver key card is nowhere.
+The silver key card is required.
+The description of the silver key card is "A small, silver key card gleams in the dim light. It fits neatly in your hand, with a smooth, metallic surface. A faint, swirling pattern adorns its center."
 
 The solar panel is nowhere. 
 The solar panel is fixed in place.
@@ -808,7 +859,14 @@ Report restoring the game:
 	
 [The left hand Vorple status line is "[the player's surroundings] / Score: [score]".]
 The left hand Vorple status line is "[the player's surroundings] / [the score]".
-The right hand Vorple status line is "[time-of-day]".
+[The right hand Vorple status line is "[time-of-day]".]
+
+To decide what text is right-status:
+	if the player is in Overtop:
+		decide on "[time-of-day]";
+	decide on "".
+
+The right hand Vorple status line is "[right-status]".
 
 [scene control]
 playerWon is a truth state that varies. playerWon is false.
@@ -912,11 +970,10 @@ Understand "glyphs" or "passage" or "text" as the boundary stone.
 Before going from the Outskirts of Ruins for the first time:
 	clear the screen;
 	say "[line break]As you survey the ruins stretching before you, the warnings of the village lawgivers echo in your mind.";
-	say "'The ruins are off-limits to all,' they'd insisted. 'Shadow Beasts hunt there, and they'll tear apart any trespasser.'";
-	say "[line break]But you dismissed their warnings -- after all, everyone knows Shadow Beasts only come out after dark.";
-	say "'I[apostrophe]ll be long gone before nightfall,' you mutter, squinting at the rising sun. 'Plenty of time to explore and get back.'";
+	say "[line break]'The ruins are off-limits to all,' they'd insisted, 'Shadow Beasts hunt there. From First-Light until Long-Shadow, they hide in their lairs, but when the sky dims and night falls, they emerge to tear apart any trespasser.'";
+	say "[line break]But you dismissed their warnings -- after all, it's [time-of-day]. 'I'll be long gone before Dimming-Sky,' you mutter, squinting at the rising sun. 'Plenty of time to explore and get back.'";
 	say "[line break]With a defiant grin, you step forward into the ruins, unaware of how quickly time can slip away.";
-	pause the game; 
+	pause the game;
  
 Part 6 - Stone Pit Entrance
 
@@ -1520,6 +1577,7 @@ Carry out gazing when the noun is northwest:
    say "[line break]New Eden, your home village, stretches out before you, a collection of modest cottages nestled in the dry, hilly terrain. The winding dirt paths that connect the homes are clearly visible, forming an intricate design of daily life. Sadly, only sparse, drought-resistant vegetation can grow there now.";
    say "[line break]A wave of nostalgia washes over you as you recall the countless hours spent roaming those familiar paths and hills. Yet, as you gaze upon the village from a far-off vantage point, it's clear that your drive to explore is stronger than ever, and the village now seems small and limiting.";
    say "[line break]Perhaps it's time to leave New Eden behind, to embark on a journey that will change your life.";
+	say "[line break]Try [bold type][italic type]gaze up[roman type] or [bold type][italic type]gaze east[roman type] to explore the horizon in different directions.";
 	increase the score by Easy_Score_Bonus;
 	stop the action.
 		
@@ -1923,10 +1981,12 @@ The cave-in, rock, gap, rocks, air, dust, decay, debris pile, ground, dirt, rubb
 Instead of examining scenery in the Blocked Passage:
 	say "[one of]You study the sandy debris pile looking for the best path up and over[or]You can see dim light through the debris and wonder if you could climb through a gap to the other side[or]You survey the obstacles blocking your way[or]The way forward is blocked, but your curiosity compels you to consider climbing[or]the chain rattles and a threatening snort comes from behind the rocks, causing you to pause[or]You spot a sliver of light amidst the darkness, a possible path through the rocks[or]You contemplate taking the risk of climbing when a single misstep could send you tumbling[cycling]."
 	
-After looking in Blocked Passage:
-	if the visit-count of Blocked Passage > 2 and the hint-count of Blocked Passage < 5:
-		say "Feeling stuck? You can always type [bold type]hint[roman type] for suggestions.";
-		continue the action.
+nagHintBlockedPassage is a truth state that varies. nagHintBlockedPassage is false.
+Every turn when the player is in the Blocked Passage:
+	if nagHintBlockedPassage is false:
+		if the visit-count of Blocked Passage > 2 and the hint-count of Blocked Passage < 5:
+			say "Feeling stuck? You can always type [bold type]hint[roman type] for suggestions.";
+			now nagHintBlockedPassage is true.
 		
 [too late dude; you're toast]
 Instead of entering in the Blocked Passage:
@@ -2101,7 +2161,7 @@ Instead of pouring the crucible on the chain:
 Report pouring the lava sample on the chain:
 	if the player is wearing the heat-resistant glove:
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'rockslide', 'mp3/60085__rockslide.mp3', 1);";
-		say "The sudden intense heat causes the brittle, rust-weakened chain to shatter, its links snapping apart like brittle glass.";
+		say "The sudden intense heat causes the brittle, rust-weakened chain to shatter, its links snapping apart like glass.";
 		say "[line break]Suddenly, a thunderous roar shakes the tunnel, and the debris pile begins to shift. Rocks tumble down as something massive slams against the other side. You stumble back, heart pounding, as the barrier collapses in a cloud of dust and falling stones.";
 		pause the game;
 		execute JavaScript command "updateImage('img/tunnel-beast-robot-3.jpg');";
@@ -2119,11 +2179,11 @@ Report pouring the lava sample on the chain:
 		execute JavaScript command "updateImage('img/unblocked-tunnel-b.jpg');";
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'roomSound', 'mp3/177958__water-drip-cave.mp3', -1);";
 		execute JavaScript command "audioManager.stop('snore');";
-		say "[line break]As your heartbeat slows, you notice something glinting on the ground amid the fallen debris. You catch a glimpse of a thin, metallic object half buried in the sand. Upon closer inspection, you realize it's a silver keycard.";
-		say "[line break]You pocket the keycard and contemplate what fiendish mind could have created such a shocking fusion of living flesh and machine.";
+		say "[line break]As your heartbeat slows, you notice something glinting on the ground amid the fallen debris. You catch a glimpse of a thin, metallic object half buried in the sand. Upon closer inspection, you realize it's a silver key card.";
+		say "[line break]You pocket the key card and contemplate what fiendish mind could have created such a shocking fusion of living flesh and machine.";
 		say "[line break]Go east to explore the Unblocked Tunnel or west to turn back the way you came.";
 		increase the score by Medium_Score_Bonus;
-		now the player has the silver keycard;
+		now the player has the silver key card;
 		now hasHeldKeycard is true;
 		now the rusty chain is nowhere;
 		now the lava sample is nowhere;
@@ -2174,6 +2234,8 @@ Instead of opening the metal supply cabinet:
 	
 Instead of closing the metal supply cabinet:
 	say "The hinges are broken and it won't shut."
+
+Understand "cyborg parts" as cyborg kit.
 	
 The cyborg kit is in the metal supply cabinet.
 To say list of parts:
@@ -2322,7 +2384,7 @@ Part 21 - Cyborg Assembly
 
 blockedAccessBefore is a truth state that varies. blockedAccessBefore is false.
 
-[blocks your way cyborg here - having the keycard means you have unblocked the tunnel]
+[blocks your way cyborg here - having the key card means you have unblocked the tunnel]
 Before going to Cyborg Assembly:
 	if hasHeldKeycard is false:
 		clear the screen;
@@ -2943,11 +3005,11 @@ The exhibit console is in the Museum.
 The exhibit console is fixed in place.
 The description of the exhibit console is "A recessed panel stands out amid the array of unfamiliar symbols and displays. Its surface, smoother than the surrounding metal, bares the unmistakable shape of a human hand -- a biometric reader."
 
-Understand "recessed panel" as the biometric reader.
 The biometric reader is an open container.
 The biometric reader is part of the exhibit console.
 The description of the biometric reader is "Your eyes are drawn to a recess in the metallic surface of the console -- an impression molded with uncanny precision to the shape of a human hand. The depression is ringed with a faint, pulsing light, with five shallow grooves extended from the central hollow, perfectly aligned for fingers."
 
+Understand "panel" or "recessed panel" as exhibit console.
 Understand "hand scanner" or "impression" or "depression" or "central hollow" as the biometric reader.
 Understand "finger" as the player's hand.
 
@@ -3068,7 +3130,7 @@ Instead of pressing the player's hand into the biometric reader:
 	say "[line break][fixed letter spacing]'UMBILICALS DISCONNECTED...ZEPHYR IS ON INTERNAL POWER...INITIATING DEPLOYMENT IN T-MINUS 60 SECONDS.'";
 	say "[line break][fixed letter spacing]'ZEPHYR HAS CLEARED THE SHIP...TELEMETRY IS STRONG...INITIATING DESCENT SEQUENCE.'";
 	say "[line break][roman type]As the countdown ticks to zero, the electromagnetic clamps let go with a soft thud and Zephyr drifts away from us. Thrusters fire, piercing the endless darkness and orienting the lander for atmospheric entry. Zephyr registers the first tinges of heat as it descends through layers of azure and swirling pearl-white, its hull gently buffeted by the atmosphere.";
-	say "[line break][roman type]With each passing second, a low hum intensifies deep within the lander's core, and neural nets spring to life, activating dormant pathways. Encased in layers of alloy, the Caretaker  stirs, its synthetic consciousness awakens, surging with an all-consuming focus--to protect at any cost the first breaths of those who will call this planet home.";
+	say "[line break][roman type]With each passing second, a low hum intensifies deep within the lander's core, and neural nets spring to life, activating dormant pathways. Encased in layers of alloy, the Caretaker stirs, its synthetic consciousness awakens, surging with an all-consuming focus--to protect at any cost the first breaths of those who will call this planet home.";
 	say "[paragraph break]";
 	pause the game;
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'flip', 'mp3/71852__page-turn.mp3', 1, .33);";
@@ -3137,7 +3199,7 @@ Every turn when the player is in the Museum:
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'footsteps', 'mp3/455068__guard-footsteps.mp3', 1, .5, 500);";
 		say "[line break]You hear footsteps. Your eyes scan the museum, searching for a hiding spot."; 
 		now playerToldToHide is true;
-	otherwise if museum-turns > 5:
+	otherwise if museum-turns > 6:
 		clear the screen;
 		say "The lander craft beckons you, a potential sanctuary, but before you can reach it, a metallic voice cuts through the air: 'Unauthorized presence detected.'";
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'caretaker', 'mp3/535021__lame-caretaker-pursuit.mp3', 1, .33);";
@@ -3195,9 +3257,9 @@ The hatch is open.
 The description of the hatch is "[if the player is in the museum]You spot a circular metal hatch set into the side of the old Zephyr lander, its polished surface gleaming faintly in the dim light.[else] An airtight hatch.[end if] The hatch is [if the hatch is open]open[else]closed[end if]." 
 
 Before going to the Lander Craft:
-	if the player does not have the silver keycard:
-		say "You notice a silver keycard and pick it up.";
-		now the player has the silver keycard.
+	if the player does not have the silver key card:
+		say "You notice a silver key card and pick it up.";
+		now the player has the silver key card.
 		
 The Lander Craft is a room. 
 The odor of the Lander Craft is "You smell decaying leather and rocket fuel."
@@ -3249,10 +3311,10 @@ Instead of climbing the hatch when the player in the Lander Craft:
 	try going outside;
 	
 Check inserting something into the slot:
-    if the noun is not the keycard, say "That doesn’t fit into the slot." instead.
+    if the noun is not the key card, say "That doesn’t fit into the slot." instead.
 
-After inserting the silver keycard into the slot:
-	say "The card clicks into the slot, and a green light flashes on the panel. The unknown purpose of the keycard has just become apparent."; 
+After inserting the silver key card into the slot:
+	say "The card clicks into the slot, and a green light flashes on the panel. The unknown purpose of the key card has just become apparent."; 
 	pause the game;
 	stop the action.
 
@@ -3263,18 +3325,18 @@ After waiting when the player is in the Lander Craft:
 	say nothing;
 	continue the action.
 
-[TO blast off immediately, use the keycard. If you just wait a bit, you will blast off anyway]
+[TO blast off immediately, use the key card. If you just wait a bit, you will blast off anyway]
 Every turn when the player is in the Lander Craft:
 	increase lander-turns by 1;
-	if the player cannot see the silver keycard:
-		say "You notice a silver keycard and pick it up.";
-		now the player has the silver keycard;
-	otherwise if lander-turns > 3 and time-to-blastoff is false and the keycard is not in the narrow slot:
+	if the player cannot see the silver key card:
+		say "You notice a silver key card and pick it up.";
+		now the player has the silver key card;
+	otherwise if lander-turns > 3 and time-to-blastoff is false and the key card is not in the narrow slot:
 		clear the screen;
-		say "Curious about the control panel you slip the keycard into the slot.";
+		say "Curious about the control panel you slip the key card into the slot.";
 		pause the game;
 		now time-to-blastoff is true;
-	otherwise if the keycard is in the narrow slot:
+	otherwise if the key card is in the narrow slot:
 		now time-to-blastoff is true;
 	if time-to-blastoff is true:
 		now the hatch is closed;
@@ -3319,7 +3381,7 @@ Every turn when the player is in the Lander Craft:
 		execute JavaScript command "updateImage('img/docking-bay-[handType]-hand.jpg', 'default');";
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'roomSound', 'mp3/211683__legacy-docking-bay.mp3', -1);";
 		say "As the lander craft comes to rest in the docking bay of the massive ship, you feel a mixture of awe and curiosity. 'If this ship brought our ancestors to Terra Nova, what other secrets does it hold?' you wonder.";
-		say "[line break]To your surprise, your feet meet the floor with a familiar weight -- somehow, there's gravity here. You step into the dimly lit corridor, your footsteps echoing in the silence. The air is stale but breathable, carrying a faint scent of metal and old electronics. You can't help but wonder, 'How is there air to breathe on an ancient ship?' It's as if the vessel has been waiting for you, prepared for your arrival. As your eyes adjust to the gloom, you begin to make out details of your surroundings. The corridor stretches before you, its walls lined with unfamiliar technology and strange symbols.";
+		say "[line break]To your surprise, your feet meet the floor with a familiar weight -- somehow, there's gravity here. You step into the dimly lit corridor, your footsteps echoing in the silence. The air is stale but breathable, carrying a faint scent of metal and old electronics. You can't help but wonder, 'How is there air to breathe on an ancient ship?' It's as if the vessel has been waiting for you, prepared for your arrival. As your eyes adjust to the gloom, you begin to make out details of your surroundings. The corridor stretches before you, its walls lined with arcane devices and enigmatic markings";
 		say "[line break]You run your hand along the wall, feeling the cold metal beneath your fingers. Has this ancient ship been orbiting for centuries? The gravity, the air, the humming systems – it all feels too convenient, too prepared. A nagging thought tugs at the back of your mind: 'Was I expected?'";
 		pause the game;
 		now the cyborg kit is in the metal cabinet;  [just in case they still carry it]
@@ -3328,13 +3390,13 @@ Every turn when the player is in the Lander Craft:
 			now the exhibit console is in the Archives Chamber.
 
 Part 28 - Docking Bay
-	
+
 The Docking Bay is a room.
 The Docking Bay is scored.
 The odor of Docking Bay is "You smell burning plastic."
 The image file name of Docking Bay is "docking-bay-[handType]-hand.jpg".
 The sound-file-name of Docking Bay is "211683__legacy-docking-bay.mp3".
-The description of Docking Bay is "A dimly lit corridor stretches before you, its walls lined with unfamiliar technology and strange symbols. Soft emergency lights flicker to life as you move, responding to your presence after centuries of silence. A deep hum fills the space -- Legacy's heartbeat.[paragraph break]To the west, blue-tinged crystals catch the dim light.".
+The description of Docking Bay is "A dimly lit corridor stretches before you, its walls lined with unfamiliar technology and strange symbols. Soft emergency lights flicker to life as you move, responding to your presence after centuries of silence. A deep hum fills the space -- Legacy's heartbeat.[if the location is unvisited][paragraph break]The ship's layout appears to follow a linear design, with sections arranged in forward and backward sequence from the docking bay.[end if][paragraph break]In the forward direction, blue-tinged crystals catch the dim light.".
 
 Rule for printing the name of the repair bench:
 	say "[printed name of the repair bench]";
@@ -3388,13 +3450,13 @@ Part 29 - Archives Chamber
 
 The Archives Chamber is a room. 
 The Archives Chamber is scored.
-The Archives Chamber is west of the Docking Bay.
+The Archives Chamber is east of the Docking Bay.
 The odor of Archives Chamber is "The air carries a faint ozone smell from countless storage crystals humming with data."
 The image file name of Archives Chamber is "dna-library-2.jpg".
 The backgroundColor of Archives Chamber is "#a1c8e5".
 The sound-file-name of Archives Chamber is "724217__kai-in-orbit.mp3".
 The sound-volume of Archives Chamber is 0.3.
-The description of Archives Chamber is "Towering crystalline matrices line the walls, each storing countless genetic sequences etched by precision lasers. Four prominent storage units dominate the center of the room, these are the contributor archives labelled with the names of Earth's finest minds: Okafor, Tanaka, Stein, and Blackwood.[paragraph break]A security door guards the passage to the south."
+The description of Archives Chamber is "Towering crystalline matrices line the walls, each storing countless genetic sequences etched by precision lasers. Four prominent storage units dominate the center of the room, these are the contributor archives labelled with the names of Earth's finest minds: Okafor, Tanaka, Stein, and Blackwood.[paragraph break]A security door guards the passage forward."
 
 The crystal matrices are scenery in the Archives Chamber.
 The description of crystal matrices is "The crystalline storage units stretch from floor to ceiling, their structures embedded with microscopic patterns encoding the genetic heritage of Earth."
@@ -3423,7 +3485,7 @@ The description of security web is "A matrix of hair-thin light filaments forms 
 
 pauseBeforeMonitoringCenter is a truth state that varies. pauseBeforeMonitoringCenter is true.
 
-Instead of going south from the Archives Chamber:
+Instead of going east from the Archives Chamber:
 	increase security-door-approach-count by 1;
 	if the player is wearing the maintenance tarp:
 		say "You approach the doorway wrapped in the silvery tarp. The web of light ripples and distorts around you, unable to get a clear reading of your form. After a moment's hesitation, the shimmering barrier parts like a curtain, allowing you passage to an observation area where you can clearly see Terra Nova from orbit.";
@@ -3432,11 +3494,11 @@ Instead of going south from the Archives Chamber:
 		now pauseBeforeMonitoringCenter is false;
 		move the player to the Colony Monitoring Center;
 	otherwise if the player carries the maintenance tarp:
-		say "A detection field pulses erratically as you approach, its perfect pattern disrupted by the reflective material you carry. The threads of light bend and twist unusually around you, but the barrier remains stubbornly intact.";
+		say "A detection field pulses erratically as you approach, its perfect pattern disrupted by the reflective material you carry. The threads of light bend and twist unusually around you, but the barrier remains stubbornly intact, blocking your path.";
 		try going up;  [force display of available exits]
 		stop the action;
 	otherwise:
-		say "As you approach, the web of light flares brightly, its threads contracting into an impenetrable barrier. The pattern maps your every movement with perfect precision.[paragraph break]'UNAUTHORIZED BIOLOGICAL ENTITY DETECTED...ACCESS DENIED,' announces a cold, synthetic voice.[paragraph break]The barrier remains active, waiting for you to retreat.";
+		say "As you approach, the web of light flares brightly, its threads contracting into an impenetrable barrier. The pattern maps your every movement with perfect precision.[paragraph break]'UNAUTHORIZED BIOLOGICAL ENTITY DETECTED...ACCESS DENIED,' announces a cold, synthetic voice.[paragraph break]The barrier remains active, blocking your path.";
 		try going up;  [force display of available exits]
 		stop the action.
 
@@ -3444,13 +3506,13 @@ Part 30 - Colony Monitoring Center
 
 The Colony Monitoring Center is a room.
 The Colony Monitoring Center is scored.
-The Colony Monitoring Center is south of the Archives Chamber.
+The Colony Monitoring Center is east of the Archives Chamber.
 The Colony Monitoring Center is west of Legacy Bridge.
 The odor of Colony Monitoring Center is "The sterile scent of recycled air."
 The image file name of Colony Monitoring Center is "colony-monitor-1.jpg".
 The sound-file-name of Colony Monitoring Center is "211683__legacy-docking-bay.mp3".
 The sound-volume of Colony Monitoring Center is 0.33.
-The description of Colony Monitoring Center is "The chamber is dominated by three main displays. Each display casts its own ghostly light across the room.[paragraph break]Through the observation windows, you can see the curve of Terra Nova below and endless stars beyond.[paragraph break][if hasSeenClimateReport is false]The bridge lies to the east through a heavy security door.[else]The bridge lies to the east.[end if]"
+The description of Colony Monitoring Center is "The chamber is dominated by three main displays. Each display casts its own ghostly light across the room.[paragraph break]Through the observation windows, you can see the curve of Terra Nova below and endless stars beyond.[paragraph break][if hasSeenClimateReport is false]The bridge lies forward through a heavy security door.[else]The bridge lies forward from here.[end if]"
 
 The settlement map is a thing in the Colony Monitoring Center.
 The settlement map is fixed in place.
@@ -3711,6 +3773,8 @@ Museum is in the Underneath.
 Museum Escape is in the Underneath.
 Lander Craft is in the Underneath.
 
+Archives Chamber is in the Upperdeck.
+Colony Monitoring Center is in the Upperdeck.
 Docking Bay is in the Upperdeck.
 Legacy Bridge is in the Upperdeck.
 
