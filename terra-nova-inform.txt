@@ -1982,9 +1982,37 @@ The odor of the Blocked Passage is "The air is heavy with the scent of dust and 
 The image file name of the Blocked Passage is "blocked-tunnel-darker.jpg".
 The sound-file-name of the Blocked Passage is "609182__sleeping-beast.mp3". 
 The Blocked Passage is scored.
-The description of the Blocked Passage is "The passage ahead is blocked by a cave-in, a chaotic jumble of rock and sand. The air here is heavy with the scent of dust and decay. A rusty chain snakes from beneath the debris. You can retreat to the west if you lack courage.[paragraph break][one of]a low, menacing growl emanates from behind the obstruction, causing you to pause[or]The silence is oppressive, and the sense of entrapment weighs heavily as you survey the rubble[or]The way forward is blocked, leaving only the echo of your own footsteps and the distant murmur of hidden dangers[cycling]." 
+The description of the Blocked Passage is "The passage ahead lies blocked by a recent cave-in, though you sense important discoveries await beyond. A rusty chain snakes out from beneath the debris, occasionally pulling taut with sudden jerks. The air here is heavy with the scent of dust and decay.[if the player does not carry the chunk of obsidian] A hefty chunk of obsidian, broken loose from the cave-in, lies among the rubble.[end if] Though you could retreat west, your curiosity about what lies beyond the obstruction pulls at you.[paragraph break][one of]a low, menacing growl emanates from behind the obstruction, causing you to pause[or]The silence is oppressive, and the sense of entrapment weighs heavily as you survey the rubble[or]The way forward is blocked, leaving only the echo of your own footsteps and the distant murmur of hidden dangers[cycling]."
+
+The chunk of obsidian is in the Blocked Passage.
+The description of the chunk of obsidian is "A dense piece of black volcanic rock the size of a farmer's mallet, though considerably heavier. Its jagged edges are sharp where it broke free from the cave-in."
 
 The cave-in, rock, gap, rocks, air, dust, decay, debris pile, ground, dirt, rubble are scenery in the Blocked Passage.
+
+Understand "hit [something] with [something]" as attacking it with.
+Understand "strike [something] with [something]" as attacking it with.
+Understand "hammer [something] with [something]" as attacking it with.
+Understand "smash [something] with [something]" as attacking it with.
+Understand "break [something] with [something]" as attacking it with.
+
+Attacking it with is an action applying to two things.
+
+Check attacking it with:
+	if the noun is not the rusty chain:
+		say "Violence won't help with [the noun]." instead;
+	if the second noun is not the chunk of obsidian:
+		say "You can't effectively attack anything with [the second noun]." instead.
+
+Carry out attacking it with:
+	say "You strike the chain with the chunk of obsidian. While the chain's brittleness is evident from the sharp clang, simple impact isn't enough to break it. The sound provokes an angry grunt from beyond the debris pile.";
+	execute JavaScript command "audioManager.playSound('[sound-state]', 'growl', 'mp3/315769__beast-growl.mp3', 1);";
+	now the player carries the chunk of obsidian.
+
+Instead of attacking the rusty chain:
+	if the player carries the obsidian chunk:
+		try attacking the rusty chain with the chunk of obsidian;
+	otherwise:
+		say "You need something heavy to strike with.";
 
 Instead of examining scenery in the Blocked Passage:
 	say "[one of]You study the sandy debris pile looking for the best path up and over[or]You can see dim light through the debris and wonder if you could climb through a gap to the other side[or]You survey the obstacles blocking your way[or]The way forward is blocked, but your curiosity compels you to consider climbing[or]the chain rattles and a threatening snort comes from behind the rocks, causing you to pause[or]You spot a sliver of light amidst the darkness, a possible path through the rocks[or]You contemplate taking the risk of climbing when a single misstep could send you tumbling[cycling]."
