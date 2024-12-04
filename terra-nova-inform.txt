@@ -443,6 +443,14 @@ Long-Shadow-Limit is a number variable. Long-Shadow-Limit is 140.
 Dimming-Sky-Limit is a number variable. Dimming-Sky-Limit is 190.
 Nightfall-Limit is a number variable. Nightfall-Limit is 270.
 
+Every turn when the player is in the Underneath:
+	if time-of-day is Nightfall:
+		clear the screen;
+		say "You have overstayed your welcome in the underground complex.";
+		execute JavaScript command "audioManager.playSound('[sound-state]', 'caretaker', 'mp3/535021__lame-caretaker-pursuit.mp3', 1, .33);";
+		pause the game;
+		move the player to the Museum Escape, without printing a room description; [kai captured, absorbed]
+
 Every turn:
 	increase current-turn-count by 1;
 	if the current-turn-count < First-Light-Limit:
@@ -2045,7 +2053,7 @@ The description of the rusty chain is "A rusty iron chain, pinned beneath tons o
 
 Instead of taking the rusty chain:
 	try pulling the rusty chain.
-
+	
 gruntSoundFile is a text that varies.
 	
 After pulling the rusty chain:
@@ -2136,11 +2144,8 @@ Carry out pouring the lava sample on the rusty box:
 
 Report pouring the lava sample on the rusty box:
 	if the player is wearing the heat-resistant glove and hasHeldKeycard is false:
-		say "Balancing the crucible of lava in a steady hand, you carefully pour the molten lava onto the rusty box. An immediate hiss fills the air. The hinges glow red-hot, then with a final, resounding snap, the box breaks open revealing its contents.";
-		say "[line break]It appears to be a time capsule containing historical relics. Inside you find: [a list of things in the rusty box].[paragraph break]";
-		now the rusty box is open;
+		say "Balancing the crucible of lava in a steady hand, you carefully pour the molten lava onto the rusty box. An immediate hiss fills the air, and the hinges glow red-hot, but the box remains fused tight. There must be another way to open the box.";
 		now the lava sample is nowhere;
-		increase the score by Easy_Score_Bonus;
 	otherwise:
 		stop the action.
 		
@@ -3797,6 +3802,8 @@ To decide whether beetle is available:
 		decide yes;
 	otherwise if time-of-day is Dimming-sky:
 		decide yes;
+	otherwise if hasRestored is true and turn count > High-Sun-Limit:
+		decide yes;
 	otherwise if hasMetCaretaker is true and hasVisitedRestrictedArea is true and hasWornGear is true:
 		decide yes;
 	otherwise if beetle-worthy-2:
@@ -3838,10 +3845,13 @@ To decide whether beetle-worthy-2:
 		
 [VORPLE FOR RESTORE/UNDO - This rulebook is run at the end of turn and after the game state has been restored, 
 either through undoing a turn, restoring a save game, or restarting the game.]
+[We track if the player has restored the game because we must assume he can get the beetle to avoid a subtle bug]
+hasRestored is a truth state that varies. hasRestored is false.
 A Vorple interface update rule:
 	execute JavaScript command "return checkRestore();";
 	if the JavaScript command returned true:
 		clear the screen;
+		now hasRestored is true;
 		try looking;
 
 [If you dawdle in the desert, you die]
