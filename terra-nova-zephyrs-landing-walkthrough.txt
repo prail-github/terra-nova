@@ -90,7 +90,7 @@ Go north to Village Foundry.
 Village Foundry
 ---------------
 Take the crucible and fire-proof glove. Those will be useful later.
-When you examine the forge itself a niche is revealed that contains a diary
+When you examine the forge itself, a niche is revealed that contains a diary
 that you can read for background on the society. 
 
 Go south, then east to the Fallen Shrine.
@@ -113,9 +113,8 @@ damages the telescope revealing a magnifying mirror that might be useful
 later, so take it.  Behind the plaque you find a manuscript. You can read more 
 history from Kael there. While you're up high, throw the rusty metal box off 
 the tower.  It crashes on the rocky terrain below and opens to reveal various 
-relics. Collect these when you leave the tower. You can read the manuscript and 
-poster now, these provide further background on the culture. The Chrono Org and 
-Qubit stick also provide historical accounts, but you can't read those until later.
+relics. Collect these when you leave the tower. The Poster, Chrono Org, and Qubit 
+stick provide historical accounts, but you can't read all of those until later.
 
 Go south to the Fallen Shrine
 
@@ -131,9 +130,6 @@ Go east to the Lava Pit
 Lava Pit
 --------
 Collect a lava sample from the pit. "scoop lava" works, as does, "take lava". 
-Note you can also open the metal box by pouring lava on it, but because the 
-glove can become damaged with use, it's better to use lava to solve problems 
-only once.
 
 Go west until your arrive at the Stone Pit
 
@@ -154,14 +150,14 @@ keep playing pour the lava on the chain, or "pour crucible on chain". This
 frees the trapped beast and unblocks the tunnel. The beast also drops 
 a keycard that is useful later. If you wait too many turns to use the lava it 
 hardens and is useless to you.  You can always backtrack to the Lava 
-Pit and gather more.
+Pit and gather more. The hints are generous here and should help guide you.
 
 Go east to the Supply Room
 
 Supply Room
 -----------
 At the end of the tunnel is a supply room where you find a damaged cyborg.
-"examine figure" then give her the Neurochip that she craves.
+"examine figure" then give her the Neurochip that she requires.
 She tells a story and threatens you at the same time. Finally she reveals that
 you'll need a disguise to roam the underground complex or you'll be captured.
 She reveals such a disguise, a cyborg kit in a cabinet in that room. 
@@ -174,12 +170,12 @@ Go east to Cyborg Assembly
 
 Cyborg Assembly
 ---------------
-A deserted assembly line to churn out cyborgs lies quiet. This is a chance to 
-study the way the Caretaker would convert troublesome settlers to high 
+A deserted assembly line to churn out cyborgs lies dormant. This is a chance 
+to study the way the Caretaker would convert troublesome settlers to high 
 performing cyborgs by replacing parts of them bit by bit, including their 
 minds. The assembly control panel blinks at you begging to be pressed, but 
-resist.  If you do press it you get a robotic hand and your disguise is 
-stripped away. Intead, look but don't touch. 
+resist.  If you do press it you escape with a robotic hand and your disguise 
+is stripped away. Intead, look but don't touch. 
 
 Go south.
 
@@ -209,7 +205,8 @@ Equipment Storage
 In the storage room are extra cyborg parts including an obedience collar. 
 You may examine it but unless you want to end the game prematurely, do not 
 pick it up or wear it. If you do you are swarmed by drones and the collar 
-is demonstrated to the fullest.
+is demonstrated to the fullest. You can disable the collar with a magnet
+if you bothered to collect it from the scrap heap earlier in the game.
 
 Go southwest then west to the Restricted Area Entrance
 
@@ -230,7 +227,7 @@ problem on the surface. Just save first before you experiment so you don't
 have to start the game over from the beginning.
 
 Go east then northwest through the tunnel, then go up the ladder to 
-the desert, then east to the Dwelling ruins.
+the desert, then east to the Dwelling ruins. 
 
 Dwelling Ruins
 --------------
@@ -260,7 +257,7 @@ or "touch reader" works to reveal the origin story of Terra Nova.  If you
 stay too long at these exhibits you will be captured and absorbed, so don't 
 delay.  If you hear the guard coming you can "hide" which puts you in the 
 capsule exhibit.  Or you could explore by typing "go in capsule." 
-The Caretaker's guards are likely nearby, so drastic measures are called for.
+The Caretaker's guards are likely nearby, so hiding is the best way forward.
 
 Lander Craft
 ------------
@@ -282,7 +279,7 @@ You notice a repair bench here with a few objects on it.
 Two are red herrings (as noted in the fine print) and one is useful.
 Take the tarp for later.
 
-Go west
+Go forward
 
 Archives Chamber
 ----------------
@@ -296,7 +293,7 @@ hand in the biometric reader.
 Wear the tarp before you go south. It's reflective qualities let you pass
 the security without being turned back.
 
-Go south.
+Go forward.
 
 Colony Monitoring Center
 ------------------------
@@ -308,7 +305,7 @@ finally the status monitor that shares the climate report.
 
 Once you've reviewed these items, you can advance to the final room.
 
-Go east
+Go forward.
 
 Legacy Bridge
 -------------
@@ -319,7 +316,7 @@ be overly protective and strict with the settlers so that rebellion would
 be inevitable. 
 
 You can ask a few questions of the pilot and the answers clear up any loose
-ends.
+ends. X pilot to see what questions you might ask.
 
 Soon after, Legacy's true intentions are revealed. You are deemed too 
 threatening to the ship and her mission, so you must be neutralized. 
