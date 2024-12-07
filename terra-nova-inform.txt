@@ -37,36 +37,48 @@ Understand "commands" as requesting commands.
 Requesting commands is an action applying to nothing.
 
 Carry out requesting commands:
-	say "Use these commands for this story:";
-	say "[line break]ask ___ about ___";
-	say "[line break]climb ___ (up, down, object)";
-	say "[line break]close ___";
-	say "[line break]dig";
-	say "[line break]examine ___ / read ___";
-	say "[line break]gaze ___ (east, west, north, south, northeast, se)";
-	say "[line break]go ___ (?, east, west, north, south, inside, outside, ne, nw)";
-	say "[line break]hide / hide in ___";
-	say "[line break]hint";
-	say "[line break]inventory";
-	say "[line break]jump over/into/on ___";
-	say "[line break]listen";
-	say "[line break]look (to reveal current location and description)";
-	say "[line break]open ___ / close ___";
-	say "[line break]push ___ / press ___ / pull ___";
-	say "[line break]pour ___ on ___";
-	say "[line break]put ___ in/on ___";
-	say "[line break]reflect ___ with ___";
-	say "[line break]switch on ___ / switch off ___";
-	say "[line break]scoop ___";
-	say "[line break]smell";
-	say "[line break]sound on / sound off";
-	say "[line break]take ___ / drop ___ / give ___";
-	say "[line break]throw ___";
-	say "[line break]uncover ___ / bury ___";
-	say "[line break]walk to ___";
-	say "[line break]wear ___";
-	say "[line break]Less common commands: save, restore, undo, quit";
-
+	clear the screen;
+	say "Basic Commands:[line break]";
+	say " [bold type]look[roman type] (l) -- reveals current location and description[line break]";
+	say " [bold type]examine[roman type] (x) <thing> -- get details about an object[line break]";
+	say " [bold type]inventory[roman type] (i) -- see what you are carrying[line break]";
+	say "[line break]Movement:[line break]";
+	say " [bold type]go[roman type] <?, east, west, north, south, inside, outside, ne, nw>[line break]";
+	say " [bold type]climb[roman type] <up, down, object>[line break]";
+	say " [bold type]walk to[roman type] <location>[line break]";
+	say "[line break]Interaction:[line break]";
+	say " [bold type]ask[roman type] <person> about <topic>[line break]";
+	say " [bold type]dig[roman type] / [bold type]dig up[roman type] <thing>[line break]";
+	say " [bold type]gaze[roman type] <direction>[line break]";
+	say " [bold type]hide[roman type] / [bold type]hide in[roman type] <thing>[line break]";
+	say " [bold type]hint[roman type] -- get suggestions based on location[line break]";
+	say " [bold type]listen[roman type][line break]";
+	say " [bold type]smell[roman type][line break]";
+	say " [bold type]sound on[roman type] / [bold type]sound off[roman type][line break]";
+	pause the game;
+	say "[line break]Object Manipulation:[line break]";
+	say " [bold type]close[roman type] <thing>[line break]";
+	say " [bold type]drop[roman type] <thing>[line break]";
+	say " [bold type]give[roman type] <thing>[line break]";
+	say " [bold type]open[roman type] <thing>[line break]";
+	say " [bold type]pour[roman type] <thing> on <thing>[line break]";
+	say " [bold type]press[roman type] <thing>[line break]";
+	say " [bold type]pull[roman type] <thing>[line break]";
+	say " [bold type]put[roman type] <thing> in/on <thing>[line break]";
+	say " [bold type]reflect[roman type] <thing> with <thing>[line break]";
+	say " [bold type]scoop[roman type] <thing>[line break]";
+	say " [bold type]switch on[roman type]/[bold type]off[roman type] <thing>[line break]";
+	say " [bold type]take[roman type] <thing>[line break]";
+	say " [bold type]throw[roman type] <thing>[line break]";
+	say " [bold type]uncover[roman type] <thing> / [bold type]bury[roman type] <thing>[line break]";
+	say " [bold type]wear[roman type] <thing>[line break]";
+	say "[line break]Other Useful Commands:[line break]";
+	say " [bold type]help[roman type] -- see this list of commands[line break]";
+	say " [bold type]credits[roman type] -- learn about the game[line break]";
+	say " [bold type]save[roman type]/[bold type]restore[roman type] -- save or load progress[line break]";
+	say " [bold type]undo[roman type] -- take back last action[line break]";
+	say " [bold type]quit[roman type] -- end the game[line break]".
+	
 Understand "credits" as requesting credits.
 Requesting credits is an action applying to nothing.
 credit-url is a text that varies.
@@ -920,7 +932,7 @@ When play begins:
 	say "[roman type]The crumbling structures of Zephyr's Landing sprawl across the arid landscape, a monument to nature's ruthless indifference on this alien world. Weathered ruins of stone and steel jut from the desert floor, their surfaces etched by centuries of windblown grit. Structures that once buzzed with life now lie hidden beneath the dunes, reclaimed by the unforgiving desert.";	say "[line break][roman type]Over the centuries, earthquakes shattered the very foundations of Zephyr's Landing,
 while distant volcanos spewed ash and vented gases that reshaped the landscape.";
 	say "[line break]But was nature alone responsible for the collapse of Zephyr's Landing?";
-	say "[line break][roman type]Tales passed down through generations tell of conflict and rebellion, of miraculous machines now silent, and sightseers swallowed by the ruins. But the details are hazy, lost in the harsh realities of survival on this desert world.";
+	say "[line break][roman type]Tales passed down through generations tell of conflict and rebellion, of miraculous machines now silent, and trespassers swallowed by the ruins. But the details are hazy, lost in the harsh realities of survival on this desert world.";
 	say "[line break][roman type]Today, the ruins of Zephyr's Landing remain off-limits, yet they 
 beckon to those brave or foolish enough to explore them. And so here among the weathered stones of the past, we find Kai, a restless youth from New Eden, venturing into the forbidden ruins in search of answers his elders seem determined to keep buried.";
 	pause the game;
