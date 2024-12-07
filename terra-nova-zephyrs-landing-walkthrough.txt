@@ -4,7 +4,7 @@
 
 ===============================================================================
 
-Updated: Nov 24, 2024
+Updated: Dec 7, 2024
 Version: 1.0
 Contact: prail@yahoo.com
 
@@ -18,9 +18,8 @@ CONTENTS
 VERSION HISTORY
 ---------------
 
-1.0: Nov 1, 2024 (First Version)
-1.0: Nov 20, 2024 (Updates)
-1.0: Nov 24, 2024 (More Updates)
+1.0: Nov 24, 2024 (First Version)
+1.0: Dec 7, 2024 (Updates)
 
 ===============================================================================
 
