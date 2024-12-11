@@ -315,7 +315,7 @@ function setupMobileContinue() {
     const observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (mutation.addedNodes.length) {
-                if (document.body.innerText.includes("Press SPACE to continue")) {
+                if (document.body.innerText.includes("Press SPACE to Continue.")) {
                     continueBtn.style.display = 'block';
                 }
             }
@@ -676,7 +676,6 @@ const imageArray = [
 'telescope-damaged-1.jpg',
 'tower-animation.gif',
 'tower-summit-4.jpg',
-'tunnel-2-beetle.jpg',
 'tunnel-2.jpg',
 'tunnel-3.jpg',
 'tunnel-beast-robot-3.jpg',
