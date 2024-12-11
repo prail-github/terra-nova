@@ -815,7 +815,10 @@ console.warn('Failed to load some sounds:', errors);
 console.error('Preloading sounds...');
 initializeSounds();
 
-setupMobileContinue();
+// Only create and show the button if we're on a mobile device
+if (/iPhone|iPad|Android/i.test(navigator.userAgent) || window.innerWidth <= 768) {
+   setupMobileContinue();
+}
 
 </script>
 
