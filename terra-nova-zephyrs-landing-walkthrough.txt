@@ -20,6 +20,7 @@ VERSION HISTORY
 
 1.0: Nov 24, 2024 (First Version)
 1.0: Dec 7, 2024 (Updates)
+1.0: Dec 11, 2024 (Updates)
 
 ===============================================================================
 
@@ -108,7 +109,7 @@ Climb to the watchtower level and study the telescope.  Gaze nw to
 see your home village, gaze up to see a hint of the Legacy spaceship patiently 
 orbiting the planet, gaze east to see the lava flows.  Overall, Terra Nova is 
 a theatening place.  After enjoying more views, an earthquake hits and 
-damages the telescope revealing a magnifying mirror that might be useful 
+damages the telescope revealing an objective lens that might be useful 
 later, so take it.  Behind the plaque you find a manuscript. You can read more 
 history from Kael there. While you're up high, throw the rusty metal box off 
 the tower.  It crashes on the rocky terrain below and opens to reveal various 
@@ -214,7 +215,7 @@ Restricted Area Entrance
 You arrive at a hallway protected by crisscrossing light beams. If you try 
 to cross you'll be punished for the first infraction. The second is worse. 
 You will be tempted to refect the light beams to defeat the security using 
-the mirror from the telescope, which feels ingenious, but ultimately doesn't 
+the lens from the telescope, which feels ingenious, but ultimately doesn't 
 work, and you are "absorbed" -- game over. The hints here help guide you
 in the right direction: you must think of a way to turn off the power to 
 disable the security beams.  It should occur to you that one source of power 
