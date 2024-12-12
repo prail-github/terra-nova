@@ -65,7 +65,7 @@ Carry out requesting commands:
 	say " [bold type]press[roman type] <thing>[line break]";
 	say " [bold type]pull[roman type] <thing>[line break]";
 	say " [bold type]put[roman type] <thing> in/on <thing>[line break]";
-	say " [bold type]reflect[roman type] <thing> with <thing>[line break]";
+	say " [bold type]focus[roman type] <thing> with <thing>[line break]";
 	say " [bold type]scoop[roman type] <thing>[line break]";
 	say " [bold type]switch on[roman type]/[bold type]off[roman type] <thing>[line break]";
 	say " [bold type]take[roman type] <thing>[line break]";
@@ -213,7 +213,7 @@ This is the Stone Watchtower hint system rule:
 	otherwise if the player has the rusty box and the rusty box is closed:
 		say "I doubt anything would survive a fall from way up here.";
 	otherwise if the observation telescope is damaged:
-		if the player has the magnifying mirror:
+		if the player has the objective lens:
 			say "No hints available.";
 		otherwise:
 			say "That was quite a quake. See what you can salvage.";
@@ -264,7 +264,12 @@ Instead of going nowhere:
 		now direction-reminder is false.
 
 Carry out asking for exits:
-	if the topic understood matches the regular expression "\?":
+	if the topic understood matches the regular expression "(?i)(stone pit|pit)":
+		if the player is in the Stone Pit Entrance:
+			try going down;
+		otherwise:
+			say "I don't understand that direction.";
+	otherwise if the topic understood matches the regular expression "\?":
 		let count of exits be the number of viable directions;
 		if the count of exits is 0:
 			say "No exit." instead;
@@ -664,9 +669,9 @@ The niche is fixed in place.
 The niche is a container.
 The description of the niche is "The compartment seems to have been designed for preservation, lined with a material that repelled moisture and pests."
 
-The magnifying mirror is nowhere.
-The magnifying mirror is required.
-The description of the magnifying mirror is "An undamaged concave mirror with good optical clarity and high magnification."
+The objective lens is nowhere.
+The objective lens is required.
+The description of the objective lens is "A large convex lens, pristine and unscratched despite the fall. Its thick glass edges catch the light with crystal clarity."
 
 A Book is a kind of written thing. A Book is usually portable.
 Understand "book" as a Book.
@@ -948,7 +953,7 @@ Every turn:
 			move the player to the Beast's Lair, without printing a room description;
 		otherwise:
 			increase death-warning by 1.
-
+			
 When Adventure ends:
 	if playerDead is true:
 		execute JavaScript command "updateImage('img/dead-game-over-1.jpg', 'default');";
@@ -962,12 +967,11 @@ When Adventure ends:
 		say "[bold type]*** Legacy Preserved ***";
 	otherwise if playerTransformed is true:
 		say "[bold type]*** You are the Shadow Beast ***";
-	decrease score by totalHints;  [1 point penalty for each hint requested]
+	decrease score by totalHints;
 	if score < 0:
 		now score is minimumParticipationScore;
-	say "[paragraph break][roman type]In this game you scored [score] points in [turn count] turns.";
-	stop the game abruptly.
-
+	end the story;
+	
 Part 4 - Outskirts of Ruins
 
 Outskirts of Ruins is a room.
@@ -1011,6 +1015,8 @@ The description of the deep void is "A dark, sinister gap swallowing all light l
 The gaping chasm is scenery in the Stone Pit Entrance.
 The description of the gaping chasm is "The silent, gaping wound in the earth beckons you with a sinister allure, its depths filled with an unsettling darkness."
 
+[xxx]
+
 After going to Stone Pit Entrance:
 	now Lab Tunnel is mapped below the Stone Pit Entrance;
 	continue the action.		
@@ -1023,9 +1029,12 @@ After going to The Stone Pit Exit:
 After going to The Lab Tunnel:
 	now the Stone Pit Exit is mapped above the Lab Tunnel;
 	continue the action.	
+
+Instead of entering the ladder in the Stone Pit Entrance:
+	try climbing the ladder.
 	
 Instead of climbing the ladder in the Stone Pit Entrance:
-	try going down;
+	try going down.
 	
 The rusty ladder is a backdrop. It is in the Stone Pit Entrance, the Stone Pit Exit, and the Lab Tunnel. 
 The description of the rusty ladder is "The rickety iron ladder is badly rusted and unstable. The uneven spacing between the rungs makes it treacherous to climb[if the player is in the Stone Pit Entrance], but the descent into the darkness of the unknown piques your curiosity.[else].[end if]"
@@ -1041,6 +1050,14 @@ Understand "climb down" as climbing down.
 Understand "climb [something]" as climbing it.
 Understand "climb up [something]" as climbing up it.
 Understand "climb down [something]" as climbing down it.
+
+Carry out climbing down it:
+	if the noun is the ladder:
+		try going down.
+		
+Carry out climbing up it:
+	if the noun is the ladder:
+		try going up.
 	
 Instead of climbing up:
 	try going up.
@@ -1056,6 +1073,9 @@ The image file name of the Stone Pit Exit is "ladder-up-8.jpg".
 The sound-file-name of the Stone Pit Exit is "177958__water-drip-cave.mp3".
 The description of the Stone Pit Exit is "You are in a deep stone pit. A rusty ladder leads upward into the light above."
 
+Instead of entering the ladder in the Stone Pit Exit:
+	try climbing the ladder.
+	
 Instead of climbing the ladder in the Stone Pit Exit:
 	try going up;
 
@@ -1128,6 +1148,9 @@ Instead of opening the solar panel:  [for 'uncover' panel]
 	otherwise:
 		say "The solar panel is already exposed."		
 Instead of opening the glass shard:   [For 'uncover' shard]
+	try taking the glass shard.
+	
+Instead of rubbing the glass shard:
 	try taking the glass shard.
 
 Instead of taking the glass shard:
@@ -1234,7 +1257,7 @@ Before dropping the Gem Beetle:
 Part 9 - Water Supply
 
 Water Supply is a room.
-The odor of Water Supply is "You smell a stagnant pool, a rancid cauldron of pungent stench that pierces the nostrils like a pointed stick. It's the odor of rot and decay."
+The odor of Water Supply is "You smell a stagnant pool, a rancid cauldron of pungent stench that pierces your nostrils like a pointed stick. It's the odor of rot and decay."
 The sound of the Water Supply is "the gentle trickle of murky water."
 The image file name of Water Supply is "well-1.jpg".
 The backgroundColor of Water Supply is "#beb296".
@@ -1331,6 +1354,18 @@ Instead of jumping on something:
 	otherwise:
 		say "Your reconsider jumping on [the noun].";
 		
+Instead of drinking the greenish water:
+	say "The odor is nauseating. You reconsider drinking from the stagnant pool." 
+	
+Instead of smelling the greenish water:
+	say "You recoil as the stench hits you -- a disgusting mix of sulfur, algae, and something deeper and more sinister. The putrid smell burns your nostrils and makes your eyes water. An unsettling chemical undertone suggests this water has been contaminated by more than just natural decay."
+	
+Instead of inserting the player's hand into the greenish water:
+	try taking the greenish water.
+	
+Instead of inserting the player's hand into the ancient well:
+	try taking the greenish water.
+		
 Instead of taking the greenish water:
 	clear the screen;
 	say "The well's rim, worn smooth by the passage of time, feels solid enough as you perch on its edge and stretch out. You reach deeper toward the greenish water below, then you hear it. The first grinding sound. It's faint, like a groan echoing up from the earth itself. Then comes the shudder of ancient mortar giving way.[paragraph break]The weathered masonry lurches suddenly and throws you forward into the stinking depths. Icy water floods into your nose and mouth, carrying the taste of decay. You claw at the walls, fingernails scraping raw against the algae-slicked stones, but each desperate grip betrays you, sliding you deeper into darkness.[paragraph break]Your waterlogged clothes drag you under like lead weights, and your lungs scream for air. The last thing you see is a warped circle of light far above, growing dimmer as the murk consumes you.";
@@ -1348,6 +1383,9 @@ Village Foundry is scored.
 Village Foundry is north of Water Supply.
 The Village Foundry is southwest of the Stone Tower Exterior.
 The description of Village Foundry is "The ruins of a metal foundry linger, preserving the memory of a forgotten time. The weathered, cracked stone walls are all that remain of the once sturdy structure. The roof, long since collapsed, leaves the interior exposed to the elements. Despite the decay, the forge still lies within, its blackened surfaces bearing the marks of intense heat. Paths lead northeast and south from here."
+
+Instead of searching something:
+    try examining the noun.
 
 After examining the forge for the first time:
 	say "As you approach the forge, your foot dislodges a piece of debris, causing a section to shift. A soft grinding noise echoes through the ruins as the forge's base splits further, revealing a niche inside.";
@@ -1397,6 +1435,9 @@ The rocky terrain, arid soil, scrub brush are scenery in Stone Tower Exterior.
 The old stone steps are scenery in the Stone Tower Exterior.
 The description of the old stone steps is "Broken-down stone steps lead into the tower."
 
+Instead of entering the old stone steps:
+	try climbing the old stone steps.
+	
 Instead of climbing the old stone steps:
 	say "You make your way up the old stone steps."; 
 	try going inside.
@@ -1469,6 +1510,9 @@ The description of native plants is "Bleak, low-lying scrub brush mixed with a f
 The treacherous stone steps are scenery in the Stone Tower Interior.
 The description of the treacherous stone steps is "Uneven stone steps covered in dust and debris lead upward to the tower's summit."
 
+Instead of entering the treacherous stone steps:
+	try climbing the treacherous stone steps.
+	
 Instead of climbing the treacherous stone steps:
 	say "You make your way up the old stone steps."; 
 	try going up.
@@ -1507,9 +1551,6 @@ Instead of searching the observation telescope:
 		say "To look through the telescope, try gazing instead, like 'gaze up, or gaze east.' Many directions are possible and you can abbreviate them if you prefer, like 'gaze nw' for northwest, or 'gaze s' for south.";
 		pause the game;
 		try gazing northwest.
-
-Instead of searching the magnifying mirror:
-	say "You look at yourself in the mirror. Handsome as ever.";
 	
 Understand "look [direction]" as facing.
 Facing is an action applying to one visible thing and requiring light.
@@ -1612,7 +1653,8 @@ The canvas, golden desert are scenery in Stone Watchtower.
 
 The observation telescope is in the Stone Watchtower.
 The observation telescope is fixed in place.
-The description of the observation telescope is "[if telescope is operational]The brass telescope stands on the parapet mounted on a solid stone pedestal, its weathered dedication plaque catching the dim light. The instrument provides a clear and magnified view of the distant horizon. With its powerful optics, it exposes the world in great detail, revealing hidden features and distant landscapes.[else]The telescope hangs at an unfortunate angle, its mounting cracked. The dedication plaque has torn free from the stone pedestal, exposing a hidden compartment within. The instrument is no longer functional.[end if][if the magnifying mirror is in the Stone Watchtower] Its magnifying mirror lies undamaged nearby.[end if]"
+Understand "brass telescope" as the observation telescope.
+The description of the observation telescope is "[if telescope is operational]The brass telescope stands on the parapet mounted on a solid stone pedestal, its weathered dedication plaque catching the dim light. The instrument provides a clear and magnified view of the distant horizon. With its powerful optics, it exposes the world in great detail, revealing hidden features and distant landscapes.[else]The telescope hangs at an unfortunate angle, its mounting cracked. The dedication plaque has torn free from the stone pedestal, exposing a hidden compartment within. The instrument is no longer functional.[end if][if the objective lens is in the Stone Watchtower] Its objective lens lies undamaged nearby.[end if]"
 
 The stone compartment is nowhere.
 The stone compartment is fixed in place.
@@ -1640,11 +1682,11 @@ Carry out looking:
 	if player is in the stone watchtower and the noun is the down:
 		try examining the down instead;
 		
-Instead of taking the mirror for the first time:
+Instead of taking the objective lens for the first time:
 	increase the score by Easy_Score_Bonus;
-	now hasHeldMirror is true;
-	say "You pick up the magnifying mirror.";
-	now the player has the mirror.
+	now hasHeldLens is true;
+	say "You pick up the objective lens.";
+	now the player has the objective lens.
 	
 The steep drop-off and broken parapet are scenery in the Stone Watchtower.
 Understand "ledge" or "precipice" as broken parapet.
@@ -1655,6 +1697,9 @@ Instead of examining the steep drop-off:
 Instead of examining the broken parapet:
 	try examining the down.
 
+Instead of entering the uneven stone steps when the player is in the Stone Watchtower:
+	try climbing the uneven stone steps.
+	
 Instead of climbing the uneven stone steps when the player is in Stone Watchtower:
 	say "You make your way down the old stone steps."; 
 	try going down.
@@ -1707,7 +1752,7 @@ Every turn when the player can see the telescope for more than 4 turns and the t
 	say "[roman type]The watchtower begins to sway gently, almost imperceptibly at first. Your mind, slow to grasp the implications, initially dismisses it as a trick of the wind. But the gentle movement quickly intensifies. A low rumble rises from below, growing louder and then, suddenly more violent. 
 The stones beneath your feet begin to wobble, and you struggle to maintain your balance.
 Before you can react, a fierce tremor shakes the tower, sending you sprawling across the rough stone surface. The dust rises and your heart races as you scramble to regain your footing.";
-	say "[line break]A sharp, resonant snap draws your attention to the observation telescope. As you watch helplessly, it tilts and crashes onto the stone floor with the sound of twisting metal. Its eyepiece snaps off, skitters across the floor, and breaks into pieces, exposing a magnifying mirror and shattering the lens.";
+	say "[line break]A sharp, resonant snap draws your attention to the observation telescope. As you watch helplessly, it tilts and crashes onto the stone floor with the sound of twisting metal. The brass tube wrenches apart at its joints, and the precious objective lens pops free from its housing, rolling across the uneven stones before coming to rest in a shaft of dusty light. The eyepiece is crushed beyond repair, its smaller lens splintered into useless fragments.";
 	pause the game;
 	execute JavaScript command "updateImage('img/telescope-damaged-1.jpg', '#575a54');";
 	say "[line break]As the tremors subside, leaving you shaken and breathless, you stare at the ruined telescope lying broken at your feet. You notice the dedication plaque has torn free from the pedestal revealing a compartment carved into the face of the pedestal.";
@@ -1715,7 +1760,7 @@ Before you can react, a fierce tremor shakes the tower, sending you sprawling ac
 	now the observation telescope is damaged;
 	now the image file name of Stone Watchtower is "telescope-damaged-1.jpg";
 	now the backgroundColor of Stone Watchtower is "#575a54";
-	now the magnifying mirror is in the Stone Watchtower;
+	now the objective lens is in the Stone Watchtower;
 	now the stone compartment is in the Stone Watchtower;
 	try looking;
 
@@ -1836,6 +1881,7 @@ The description of The Lava Pit is "A molten pool of lava cuts a deep scar in th
 The molten lava is an enterable container in the Lava Pit. 
 The molten lava is undescribed.
 The description of molten lava is "Intense heat radiates from the fiery orange molten liquid."
+Understand "pit" or "lava pit" as the molten lava.
 
 The lava sample is a thing.
 The lava sample is nowhere.
@@ -1860,6 +1906,22 @@ Instead of scooping the molten lava into the crucible:
 Instead of scooping the lava sample into the crucible:
 	try sampling the molten lava.
 
+Before filling something with:
+	if the noun is the crucible:
+		if the second noun is greenish water or the second noun is ancient well:
+			try taking the greenish water;
+		otherwise if the second noun is the lava sample:
+			try scooping the lava sample;
+		otherwise:
+			say "There are better ways to spend your time.";
+			stop the action;
+	otherwise if the noun is the player's hand:
+		if the second noun is greenish water or the second noun is ancient well:
+			try taking the greenish water;
+	otherwise:
+		say "Your action would not help you here.";
+		stop the action;
+	
 Instead of filling the crucible with the molten lava:
 	try sampling the molten lava.
 	
@@ -1913,6 +1975,11 @@ Carry out sampling the molten lava:
 	otherwise:
 		say "It's too hot.";
 		stop the action;
+
+Check inserting something into the crucible:
+	if the second noun is the crucible and the noun is not the lava sample:
+		say "It doesn't fit, so you reconsider putting [the noun] into the crucible.";
+		stop the action.
 		
 Instead of touching the molten lava:
 	try sampling the molten lava.
@@ -1920,7 +1987,7 @@ Instead of touching the molten lava:
 Every turn when the player can see the crucible and the lava sample is in the crucible for more than 5 turns:	Say "The glow of the lava sample within the crucible is going dim.";
 
 Every turn when the player can see the crucible and the lava sample is in the crucible for 12 turns:
-	Say "The lava sample has hardened to stone in the crucible.";
+	Say "The lava sample has hardened in the crucible.";
 	now the lava sample is nowhere.
 
 Instead of jumping into the molten lava when the player is in the Lava Pit:
@@ -1974,6 +2041,9 @@ Before going from the Lab Tunnel:
 		say "You can't make progress in the dark. A dim light above you reveals an exit.";
 		stop the action;
 		
+Instead of entering the ladder in the Lab Tunnel:
+	try climbing the ladder.
+	
 Instead of climbing the ladder in the Lab Tunnel:
 	try going up;
 
@@ -2001,6 +2071,7 @@ The description of the chunk of obsidian is "A dense piece of black volcanic roc
 
 The cave-in, rock, gap, rocks, air, dust, decay, debris pile, ground, dirt, rubble are scenery in the Blocked Passage.
 
+Understand "kick [something]" as attacking.
 Understand "hit [something] with [something]" as attacking it with.
 Understand "strike [something] with [something]" as attacking it with.
 Understand "hammer [something] with [something]" as attacking it with.
@@ -2362,6 +2433,17 @@ After examining the female cyborg:
 	otherwise if the female cyborg can see the Neurochip:
 		say "Her fingers twitch almost imperceptibly toward a fallen Neurochip.";
 	
+Instead of putting something on the female cyborg:
+	if the noun is the Neurochip:
+		try giving the Neurochip to the female cyborg;
+	otherwise:
+		say "Putting things on the female cyborg would achive nothing.";
+	
+Instead of inserting something into female cyborg:
+	try giving the noun to the female cyborg.		
+Instead of putting something on the female cyborg:
+	try giving the noun to the female cyborg.
+		
 Before giving something to the female cyborg:
 	if the noun is not the Neurochip:
 		say "She isn't interested in [the noun].";
@@ -2447,7 +2529,7 @@ Before going to Cyborg Assembly:
 			say "[line break]'Kael?,' you whisper in disbelief. 'Kael the Liberator? Leader of the rebellion?'";
 			pause the game;
 			say "[line break]The cyborg's expression doesn't change, but something flickers in his eyes. 'I love my work,' Kael intones mechanically. 'The Caretaker provides for all our needs.'"; 
-			say "[line break]Your amazement turns to horror as you come to realize the truth. Kael the Liberator hadn't died a martyr in the rebellion after all. He had suffered a far worse fate. Centuries of enslavement, his body replaced piece by piece, until only his head remained.";
+			say "[line break]Your amazement turns to horror as you come to realize the truth. Kael the Liberator hadn't died a martyr in the rebellion after all. He had suffered a far worse fate. Centuries of enslavement, his body replaced piece by piece, until only his withered head and shriveled hands remained.";
 			say "[line break]For a moment, Kael's robotic demeanor cracks, and a ghost of a smile touches his ancient lips. 'New... Eden,' he whispers. Then, his cyborg arm shoots out suddenly, attempting to grab you.";
 			say "[line break]Taken by surprise, you stumble back. You see Kael's ancient head twitch, his jaw clench in an obvious struggle. Slowly, painfully, his metal arm lowers.";
 			say "[line break]'You... must... go,' he forces out, fighting against his programming with every word."; 
@@ -2944,33 +3026,30 @@ Instead of jumping over the light beam:
 Instead of crawling over:
 	try climbing the noun.
 
-Reflecting it with is an action applying to one thing and one thing. 
-Understand "reflect [something] with [something]" as reflecting it with.
-Understand "block [something] with [something]" as reflecting it with.
-Understand "deflect [something] with [something]" as reflecting it with.
-Understand "redirect [something] with [something]" as reflecting it with.
-Understand "bounce [something] with [something]" as reflecting it with.
+Focusing it with is an action applying to one thing and one thing.
+Understand "focus [something] with [something]" as focusing it with.
+Understand "concentrate [something] with [something]" as focusing it with.
+Understand "direct [something] with [something]" as focusing it with.
+Understand "aim [something] with [something]" as focusing it with.
+Understand "magnify [something] with [something]" as focusing it with.
 
 Understand "laser" or "light" or "beam" or "beams" as light beam.
 
 The description of the light beam is "Concentrated red light beams span the entrance. Tiny projectors, almost invisible in the walls, fire these beams across the gap. On the other side, barely discernible receivers blink in response. If you break the beam, you expect an alarm to blare."
-
-Instead of touching the light beam for the first time:
-	say "Touching the light beam could alert the Caretaker's guards and get you captured, so you decide against it."
 	 
-Carry out reflecting:
+Carry out focusing:
 	if the noun is the light beam:
-		if the second noun is the magnifying mirror:
+		if the second noun is the objective lens:
 			clear the screen;
-			say "With precise movements, you position the mirror to redirect a light beam back to its receptor. The reflected beam wavers as you adjust the angle slightly, hitting the target.";
-			say "[line break]For a heart-stopping moment, it seems to work -- the beam connects with the receptor, which begins blinking rapidly. You feel a sense of relief and step into the darkened hallway.";
+			say "With careful precision, you position the lens to concentrate the light beam. The focused beam intensifies as you find the right distance, creating a brilliant point of light on the receptor.";
+			say "[line break]For a heart-stopping moment, it seems to work -- the focused beam connects with the receptor, which begins blinking rapidly. You feel a sense of relief and step into the darkened hallway.";
 			say "[line break]However, you soon realize that the security system doesn't rely on a single beam. It's a complex network of crisscrossing lights."; 
 			pause the game;
 			clear the screen;
 			execute JavaScript command "updateImage('img/caretaker-closeup-4.jpg', '#303030');";
 			execute JavaScript command "audioManager.playSound('[sound-state]', 'alarm', 'mp3/586384__alarm.mp3', -1);";
 			say "[line break]Suddenly, alarms blare throughout the complex, and you hear an automated voice announce, 'Unauthorized Access Detected.'";
-			say "As you turn to run, you feel a sudden sharp pain in your neck -- an injection. The last thing you see is the Caretaker's impassive face looming over you. She says, 'Initiate Absorption Protocol.'";
+			say "[line break]As you turn to run, you feel a sudden sharp pain in your neck -- an injection. The last thing you see is the Caretaker's impassive face looming over you. She says, 'Initiate Absorption Protocol.'";
 			pause the game;
 			clear the screen;
 			execute JavaScript command "audioManager.stop('alarm');";
@@ -2991,7 +3070,7 @@ Carry out reflecting:
 			say "Your action has no effect.";
 			stop the action;
 	otherwise:
-		say "You can't reflect that.";
+		say "You can't focus that.";
 		stop the action.
 
 Part 26 - Museum
@@ -3059,6 +3138,8 @@ Understand "hand scanner" or "impression" or "depression" or "central hollow" as
 Understand "finger" as the player's hand.
 
 A hand is a kind of thing. The player's hand is a hand. The player's hand is part of the player. 
+The player's hand is required.
+The player is required.
 Pressing it into is an action applying to two things. 
 Understand "press [something] on/into/against [something]" as pressing it into.
 Understand "place [something] in/into [something]" as pressing it into.
@@ -3714,6 +3795,7 @@ Every turn when the player is in the Beast's Lair:
 	say "[line break]A blast of scorching air engulfs you, carrying the stench of decay. As massive jaws close around you, crushing bone and severing tissue, a final thought flashes through your mind: 'But it[apostrophe]s not dark yet.'"; 
 	say "[line break]Your adventure ends here, in the belly of the Shadow Beast.";
 	pause the game;
+	execute JavaScript command "audioManager.stopAll();";
 	now playerDead is true;
 	
 Part 33 - Museum Escape
@@ -3872,7 +3954,7 @@ To decide whether beetle-worthy-2:
 	if the player is wearing the Cyberhand:
 		if hasVisitedRestrictedArea is true:
 			if hasOpenedTimeCapsule is true:
-				if hasHeldMirror is true:
+				if hasHeldLens is true:
 					decide yes;
 				otherwise:
 					decide no;
@@ -3901,7 +3983,7 @@ To decide whether time to die by beast:
 	decide no.
 
 [MILESTONES]
-hasHeldMirror is a truth state that varies. hasHeldMirror is false.
+hasHeldLens is a truth state that varies. hasHeldLens is false.
 hasUncoveredSolarPanels is a truth state that varies. hasUncoveredSolarPanels is false.
 hasHeldKeycard is a truth state that varies. hasHeldKeycard is false.
 hasMetCaretaker is a truth state that varies. hasMetCaretaker is false.
