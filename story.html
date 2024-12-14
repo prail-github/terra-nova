@@ -299,6 +299,45 @@ const hiddenCtx = hiddenCanvas.getContext('2d');
 // set up audio
 var audioManager = new AudioManager();
 
+function setupMobileContinue() {
+// Create a continue button
+let continueBtn = document.createElement('button');
+continueBtn.innerText = 'Continue';
+continueBtn.style.position = 'fixed';
+continueBtn.style.bottom = '20px';
+continueBtn.style.left = '50%';
+continueBtn.style.transform = 'translateX(-50%)';
+continueBtn.style.padding = '10px 20px';
+continueBtn.style.display = 'none';  // Hidden by default
+document.body.appendChild(continueBtn);
+
+// Monitor for the "Press SPACE to continue" message
+const observer = new MutationObserver(function(mutations) {
+mutations.forEach(function(mutation) {
+if (mutation.addedNodes.length) {
+if (document.body.innerText.includes("Press SPACE to Continue.")) {
+continueBtn.style.display = 'block';
+}
+}
+});
+});
+
+// Watch for DOM changes
+observer.observe(document.body, { childList: true, subtree: true });
+
+// When button is clicked, simulate a space keypress
+continueBtn.addEventListener('click', function() {
+const spaceEvent = new KeyboardEvent('keydown', {
+key: ' ',
+keyCode: 32,
+which: 32,
+bubbles: true
+});
+document.dispatchEvent(spaceEvent);
+continueBtn.style.display = 'none';
+});
+}
+
 function setBackgroundColorAndTextColor(rgb) {
 // Ensure the RGB value is a hexadecimal color code
 if (!rgb.startsWith('#')) {
@@ -774,6 +813,11 @@ console.warn('Failed to load some sounds:', errors);
 
 console.error('Preloading sounds...');
 initializeSounds();
+
+// Only create and show the button if we're on a mobile device
+if (/iPhone|iPad|Android/i.test(navigator.userAgent) || window.innerWidth <= 768) {
+setupMobileContinue();
+}
 
 </script>
 
