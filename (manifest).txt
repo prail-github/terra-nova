@@ -329,6 +329,45 @@ const hiddenCtx = hiddenCanvas.getContext('2d');
 // set up audio
 var audioManager = new AudioManager();
 
+function setupMobileContinue() {
+    // Create a continue button
+    let continueBtn = document.createElement('button');
+    continueBtn.innerText = 'Continue';
+    continueBtn.style.position = 'fixed';
+    continueBtn.style.bottom = '20px';
+    continueBtn.style.left = '50%';
+    continueBtn.style.transform = 'translateX(-50%)';
+    continueBtn.style.padding = '10px 20px';
+    continueBtn.style.display = 'none';  // Hidden by default
+    document.body.appendChild(continueBtn);
+
+    // Monitor for the "Press SPACE to continue" message
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.addedNodes.length) {
+                if (document.body.innerText.includes("Press SPACE to Continue.")) {
+                    continueBtn.style.display = 'block';
+                }
+            }
+        });
+    });
+
+    // Watch for DOM changes
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // When button is clicked, simulate a space keypress
+    continueBtn.addEventListener('click', function() {
+        const spaceEvent = new KeyboardEvent('keydown', {
+            key: ' ',
+            keyCode: 32,
+            which: 32,
+            bubbles: true
+        });
+        document.dispatchEvent(spaceEvent);
+        continueBtn.style.display = 'none';
+    });
+}
+
 function setBackgroundColorAndTextColor(rgb) {
   // Ensure the RGB value is a hexadecimal color code
   if (!rgb.startsWith('#')) {
@@ -591,6 +630,7 @@ const imageArray = [
    'blocked-tunnel-darker.jpg',
    'bot-assembly-4.jpg',
    'caretaker-closeup-4.jpg',
+   'caretaker-peeps.jpg',
    'colony-monitor-1.jpg',
    'crumbling-ruins.jpg',
    'cyborg-agony-1.jpg',
@@ -666,7 +706,6 @@ const imageArray = [
    'telescope-damaged-1.jpg',
    'tower-animation.gif',
    'tower-summit-4.jpg',
-   'tunnel-2-beetle.jpg',
    'tunnel-2.jpg',
    'tunnel-3.jpg',
    'tunnel-beast-robot-3.jpg',
@@ -707,6 +746,7 @@ const soundFiles = [
     '459838__docking-alert-beeps.mp3',
     '468442__smidglet-squeak.mp3',
     '505127__beast-roar.mp3',
+    '535021__lame-caretaker-pursuit.mp3',
     '547472__wind-more.mp3',
     '56753__testing-station.mp3',
     '586384__alarm.mp3',
@@ -803,6 +843,11 @@ async function initializeSounds() {
 
 console.error('Preloading sounds...');
 initializeSounds();
+
+// Only create and show the button if we're on a mobile device
+if (/iPhone|iPad|Android/i.test(navigator.userAgent) || window.innerWidth <= 768) {
+   setupMobileContinue();
+}
 
 </script>
 
