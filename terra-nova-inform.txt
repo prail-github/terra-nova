@@ -914,6 +914,9 @@ Adventure ends when playerWon is true or playerDead is true or playerAbsorbed is
 hasPlayedBefore is a truth state that varies. hasPlayedBefore is false.
 
 When play begins:
+	[don't allow undo at end of story]
+	choose row with a final response rule of immediately undo rule in the Table of Final Question Options;
+	blank out the final question wording entry;
 	execute JavaScript command "audioManager.stopAll();";
 	now the maximum score is 680;
 	now handType is "normal";
@@ -953,7 +956,10 @@ Every turn:
 			move the player to the Beast's Lair, without printing a room description;
 		otherwise:
 			increase death-warning by 1.
-			
+	
+The print obituary headline rule is not listed in any rulebook.
+[The print final score rule is not listed in any rulebook.]
+		
 When Adventure ends:
 	if playerDead is true:
 		execute JavaScript command "updateImage('img/dead-game-over-1.jpg', 'default');";
@@ -1908,18 +1914,24 @@ Instead of scooping the lava sample into the crucible:
 
 Before filling something with:
 	if the noun is the crucible:
-		if the second noun is greenish water or the second noun is ancient well:
+		if the second noun is greenish water:
 			try taking the greenish water;
+		otherwise if the second noun is ancient well:
+			try taking the greenish water;
+		otherwise if the second noun is the molten lava:
+			continue the action;
 		otherwise if the second noun is the lava sample:
-			try scooping the lava sample;
+			continue the action;
 		otherwise:
 			say "There are better ways to spend your time.";
 			stop the action;
 	otherwise if the noun is the player's hand:
-		if the second noun is greenish water or the second noun is ancient well:
+		if the second noun is greenish water:
+			try taking the greenish water;
+		otherwise if the second noun is ancient well:
 			try taking the greenish water;
 	otherwise:
-		say "Your action would not help you here.";
+		say "That action would not help you here.";
 		stop the action;
 	
 Instead of filling the crucible with the molten lava:
@@ -1932,6 +1944,9 @@ Instead of filling the crucible with the lava sample:
 	try sampling the molten lava.
 	
 Instead of scooping the greenish water into the crucible:
+	try taking the greenish water.
+	
+Instead of touching the greenish water:
 	try taking the greenish water.
 
 Instead of scooping something into something:
@@ -2437,7 +2452,7 @@ Instead of putting something on the female cyborg:
 	if the noun is the Neurochip:
 		try giving the Neurochip to the female cyborg;
 	otherwise:
-		say "Putting things on the female cyborg would achive nothing.";
+		say "Putting things on the female cyborg would achieve nothing.";
 	
 Instead of inserting something into female cyborg:
 	try giving the noun to the female cyborg.		
@@ -2675,7 +2690,16 @@ Instead of taking the obedience collar when the player has the drone magnet:
 	clear the screen;
 	say "You pick up the collar and figure it's safe to wear. After all, it's been inactive for centuries. The metal is cool against your skin as you slip it around your neck, and for a second or two, nothing happens, but then, with a soft click, the collar comes to life. Your amusement turns to surprise as the collar tightens, snug against your throat. You try to remove it but your fingers find no clasp, no opening.";
 	pause the game;
-		
+
+Instead of taking off the obedience collar:
+	if the obedience collar is operational:
+		say "Panic rising, you claw desperately at the metal band crushing your throat. Your fingernails scrape uselessly against the seamless surface, leaving bloody trails across your neck. The more you struggle, the tighter it seems to become. Dark spots dance at the edges of your vision as precious oxygen is cut off. Your attempts grow weaker, more frantic, but the collar remains locked firmly in place -- a cold reminder of the Caretaker's absolute control.";
+		increase equip-death-turns by 1;
+	otherwise:
+		say "The collar is already broken and harmless."
+
+Instead of pulling the obedience collar:
+	try taking off the obedience collar.		
 Instead of putting the drone magnet on the obedience collar:
 	try pressing the drone magnet into the obedience collar.
 
@@ -2701,7 +2725,7 @@ Every turn when the player is in Equipment Storage:
 			pause the game;
 			execute JavaScript command "updateImage('img/drone-attack-9.jpg', 'default');";
 			execute JavaScript command "audioManager.playSound('[sound-state]', 'alarm', 'mp3/586384__alarm.mp3', 5);";
-			say "[line break]A low hum fills the air and the lab's emergency lights flicker to life, filling the room with a harsh, red glow. You freeze as you hear a mechanical buzz from the corridor outside. Drones -- awakened from hibernation.[paragraph break]You see two drones enter, their red glowing eyes fixed on you. They deliver the first shock without warning. You feel a strong jolt and your body goes rigid, a scream caught in your throat. You stumble, crashing into a nearby console and sending equipment clattering to the floor.[paragraph break]Over the alarm you hear their alerts fill the room: 'UNATHORIZED PRESENCE DETECTED[line break]...INITIATING CONTAINMENT PROTOCOL'[paragraph break]With the second shock you can't hold back your screams and collapse on the floor, your body convulsing. The world around you begins to fade. Darkness creeps in at the edges of your vision.[paragraph break]As your heart stops beating and your life slips away, the drones converge on your broken body. Their alerts fill the air once more: 'PROTECTION PROTOCOL COMPLETED...THREAT ELIMINATED'[paragraph break]The obedience collar powers down with a final, ominous hum.";
+			say "[line break]A low hum fills the air and the lab's emergency lights flicker to life, filling the room with a harsh, red glow. You freeze as you hear a mechanical buzz from the corridor outside. Drones -- awakened from hibernation.[paragraph break]You see two drones enter, their red glowing eyes fixed on you. They deliver the first shock without warning. You feel a strong jolt and your body goes rigid, a scream caught in your throat. You stumble, crashing into a nearby console and sending equipment clattering to the floor.[paragraph break]Over the alarm you hear their alerts fill the room: 'UNATHORIZED PRESENCE DETECTED[line break]...INITIATING CONTAINMENT PROTOCOL'[paragraph break]With the second shock you can't hold back your screams and collapse on the floor, your body convulsing. The world around you begins to fade. Darkness creeps in at the edges of your vision.[paragraph break]As your heart stops beating and your life slips away, the drones converge on your broken body. Their alerts fill the air once more: 'PROTECTION PROTOCOL COMPLETED...THREAT ELIMINATED'[paragraph break]One drone extends a small magnetic device, and pressing it against the collar, powers it down with a final, ominous hum.";
 			pause the game;
 			execute JavaScript command "audioManager.stopAll()";
 			now playerDead is true;
