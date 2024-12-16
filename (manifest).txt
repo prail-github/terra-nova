@@ -44,10 +44,6 @@ g
 ! to be) "story.zblorb.js".
 
 [INTERPRETERHEAD]
-<link rel="apple-touch-icon" sizes="180x180" href="/terra-nova/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/terra-nova/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/terra-nova/favicon-16x16.png">
-<link rel="manifest" href="/terra-nova/site.webmanifest">
 <link rel="shortcut icon" type="image/x-icon" href="/terra-nova/favicon.ico">
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
@@ -78,6 +74,7 @@ g
     max-width: 90%; /* Optional, ensures it doesn't go beyond the screen size */
     box-sizing: border-box; /* Ensures padding is included in width calculation */
 }
+.command-echo { display: none; }
 </style>
 
 []
@@ -86,15 +83,60 @@ g
 ! or gadget actually appears.
 
 [INTERPRETERBODY]
-  <main id="vorple">
-    <div id="loader">
-      <h2 id="loader-message">Loading scripts</h2>
-      <div id="spinner">V</div>
-    </div>
-  </main>
+<main id="vorple">
+ <div id="loader">
+    <h2 id="loader-message">Loading scripts</h2>
+    <div id="spinner">V</div>
+ </div>
+</main>
 
-  <script src="interpreter/vorple.min.js"></script>
-  <script src="interpreter/[ENCODEDSTORYFILE]"></script>
+<script src="interpreter/vorple.min.js"></script>
+<script src="interpreter/[ENCODEDSTORYFILE]"></script>
+
+<script>
+function showHideTranscriptButton(show_me) { // show_me = none | block
+   const ting = document.getElementById('downloadTranscript');
+   if (ting) {
+      ting.style.display = show_me;
+   }
+}
+
+   function downloadLatestTranscript() {
+      const fs = vorple.file.getFS();
+
+            fs.readdir(vorple.file.TRANSCRIPT_PATH, function(error, files) {
+                if (error) {
+                    console.log("Error reading transcript directory:", error);
+                    return;
+                }
+
+                if (files && files.length > 0) {
+                    // Get the most recent transcript file
+                    const latestFile = files[files.length - 1];
+
+                    fs.readFile(
+                        vorple.file.path(latestFile, vorple.file.TRANSCRIPT_PATH),
+                        "utf8",
+                        function(error, contents) {
+                            if (error) {
+                                console.log("Error reading transcript:", error);
+                                return;
+                            }
+
+                            // Create and trigger download
+                            const blob = new Blob([contents], {type: 'text/plain'});
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = latestFile;
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        }
+                    );
+                }
+            });
+   }
+</script>
 
   <script>
     if( location.protocol === "file:" ) {
@@ -565,6 +607,15 @@ containerDiv.appendChild(window0);
 // move container inside output div
 var outputDiv = document.getElementById('output');
 outputDiv.appendChild(containerDiv);
+
+// create transcript button
+const button = document.createElement('button');
+button.id = 'downloadTranscript';
+button.innerHTML = 'Transcript';
+button.onclick = downloadLatestTranscript;
+button.style.cssText = 'z-index: 1000; position: fixed; top: 10px; left: 10px; display: none;';
+const body = document.body;
+body.insertAdjacentElement('afterbegin', button);
 
 // Adjust CSS styles as needed for layout
 sideWindow.style.marginTop = '10px';
