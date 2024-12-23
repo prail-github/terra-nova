@@ -66,6 +66,7 @@ Carry out requesting commands:
 	say " [bold type]pull[roman type] <thing>[line break]";
 	say " [bold type]put[roman type] <thing> in/on <thing>[line break]";
 	say " [bold type]focus[roman type] <thing> with <thing>[line break]";
+	say " [bold type]reflect[roman type] <thing> with <thing>[line break]";
 	say " [bold type]scoop[roman type] <thing>[line break]";
 	say " [bold type]switch on[roman type]/[bold type]off[roman type] <thing>[line break]";
 	say " [bold type]take[roman type] <thing>[line break]";
@@ -77,6 +78,7 @@ Carry out requesting commands:
 	say " [bold type]credits[roman type] -- learn about the game[line break]";
 	say " [bold type]save[roman type]/[bold type]restore[roman type] -- save or load progress[line break]";
 	say " [bold type]undo[roman type] -- take back last action[line break]";
+	say " [bold type]transcript on[roman type]/[bold type]transcript off[roman type] -- begin / end a game transcript[line break]";
 	say " [bold type]quit[roman type] -- end the game[line break]".
 	
 Understand "credits" as requesting credits.
@@ -191,10 +193,14 @@ This is the Restricted Area Entrance hint system rule:
 	if LabPower is true:
 		if hc is 0:
 			say "I wonder if walking through the beams would hurt.";
+			say "The more I think about this, the more hints come to mind...";
 			now the hint-count of the location is 1;
 		otherwise if hc is 1:
 			say "I wonder if there's a way to deflect the security beams so you can enter.";
 			now the hint-count of the location is 2;
+		otherwise if hc is 2:
+			say "There's something familiar about the crackle of electricity here. Where have you heard it before?";
+			now the hint-count of the location is 3;
 		otherwise:
 			say "Think about how to turn off the power to the security beams so you can safely enter the hallway.";
 			now the hint-count of the location is 0;
@@ -460,6 +466,29 @@ Long-Shadow-Limit is a number variable. Long-Shadow-Limit is 140.
 Dimming-Sky-Limit is a number variable. Dimming-Sky-Limit is 190.
 Nightfall-Limit is a number variable. Nightfall-Limit is 270.
 
+transcript-on is a truth state that varies. transcript-on is false.
+Carry out switching the story transcript on:
+	execute JavaScript command "showHideTranscriptButton('none');";
+	now transcript-on is true.
+
+Carry out switching the story transcript off:
+	execute JavaScript command "showHideTranscriptButton('block');";
+	now transcript-on is false.
+	
+The end transcript rule is listed in the shutdown rules.
+This is the end transcript rule:
+	if transcript-on is true:
+		try switching the story transcript off.
+
+[include the command in the transcript but don't double-print in the player's view]
+command-echo is a Vorple style.
+
+After reading a command:
+	if transcript-on is true and Vorple is supported:
+		let cmd be the player's command;
+		say "[command-echo style]>[cmd][end style]";
+	continue the action.
+
 Every turn when the player is in the Underneath:
 	if time-of-day is Nightfall:
 		clear the screen;
@@ -484,18 +513,21 @@ Every turn:
 			continue the action;
 	otherwise if the current-turn-count < Long-Shadow-Limit:
 		now the time-of-day is Long-Shadow;
+		now the description of the sun is "The sun hangs low in the sky, its light casting stretched and weary shadows across the land.";
 		if time-of-day is not prev-time-of-day and the player is in the Overtop:
 			say "Long-Shadow arrives as the sun begins its descent. Your shadow stretches before you, a reminder of the approaching evening.";
 		otherwise:
 			continue the action;
 	otherwise if the current-turn-count < Dimming-Sky-Limit:
 		now the time-of-day is Dimming-Sky;
+		now the description of the sun is "The sun dips toward the horizon, painting the sky with streaks of gold, crimson, and deep violet.";
 		if time-of-day is not prev-time-of-day and the player is in the Overtop:
 			say "The light fades into Dimming-Sky. A sense of urgency grows as you recall the dangers that lurk in the darkness.";
 		otherwise:
 			continue the action;
 	otherwise if the current-turn-count < Nightfall-Limit:
 		now the time-of-day is Nightfall;
+		now the description of the sun is "The sun has vanished beyond the horizon, leaving only a faint glow as the stars emerge to claim the night.";
 		if time-of-day is not prev-time-of-day and the player is in the Overtop:
 			say "Nightfall envelops the land. The warnings of the lawgivers echo in your mind -- the Shadow Beasts now roam. Seek shelter immediately.";
 		otherwise:
@@ -589,8 +621,10 @@ The standard report switching off rule is not listed in any rulebook.
 The standard report switching on rule is not listed in any rulebook. 
 
 A room can be scored or unscored.
-Carry out going to an unvisited scored room:
-	increment the score.
+Carry out going to an unvisited room:
+	if the location is scored:
+		if the location is lit:
+			increment the score;
 	
 Asking someone about something is speech.
 Telling someone about something is speech.
@@ -662,7 +696,7 @@ The description of the silver key card is "A small, silver key card gleams in th
 
 The solar panel is nowhere. 
 The solar panel is fixed in place.
-The description of the solar panel is "A large solar panel with a sleek black surface. Beneath the tempered glass, countless monocrystalline silicon cells efficiently convert solar energy into electricity. Its impressive size and advanced technology make it capable of generating substantial power."
+The description of the solar panel is "A vast solar panel with a sleek black surface. Beneath the tempered glass, countless monocrystalline silicon cells efficiently convert solar energy into electricity. Its impressive size and advanced technology make it capable of generating substantial power."
 
 The niche is nowhere.
 The niche is fixed in place.
@@ -863,6 +897,7 @@ After examining the player:
 	
 Part 3 - Begin
 
+Understand "Kai" as yourself.
 The description of the player is "You are Kai, a citizen of New Eden and a descendant of the original colonists on this alien world of Terra Nova. Your fascination with the civilization that once thrived in the ancient city of Zephyr's Landing has led you to explore the forbidden ruins there.[paragraph break]Despite the lawgivers[apostrophe] warnings, your thirst for knowledge has driven you to venture into the heart of the mysterious ruins. Armed with a keen sense of adventure and a knack for survival, you are capable of navigating treacherous terrain, dodging deadly traps, and deciphering puzzles left behind by the long-dead inhabitants of the abandoned settlement."
 
 [We have problems in Vorple of Save/Restore saying they failed--even when they didn't, so we stop that response.]
@@ -914,6 +949,8 @@ Adventure ends when playerWon is true or playerDead is true or playerAbsorbed is
 hasPlayedBefore is a truth state that varies. hasPlayedBefore is false.
 
 When play begins:
+	[hide the transcript button if the player restarted]
+	execute JavaScript command "showHideTranscriptButton('none');";
 	[don't allow undo at end of story]
 	choose row with a final response rule of immediately undo rule in the Table of Final Question Options;
 	blank out the final question wording entry;
@@ -986,7 +1023,7 @@ Outskirts of Ruins is north of the Stone Pit Entrance.
 The image file name of Outskirts of Ruins is "zephyrs-landing-ruins-6.jpg".
 The sound-file-name of Outskirts of Ruins is "608439__wind-less.mp3".
 
-The description of Outskirts of Ruins is "The sun beats down mercilessly on the parched desert landscape, casting long shadows across the cracked earth. The ancient structures, now crumbling and weathered, are filled with an eerie silence.[paragraph break]A boundary stone stands near the path, its surface etched with the glyphs of early settlers. Most of the text has eroded away, but one passage remains clear:[italic type][paragraph break]'The desert breathes in wanderers and breathes out silence.'[paragraph break][roman type] Abandoned structures extend southward, disappearing into the shimmering haze.".
+The description of Outskirts of Ruins is "The sun beats down mercilessly on the parched desert landscape, casting long shadows across the cracked earth. The ancient structures, now crumbling and weathered, are filled with an eerie silence.[paragraph break]A boundary stone stands near the path, its surface etched with the glyphs of your ancestors. Most of the text has eroded away, but one passage remains clear:[italic type][paragraph break]'The desert breathes in wanderers and breathes out silence.'[paragraph break][roman type] Abandoned structures extend southward, disappearing into the shimmering haze.".
 
 The dancing shadows, the cracked earth, the boundary stone, the long-abandoned structures, and the shimmering haze are scenery in Outskirts of Ruins.
 
@@ -1001,13 +1038,14 @@ Before going from the Outskirts of Ruins for the first time:
 	clear the screen;
 	say "[line break]As you survey the ruins stretching before you, the warnings of the village lawgivers echo in your mind.";
 	say "[line break]'The ruins are off-limits to all,' they'd insisted, 'Shadow Beasts hunt there. From First-Light until Long-Shadow, they hide in their lairs, but when the sky dims and night falls, they emerge to tear apart any trespasser.'";
-	say "[line break]But you dismissed their warnings -- after all, it's [time-of-day]. 'I'll be long gone before Dimming-Sky,' you mutter, squinting at the rising sun. 'Plenty of time to explore and get back.'";
-	say "[line break]With a defiant grin, you step forward into the ruins, unaware of how quickly time can slip away.";
+	say "[line break]But the need to understand your history outweighs their warnings. These ruins hold the key to understanding how your ancestors came to this harsh world, why they rebelled, and what legacy they left behind. 'I'll be long gone before Dimming-Sky,' you mutter, squinting at the rising sun. 'Plenty of time to explore and get back.'";
+	say "[line break]With a defiant grin, you step forward into the ruins, your curiosity about your origins driving you onward, unaware of how quickly time can slip away.";
 	pause the game;
  
 Part 6 - Stone Pit Entrance
 
 The Stone Pit Entrance is a room.
+The Stone Pit Entrance is unscored.
 The odor of the Stone Pit Entrance is "You smell rust and dampness--the haunting scents of forgotten times."
 The image file name of The Stone Pit Entrance is "ladder-down-5a.jpg".
 The sound-file-name of Stone Pit Entrance is "608439__wind-less.mp3".  
@@ -1020,8 +1058,6 @@ The description of the deep void is "A dark, sinister gap swallowing all light l
 
 The gaping chasm is scenery in the Stone Pit Entrance.
 The description of the gaping chasm is "The silent, gaping wound in the earth beckons you with a sinister allure, its depths filled with an unsettling darkness."
-
-[xxx]
 
 After going to Stone Pit Entrance:
 	now Lab Tunnel is mapped below the Stone Pit Entrance;
@@ -1097,14 +1133,14 @@ The sound-file-name of Dwelling Ruins is "608439__wind-less.mp3".
 
 Instead of listening in the Dwelling Ruins:
 	if LabPower is true:
-		say "You hear the dull hum of machinery from beneath the sand.";
+		say "You hear the faint crackle of electricity and distant whir of machines below ground.";
 	otherwise:
 		say "You hear nothing but the sounds of the desert.";
 
 The glass shard is in Dwelling Ruins.
 The description of the glass shard is "A shiny bit of glass poking through the soft sand."
 
-understand "discovery" or "array" as the solar panel.
+understand "discovery" or "array" or "solar array" or "panels" as the solar panel.
 
 Understand "expose [something]" as opening.
 Understand "reveal [something]" as opening.
@@ -1138,7 +1174,27 @@ Check digging up something:
 
 Carry out digging up the solar panel:
 	try opening the solar panel.
+	
+Instead of putting something on the solar panel:  
+	if the noun is sand:
+		try burying the solar panel in sand;
+	otherwise:
+		say "Putting [the noun] on the solar panel would achieve nothing.";
+		stop the action.
 
+Instead of putting sand on something:
+	if the second noun is the solar panel:
+		try burying the solar panel in sand;
+	otherwise:
+		say "Putting sand on [the second noun] would achieve nothing.";
+		stop the action.
+		
+Instead of blocking the solar panel with something:
+	if the second noun is sand: [cover panel with sand]
+		try burying the solar panel in sand.
+
+Instead of putting sand on anything:
+	say "You can't pick up sand to put it on things. Try burying things in the sand instead."
 Carry out digging up the glass shard:
 	try taking the glass shard.
 	
@@ -1146,21 +1202,24 @@ Instead of opening the solar panel:  [for 'uncover' panel]
 	if LabPower is false:
 		now the image file name of Dwelling Ruins is "ruins-solar-glass-2.jpg";
 		execute JavaScript command "updateImage('img/ruins-solar-glass-2.jpg', '#dbb579');";
-		say "Brushing the volcanic ash and desert sand away, you reveal the solar panel. As you work to uncover the rest of the array, a faint vibration travels through the ground, so slight you almost miss it.";	
+		say "Brushing the volcanic ash and desert sand away, you reveal the solar panel. As you work to uncover the rest of the array, a faint vibration travels through the ground, so slight you almost miss it. You hear the distant whir of machines beneath the surface.";
 		now LabPower is true;
 		[set all rooms underground to lit]
 		repeat with place running through rooms in Underneath:
 			now place is lit;
 	otherwise:
-		say "The solar panel is already exposed."		
+		say "The solar panel is clean and fully exposed."		
 Instead of opening the glass shard:   [For 'uncover' shard]
 	try taking the glass shard.
 	
 Instead of rubbing the glass shard:
 	try taking the glass shard.
-
+	
+Instead of rubbing the solar panel:
+	try opening the solar panel.
+	
 Instead of taking the glass shard:
-	say "Brushing the volcanic ash and desert sand away, you discover the glass shard is part of a vast solar panel. As you work to uncover the rest of the array, a faint vibration travels through the ground, so slight you almost miss it. You take a step back to survey your discovery, and a fleeting sense of unease passes over you. The vibration intensifies as if something deep beneath the sand is stirring. You ignore any lingering feeling of disquiet, after all, tremors are common in this region, with reports of seismic activity dating back for ages. Still, as you study the solar panel, you wonder about the civilization that created it and what sleeps in the ruins beneath the sand.";
+	say "Brushing the volcanic ash and desert sand away, you discover the glass shard is part of a vast solar array. As you work to uncover the rest of the panels, a faint vibration travels through the ground, so slight you almost miss it. You take a step back to survey your discovery, and a fleeting sense of unease passes over you. The vibration intensifies as if something deep beneath the sand is stirring. You ignore any lingering feeling of disquiet, after all, tremors are common in this region, with reports of seismic activity dating back for ages. Still, as you study the solar panel, you wonder about the civilization that created it and what sleeps in the ruins beneath the sand.[paragraph break]";
 	now the image file name of Dwelling Ruins is "ruins-solar-glass-2.jpg";
 	execute JavaScript command "updateImage('img/ruins-solar-glass-2.jpg', '#dbb579');";
 	now the glass shard is nowhere;
@@ -1170,6 +1229,7 @@ Instead of taking the glass shard:
 		now place is lit;
 	now the description of Dwelling Ruins is dwelling-with-solar;
 	now LabPower is true;
+	try listening;
 	now hasUncoveredSolarPanels is true;
 	increase the score by Easy_Score_Bonus;
 	
@@ -1196,7 +1256,7 @@ Instead of burying the noun in the sand:
 			otherwise if beetle is available:
 				say "[if near-dark]As the sun begins to descend, you realize time is running short. The ruins aren't safe after dark -- that's when desert predators emerge to hunt, and nothing would save you from their hunger and ferocity.[paragraph break]Racing against the setting sun, you begin to dig, tossing sand over the gleaming solar panel. The work is hard and time is tight, but the nasty alternative of facing the Shadow Beasts spurs you on.[end if][line break]As you're scraping up another handful of sand, something catches your eye. A small, iridescent jewel gleams amid the grains. Curious, you brush away the sand to reveal a Gem Beetle, no larger than your thumbnail. To your amazement, it begins to glow with a soft, blue-green light.";
 				say "[line break]You carefully pocket the beetle, recognizing it could be useful in the darkened complex. With renewed energy, you finish covering the solar panel.";
-				say "[line break]You immediately notice the familiar hum of machinery fading away. The Caretaker's underground complex is most likely on minimal battery backup power now. In your pocket, the beetle's gentle glow feels like a small victory against the darkness.";
+				say "[line break]You immediately notice the familiar crackle of electricity fading away. The Caretaker's underground complex is most likely on minimal battery backup power now. In your pocket, the beetle's gentle glow feels like a small victory against the darkness.";
 				now the player has the Gem Beetle;
 				increase the score by Medium_Score_Bonus;
 				now hasHeldBeetle is true;
@@ -1360,6 +1420,9 @@ Instead of jumping on something:
 	otherwise:
 		say "Your reconsider jumping on [the noun].";
 		
+Instead of tasting the greenish water:
+	try drinking the greenish water.
+		
 Instead of drinking the greenish water:
 	say "The odor is nauseating. You reconsider drinking from the stagnant pool." 
 	
@@ -1410,6 +1473,7 @@ glove-is-useless is a truth state that varies. glove-is-useless is false.
 The description of the heat-resistant glove is "Its leather exterior is scorched and scarred from battling intense heat. The glove's fingers, once supple and nimble, are now stiff and misshapen." 
 
 The rusty forge is in the Village Foundry.
+The rusty forge is fixed in place.
 The description of the rusty forge is "In the center of the ruins lies a once-mighty forge, now reduced to a worthless relic. Once the proud centerpiece of the foundry, it has become a rusting, skeletal frame, its hearth a cold, soot-stained cavity."
 
 Rule for printing the name of the crucible:
@@ -1436,7 +1500,7 @@ The image file name of Stone Tower Exterior is "stone-tower-1.jpg".
 The sound-file-name of Stone Tower Exterior is "625005__wind+birds.mp3".
 The description of Stone Tower Exterior is "A crumbling stone tower looms before you, a sentinel in the desert landscape. Scrub brush dots the rocky terrain and clings to life in the arid soil. Old stone steps lead inside the structure. Paths lead away from the tower to the southeast, south, and southwest.";
 
-The rocky terrain, arid soil, scrub brush are scenery in Stone Tower Exterior.
+The rocky terrain and arid soil are scenery in Stone Tower Exterior.
 
 The old stone steps are scenery in the Stone Tower Exterior.
 The description of the old stone steps is "Broken-down stone steps lead into the tower."
@@ -1575,7 +1639,7 @@ Carry out facing:
 			say "The sky unfolds in a breathtaking display from warm amber to a deep indigo.";
 	otherwise:
 		say "You see nothing unexpected in that direction."
-
+ 
 Understand "gaze [direction]" as gazing. 
 Gazing is an action applying to one visible thing and requiring light.
 
@@ -1648,14 +1712,21 @@ Carry out gazing when the noun is northwest:
 	increase the score by Easy_Score_Bonus;
 	stop the action.
 		
+Instead of gazing when the noun is inside:
+	try gazing down.
+	
+Instead of gazing when the noun is outside:
+	try gazing up.
+	
 Carry out gazing:
-	say "[one of]Your view is obscured by ash clouds in that direction.[or]Your view is blocked by a smokey haze in that direction.[or]Your view is obscured by a severe dust storm on the horizon.[or]The telescope won't point that way.[then at random]";
+	say "[one of]Your view is obscured in that direction.[or]Your view is blocked by a smokey haze in that direction.[or]Your view is obscured by a severe dust storm on the horizon.[or]The telescope won't point that way.[then at random]";
 	stop the action.
 	
 Instead of examining a direction when the player is in the Stone Watchtower:
 	say "Instead, try typing 'look south', for example, or better yet, try gazing, like 'gaze south' to look through the telescope."
 	
-The canvas, golden desert are scenery in Stone Watchtower.
+The canvas, golden desert, and the stone floor are scenery in Stone Watchtower.
+The description of the stone floor is "The stone surface is worn into subtle hollows by years of windblown grit, its edges rounded by time. Spiderweb cracks trace across the weathered floor, carved by generations of freezing winters and scorching summers."
 
 The observation telescope is in the Stone Watchtower.
 The observation telescope is fixed in place.
@@ -1952,6 +2023,15 @@ Instead of touching the greenish water:
 Instead of scooping something into something:
     say "That action will do you no good."
 
+Getting it with is an action applying to two things.
+Understand "get [something] with [something]" as getting it with.
+
+Check getting something with something:
+	try taking the noun instead.
+
+Instead of getting the lava with the crucible:
+	try taking the lava sample.
+
 hasSampledLava is a truth state that varies. hasSampledLava is false.
 
 Instead of taking the lava sample:
@@ -2002,7 +2082,7 @@ Instead of touching the molten lava:
 Every turn when the player can see the crucible and the lava sample is in the crucible for more than 5 turns:	Say "The glow of the lava sample within the crucible is going dim.";
 
 Every turn when the player can see the crucible and the lava sample is in the crucible for 12 turns:
-	Say "The lava sample has hardened in the crucible.";
+	Say "The lava has cooled in the crucible, forming a useless, brittle crust. You discard it.";
 	now the lava sample is nowhere.
 
 Instead of jumping into the molten lava when the player is in the Lava Pit:
@@ -2039,7 +2119,7 @@ The Lab Tunnel is scored.
 The Lab Tunnel is west of the Eerie Tunnel.
 The Lab Tunnel is northwest of the Research Lab.
 
-The description of the Lab Tunnel is "An abandoned tunnel extends ahead of you into near darkness. The floor is uneven pitted stone, the walls cracked and stained from neglect. The silence is broken only by the distant drip of water.[if hasBuriedSolarPanel is true] Because the light is so dim here, you infer that the solar array in the ruins powers this complex below.[end if] The tunnel winds to the east, the Research Lab is southeast, and a rusty ladder leads up to the surface.[if using-beetle-light][paragraph break][one of]The beetle lights your way.[or]The beetle's glow illuminates the darkness.[or]Soft light from the beetle reveals the shadowy passage.[or]Your pocket glows faintly lighting the tunnel before you.[or]The beetle's radiance pierces the gloom, allowing you to proceed.[at random][end if]"
+The description of the Lab Tunnel is "An abandoned tunnel extends ahead of you into near darkness. The floor is uneven pitted stone, the walls cracked and stained from neglect and dripping water.[if hasBuriedSolarPanel is true][paragraph break]The dim lighting confirms your theory -- cutting off the solar panel's power has affected systems throughout the underground complex.[end if][if location is unvisited][paragraph break]The complex seems to be awakening, you hear the whir of distant machinery as power returns.[end if][if using-beetle-light][paragraph break][one of]The beetle lights your way.[or]The beetle's glow illuminates the darkness.[or]Soft light from the beetle reveals the shadowy passage.[or]Your pocket glows faintly lighting the tunnel before you.[or]The beetle's radiance pierces the gloom, allowing you to proceed.[at random][end if]";
 
 Before going to The Lab Tunnel:
 	if the Lab Tunnel is lit or the player has the beetle:
@@ -2277,6 +2357,9 @@ Report pouring the lava sample on the rusty box:
 		
 Instead of pouring the crucible on the rusty box:
 	try pouring the lava sample on the rusty box.
+	
+Instead of putting the lava sample on the chain:
+	try pouring the lava sample on the chain.
 		
 Carry out pouring the lava sample on the chain:
 	if the player is not wearing the heat-resistant glove:
@@ -2351,9 +2434,9 @@ The sound-file-name of the Supply Room is "32899__supply-room.mp3".
 The sound-volume of the Supply Room is 0.50.
 Supply Room is scored.
 Supply Room is west of Cyborg Assembly.
-The description of the Supply Room is "The dimly lit closet reeks of ozone and decay. A tangle of cables and broken electronics litter the floor, creating a haphazard maze. In the dim light, you can make out the outline of a figure slumped against the wall. Exits are to the east and west."
+The description of the Supply Room is "The dimly lit closet reeks of ozone and decay. A tangle of cables and broken electronics litter the dusty floor, creating a haphazard maze. In the dim light, you can make out the outline of a figure slumped against the wall. Exits are to the east and west."
 
-The wall, floor, tangle of cables, broken electronics are scenery in Supply Room.
+The wall, dusty floor, tangle of cables, broken electronics are scenery in Supply Room.
 
 The metal supply cabinet is nowhere.
 The metal supply cabinet is a container.
@@ -2604,17 +2687,21 @@ Instead of taking off the Cyberhand:
 
 Understand "press [something]" as pushing.
 
+Instead of touching the assembly control panel:
+	try pushing the assembly control panel.
+	
 Instead of pushing the assembly control panel:
 	if the player has the Cyberhand:
 		say "Pressing the button has no effect. The conveyor appears dead.";
 		stop the action;
 	otherwise:
+		clear the screen;
 		say "You press the blinking button, and the panel emits a sharp beep, followed by a whirring sound.";
 		pause the game;
 		clear the screen;
 		execute JavaScript command "updateImage('img/kai-on-belt-f.jpg');";
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'assembly', 'mp3/73607__assembly-line.mp3', -1);";
-		say "[line break]A loud mechanical groan echoes through the chamber as the conveyor belt lurches into motion. Before you can react, [if the player has the cyborg kit]your cyborg arm guard snags on a protruding metal arm[else]your sleeve snags on a protruding metal arm[end if], yanking you off balance.";
+		say "[line break]A loud mechanical groan echoes through the chamber as the conveyor belt lurches into motion. Before you can react, [if the player has the cyborg kit]your cyborg arm guard snags on a protruding metal extension[else]your sleeve snags on a protruding metal arm[end if], yanking you off balance.";
 		say "[line break]Heart pounding, you struggle against the pull of the machine. Your feet scrabble for purchase on the smooth floor as you're dragged onto the belt and towards an array of surgical implements and cybernetic components[if the player has the cyborg kit]. The cyborg kit is stripped off of you, scattered across the conveyor, and shredded. The disguise that would have kept you safely anonymous in the Caretaker's complex is now just worthless debris, leaving you exposed[end if].";
 		say "[line break]You yell for help but your voice is lost in the roar of grinding gears and hissing pneumatics.";
 		say "[line break]A robotic arm clamps around your wrist with crushing force. Pain shoots up your arm as you're lifted off your feet, dangling helplessly above the conveyor. Panic overwhelms you as a circular saw spins to life, its teeth a blur in the muted light.";
@@ -2658,14 +2745,14 @@ The image file name of Equipment Storage is "equipment-storage-3.jpg".
 The sound-file-name of Equipment Storage is "silence".
 Equipment Storage is scored.
 Equipment storage is northeast of the Research Lab.
-	
-The description of Equipment Storage is "The room is a jumble of discarded technology and broken machinery. The shelves are a silent graveyard stacked high with the spare parts of once-functional cyborgs. Robotic arms and legs, their metal twisted and bent, reach out from the shadows. Piles of tangled cables, orphaned computers, and old circuit boards lie forgotten. The air hangs like stale memories, heavy with dust and machine oil. The assembly line is west, the research lab to the southwest."
 
-jumble, technology, broken machinery, shelves, tangled cables, orphaned computers, old circuit boards are scenery in Equipment Storage. 
+The description of Equipment Storage is "The room is filled with a jumble of forgotten machinery -- nothing but dusty, still obsolescence. In the dim light, the crowded shelves hold a shadowy mass of forgotten forms. Nothing here seems salvageable. The assembly line is west, the research lab to the southwest."
+
+jumble, forgotten machinery, cramped shelves, and forgotten forms are scenery in Equipment Storage. 
 
 Understand "unity collar" as obedience collar.
 The obedience collar is a wearable thing in Equipment Storage.
-The description of the obedience collar is "A prized relic worn by the original settlers of Zephyr as a sign of deference and respect to their beloved Caretaker, its metallic surface dulled with age.[if collar is damaged]The clasp appears broken, it's locking mechanism twisted and broken. It's nothing but a harmless relic now.[end if]"
+The description of the obedience collar is "A prized relic worn by the original settlers of Zephyr as a sign of deference and respect to their beloved Caretaker, euphemistically referred to as a 'unity collar' by her most loyal followers. Its metallic surface is now dulled with age.[if collar is damaged]The clasp appears broken, it's locking mechanism twisted and broken. It's nothing but a harmless relic now.[end if]"
 
 Before going from Equipment Storage:
 	if the player wears the obedience collar:
@@ -2782,7 +2869,7 @@ The Quantum Playback Projector is fixed in place.
 The description of the Quantum Playback Projector is "This device is the centerpiece of the worktable. At its core, a receptacle pulses with a mesmerizing, blue light. Tiny quantum antennae within the media port flutter in complex patterns, as if eager to receive data.[if item described is unexamined] A sleek touch panel below prompts: 'Insert Quantum Media to Begin Playback'.[end if]";
 
 The energy statistics log is a thing in the Testing Station.
-The description of the energy statistics log is "The energy statistics show that the underground complex was without power for an extended period until earlier today when it was restored. This outage caused a serious battery drain. Recharging operations are slow and ongoing."
+The description of the energy statistics log is "The report mentions recurring failures in the aging power system that serves the underground complex. Today's logs show solar power was unexpectedly restored after an extended outage, which severely depleted the backup systems. The recharging process is proceeding slowly."
 
 After taking the energy statistics log for the first time:
 	increase the score by Easy_Score_Bonus.
@@ -3005,7 +3092,7 @@ The sound-file-name of Restricted Area Entrance is "449013__light-beams.mp3".
 Restricted Area Entrance is scored.
 Restricted Area Entrance is west of the Research Lab.
 
-The description of Restricted Area is "[if LabPower is true]Crisscrossing beams form a pulsing lattice across the threshold, their ruby glow reflecting off the stone walls. Small projectors embedded in the walls emit these beams, while barely visible receptors blink steadily on the opposite side. A low-frequency hum is coming from a polished metal strip spanning the stone floor entrance. Despite the danger and a yellow warning sign, you find yourself drawn to this hallway, your curiosity piqued by what secrets might lie beyond the security barrier.[else]The once-forbidden hall is dim and silent, its formidable defenses neutralized. Where crisscrossing light beams once flickered, there is now only still, heavy air. The projectors embedded in the walls are lifeless, and the low hum of the punishment strip has given way to an eerie silence.[end if] This shadowy hallway stretches to the south. The research lab is to the east."
+The description of Restricted Area is "[if LabPower is true]Crisscrossing beams form a pulsing lattice across the threshold, their ruby glow reflecting off the stone walls. Small projectors embedded in the walls emit these beams, while barely visible receptors blink steadily on the opposite side. A low-frequency hum is coming from a polished metal strip spanning the stone floor entrance. Despite the danger and a yellow warning sign, you find yourself drawn to this hallway, your curiosity piqued by what secrets might lie beyond the security barrier.[paragraph break]That same crackle of electricity and whir of machinery you heard earlier in the ruins fills your ears.[else]The once-forbidden hall is dim and silent, its formidable defenses neutralized. Where crisscrossing light beams once flickered, there is now only still, heavy air. The projectors embedded in the walls are lifeless, and the low hum of the punishment strip has given way to an eerie silence.[end if][paragraph break]This shadowy hallway stretches to the south. The research lab is to the east."
 
 Before going to The Restricted Area Entrance:
 	now hasVisitedRestrictedArea is true;
@@ -3013,6 +3100,10 @@ Before going to The Restricted Area Entrance:
 		now the image file name of Restricted Area Entrance is "restricted-hallway-1.jpg";
 	otherwise:
 		now the image file name of Restricted Area Entrance is "restricted-hallway-beams-1.jpg";
+
+After looking in Restricted Area Entrance for the first time:
+	say "Tip: You can type [bold type]hint[roman type] if you need suggestions.";
+	continue the action.
 
 Instead of reading the restricted sign:
 	try examining the restricted sign.
@@ -3059,8 +3150,7 @@ Understand "magnify [something] with [something]" as focusing it with.
 
 Understand "laser" or "light" or "beam" or "beams" as light beam.
 
-The description of the light beam is "Concentrated red light beams span the entrance. Tiny projectors, almost invisible in the walls, fire these beams across the gap. On the other side, barely discernible receivers blink in response. If you break the beam, you expect an alarm to blare."
-	 
+The description of the light beam is "Concentrated red light beams span the entrance. Tiny projectors, almost invisible in the walls, fire these beams across the gap. The beams pulse irregularly, drawing power from a distant source. On the other side, barely discernible receivers blink in response. If you break the beam, you expect an alarm to blare."	 
 Carry out focusing:
 	if the noun is the light beam:
 		if the second noun is the objective lens:
@@ -3096,6 +3186,67 @@ Carry out focusing:
 	otherwise:
 		say "You can't focus that.";
 		stop the action.
+		
+Reflecting it with is an action applying to two things.
+Understand "reflect [something] with [something]" as reflecting it with.
+Understand "reflect [something] using [something]" as reflecting it with.
+Understand "redirect [something] with [something]" as reflecting it with.
+Understand "redirect [something] using [something]" as reflecting it with.
+
+Check reflecting it with:
+	if the noun is not the light beam:
+		say "You can't reflect that." instead;
+	if the second noun is not the objective lens and the second noun is not the silver key card:
+		say "That wouldn't work as a reflector." instead.
+
+Carry out reflecting it with:
+	if the player is in the Restricted Area Entrance:
+		if the second noun is the objective lens:
+			try focusing the beam with the objective lens;
+		otherwise if the second noun is the silver key card:
+			say "The beams pass straight through the key card. Their unwavering intensity suggests they're powered by something substantial -- mere reflection won't defeat this security system." instead;
+	otherwise:
+		say "That wouldn't achieve anything useful here." instead.
+
+Blocking it with is an action applying to two things.
+Understand "block [something] with [something]" as blocking it with.
+Understand "deflect [something] with [something]" as blocking it with.
+Understand "block [something] using [something]" as blocking it with.
+Understand "cover [something] with [something]" as blocking it with.
+Understand "shield [something] with [something]" as blocking it with.
+
+Check blocking it with:
+	if the noun is not the light beam:
+		say "You can't block that." instead;
+	if the second noun is not the silver key card and the second noun is not the objective lens:
+		say "That wouldn't work." instead.
+
+Carry out blocking it with:
+	if the player is in the Restricted Area Entrance:
+		if the second noun is the objective lens:
+			say "The lens does nothing to impede the beams. The constant low frequency hum reminds you that as long as they're powered, these beams will remain active.";
+			pause the game;
+			try focusing the beam with the objective lens;
+		otherwise if the second noun is the silver key card:
+			say "The key card proves useless against the beams. They continue their relentless sweep, drawing power from somewhere in the complex." instead;
+	otherwise:
+		say "That wouldn't achieve anything useful here." instead.
+		
+Disabling is an action applying to one thing.
+Understand "disable [something]" as disabling.
+Understand "deactivate [something]" as disabling.
+		
+Check disabling:
+	if the noun is a device:
+		try switching off the noun instead;
+	if the noun is not the light beam:
+		say "You can't disable that." instead;
+	if the player is in the Restricted Area Entrance:
+		continue the action;
+	say "That wouldn't achieve anything here." instead.
+
+Carry out disabling:
+	say "There's no obvious way to disable the security beams here. The steady hum suggests the power source must be elsewhere in the complex."
 
 Part 26 - Museum
 
@@ -3178,7 +3329,7 @@ Instead of examining the player's hand:
 [put hand on console (ok)]
 Instead of putting something on the exhibit console:
 	if the noun is the player's hand:
-		try pressing the noun into the biometric reader;
+		try pushing the exhibit console;
 	otherwise:
 		say "That would achieve nothing."
 
@@ -3189,9 +3340,11 @@ Instead of inserting something into the exhibit console:
 	otherwise:
 		say "That would achieve nothing."
 		
-Check pressing something into the biometric reader:
-	if the noun is not the player's hand:
-		say "[the noun] doesn't fit in the indentation." instead.
+Instead of pressing something into the biometric reader:
+	try pushing the exhibit console;
+	
+Instead of pressing something into the exhibit console:
+	try pushing the exhibit console;
 		
 [put hand ON impression (works)]
 Instead of putting something on the biometric reader:
@@ -3315,6 +3468,7 @@ The Gestation Pod Display is scenery in the Museum.
 The description of the Gestation Pod Display is "A fully reconstructed gestation pod, identical to those used to grow the first colonists. Accompanying screens show the process of constructing embryos from digital DNA, nurturing them to term, and decanting them as viable resources.";
 
 The Ideal Worker Exhibit is scenery in the Museum.
+Understand "diorama" as the Ideal Worker Exhibit.
 The description of the Ideal Worker is "This prominent display celebrates the 'Evolution of the Ideal Worker.' Interactive displays promote the benefits of cybernetic enhancements, showing before-and-after productivity charts with impressive gains. A looping video presentation proclaims, 'Building a Better Tomorrow, One Worker at a Time,' while suggesting the cyborg program was voluntary."; 
 
 The Caretaker Tribute is scenery in the Museum.
@@ -3371,6 +3525,8 @@ Carry out hiding:
 Understand "hide in [something]" as hiding in. Hiding in is an action applying to one visible thing.
 
 Check hiding in something:
+	if the noun is the Gestation Pod Display:
+		say "You won't fit in [the noun]." instead;
 	if the noun is not the Capsule:
 		say "Hiding won't help you here." instead.
 
@@ -3416,7 +3572,7 @@ The odor of the Lander Craft is "You smell decaying leather and rocket fuel."
 The Lander Craft is scored.
 The image file name of the Lander Craft is "lander-interior-5.jpg".
 The sound-file-name of the Lander Craft is "silence".
-The description of the Lander Craft is "The controls glow faintly inside the cramped lander. A narrow slot on the console gleams in the dim light. A silver, swirling pattern adorns its rim. [if item described is unexamined][paragraph break]The musty scent of long-dormant machinery fills your nostrils, and you shiver slightly in the cool, stale air. Your eyes dart from one blinking light to another, trying to make sense of the unfamiliar symbols and readouts that surround you.[end if]"
+The description of the Lander Craft is "The controls glow faintly inside the cramped lander. A narrow slot on the console gleams in the dim light. A silver, swirling pattern adorns its rim. [if item described is unvisited][paragraph break]The musty scent of long-dormant machinery fills your nostrils, and you shiver slightly in the cool, stale air. Your eyes dart from one blinking light to another, trying to make sense of the unfamiliar symbols and readouts that surround you.[end if]"
 
 The blinking light and unfamiliar symbols are scenery in the Lander Craft.
 The description of the blinking light is "A flashing warning light."
@@ -3465,6 +3621,7 @@ Check inserting something into the slot:
 
 After inserting the silver key card into the slot:
 	say "The card clicks into the slot, and a green light flashes on the panel. The unknown purpose of the key card has just become apparent."; 
+	now time-to-blastoff is true;
 	pause the game;
 	stop the action.
 
@@ -3478,16 +3635,6 @@ After waiting when the player is in the Lander Craft:
 [TO blast off immediately, use the key card. If you just wait a bit, you will blast off anyway]
 Every turn when the player is in the Lander Craft:
 	increase lander-turns by 1;
-	if the player cannot see the silver key card:
-		say "You notice a silver key card and pick it up.";
-		now the player has the silver key card;
-	otherwise if lander-turns > 3 and time-to-blastoff is false and the key card is not in the narrow slot:
-		clear the screen;
-		say "Curious about the control panel you slip the key card into the slot.";
-		pause the game;
-		now time-to-blastoff is true;
-	otherwise if the key card is in the narrow slot:
-		now time-to-blastoff is true;
 	if time-to-blastoff is true:
 		now the hatch is closed;
 		clear the screen;
@@ -3546,15 +3693,17 @@ The Docking Bay is scored.
 The odor of Docking Bay is "You smell burning plastic."
 The image file name of Docking Bay is "docking-bay-[handType]-hand.jpg".
 The sound-file-name of Docking Bay is "211683__legacy-docking-bay.mp3".
-The description of Docking Bay is "A dimly lit corridor stretches before you, its walls lined with unfamiliar technology and strange symbols. Soft emergency lights flicker to life as you move, responding to your presence after centuries of silence. A deep hum fills the space -- Legacy's heartbeat.[if the location is unvisited][paragraph break]The ship's layout appears to follow a linear design, with sections arranged in forward and backward sequence from the docking bay.[end if][paragraph break]In the forward direction, blue-tinged crystals catch the dim light.".
+The description of Docking Bay is "A dimly lit corridor stretches before you, its walls lined with unfamiliar technology and strange symbols. Soft emergency lights flicker to life as you move, responding to your presence after centuries of silence. A deep hum fills the space -- Legacy's heartbeat.[if the location is unvisited][paragraph break]The ship's layout appears to follow a linear design, with sections arranged in forward and backward sequence from the docking bay.[end if][paragraph break]Something in the forward direction casts a subtle blue glow.".
 
+The blue glow is scenery in the Docking Bay.
+The description of the blue glow is "The passage ahead is tinged with an ethereal blue radiance."
 Rule for printing the name of the repair bench:
 	say "[printed name of the repair bench]";
 	omit contents in listing.
 	
 The repair bench is a supporter in the Docking Bay.
 The repair bench is fixed in place.
-The description of the repair bench is "[if something is on the repair bench]A battered maintenance bench with tools and equipment scattered across its surface[else]. A battered maintenance bench, its scarred surface now empty[end if]."
+The description of the repair bench is "[if something is on the repair bench]A battered maintenance bench with tools and equipment scattered across its surface.[else]A battered maintenance bench, its scarred surface now empty.[end if]";
 
 The laser cutter is a device on the repair bench.
 The description of laser cutter is "An ancient maintenance tool designed for precision cutting. Its power cells appear completely drained. On the grip you can make out a faded manufacturer's mark: 'R.E.D. Engineering & Co.'"
@@ -3606,14 +3755,17 @@ The image file name of Archives Chamber is "dna-library-2.jpg".
 The backgroundColor of Archives Chamber is "#a1c8e5".
 The sound-file-name of Archives Chamber is "724217__kai-in-orbit.mp3".
 The sound-volume of Archives Chamber is 0.3.
-The description of Archives Chamber is "Towering crystalline matrices line the walls, each storing countless genetic sequences etched by precision lasers. Four prominent storage units dominate the center of the room, these are the contributor archives labelled with the names of Earth's finest minds: Okafor, Tanaka, Stein, and Blackwood.[paragraph break]A security door guards the passage forward."
+The description of Archives Chamber is "Towering crystalline matrices line the walls, each storing countless genetic sequences etched by precision lasers. Four prominent storage units dominate the center of the room, these are the contributor archives labelled with the names of Earth's finest minds: Okafor, Tanaka, Stein, and Blackwood.[paragraph break]A security doorway guards the passage forward."
 
 The crystal matrices are scenery in the Archives Chamber.
 The description of crystal matrices is "The crystalline storage units stretch from floor to ceiling, their structures embedded with microscopic patterns encoding the genetic heritage of Earth."
+Understand "crystals" as the crystal matrices.
 
 The contributor archives are scenery in the Archives Chamber.
-Understand "Okafor" or "Tanaka" or "Stein" or "Blackwood" or "storage units" or "units" or "archives" as the contributor archives.
+Understand "Okafor" or "Tanaka" or "Stein" or "Blackwood" or "storage units" or "units" or "archives" or "unit" as the contributor archives.
 The description of contributor archives is "Four distinct storage units, each dedicated to one of the primary genetic contributors to the Terra Nova colonists. Each unit contains a detailed biographical interface."
+
+Understand "wall" or "walls" as the crystal matrices when location is Archives Chamber.
 
 Instead of examining the contributor archives:
 	clear the screen;
@@ -3627,11 +3779,15 @@ Instead of examining the contributor archives:
 	try looking.
 
 security-door-approach-count is a number that varies. security-door-approach-count is 0.
-The security door is scenery in the Archives Chamber.
-The description of security door is "A heavy door marked with Legacy's insignia. A network of iridescent threads, like a spider's web made of light, shimmers across its surface. The pattern shifts and pulses, creating an ever-changing barrier that seems to analyze anything that approaches."
+The security doorway is scenery in the Archives Chamber.
+The description of security doorway is "A heavy door marked with Legacy's insignia. A network of iridescent threads, like a spider's web made of light, shimmers across its surface. The pattern shifts and pulses, creating an ever-changing barrier that seems to analyze anything that approaches."
+Understand "security door" or "door" as the security doorway when location is Archives Chamber.
 
 The security web is scenery in the Archives Chamber.
 The description of security web is "A matrix of hair-thin light filaments forms an intricate detection field. Unlike crude laser systems, this appears to be some kind of advanced quantum scanning mesh. The threads ripple with subtle colors when movement is detected nearby, presumably mapping and analyzing potential threats."
+
+Instead of opening the security doorway:
+	try going east.
 
 pauseBeforeMonitoringCenter is a truth state that varies. pauseBeforeMonitoringCenter is true.
 
@@ -3644,11 +3800,11 @@ Instead of going east from the Archives Chamber:
 		now pauseBeforeMonitoringCenter is false;
 		move the player to the Colony Monitoring Center;
 	otherwise if the player carries the maintenance tarp:
-		say "A detection field pulses erratically as you approach, its perfect pattern disrupted by the reflective material you carry. The threads of light bend and twist unusually around you, but the barrier remains stubbornly intact, blocking your path.";
+		say "A detection field pulses erratically as you approach the doorway, its perfect pattern disrupted by the reflective material you carry. The threads of light bend and twist unusually around you, but the barrier remains stubbornly intact, blocking your path.";
 		try going up;  [force display of available exits]
 		stop the action;
 	otherwise:
-		say "As you approach, the web of light flares brightly, its threads contracting into an impenetrable barrier. The pattern maps your every movement with perfect precision.[paragraph break]'UNAUTHORIZED BIOLOGICAL ENTITY DETECTED...ACCESS DENIED,' announces a cold, synthetic voice.[paragraph break]The barrier remains active, blocking your path.";
+		say "As you approach the doorway, the web of light flares brightly, its threads contracting into an impenetrable barrier. The pattern maps your every movement with perfect precision.[paragraph break]'UNAUTHORIZED BIOLOGICAL ENTITY DETECTED...ACCESS DENIED,' announces a cold, synthetic voice.[paragraph break]The barrier remains active, blocking your path.";
 		try going up;  [force display of available exits]
 		stop the action.
 
@@ -3705,6 +3861,17 @@ The odor of the Legacy Bridge is "You detect a subtle mix of ozone and the synth
 The image file name of the Legacy Bridge is "legacy-bridge-2.jpg".
 The sound-file-name of the Legacy Bridge is "688249__legacy-bridge.mp3".
 The description of the Legacy Bridge is "The circular room hums with a low, rhythmic pulse punctuated by disturbing beeps and whines. At the center, surrounded in soft blue-white light, an oversized holographic human brain with glowing, pulsing neural pathways floats above a rotating galaxy map. Surrounding the central area are sleek, curved control panels with colorful displays, all synchronizing with the brain's pulses and displaying streams of data and status readouts. The walls are lined with large, arched viewscreens showing the vastness of space."
+
+The arched viewscreens are scenery in the Legacy Bridge. 
+The description of the arched viewscreens is "The wall-mounted displays paint the bridge in a soft electronic glow, showing real-time views of the surrounding cosmos. Swirling nebulae and pinpoint stars scroll languidly across the screens, while data readouts track orbital patterns and stellar phenomena in vibrant hues of green and amber."
+
+The curved control panels are scenery in the Legacy Bridge. The description of the curved control panels is "The polished, curved consoles sweep around the central hologram in an elegant arc. Their surfaces ripple with cascading data streams and status indicators that pulse in perfect synchronization with the neural pathways of the floating brain above."
+
+Understand "console" or "consoles" or "controls" or "panel" or "display" or "displays" or "readout" or "readouts" as the control panels when the location is Legacy Bridge.
+
+Understand "screen" or "display" or "displays" or "monitor" or "monitors" or "viewscreen" or "view screen" or "view screens" as the viewscreens when the location is Legacy Bridge.
+
+Understand "brain" as pilot.
 
 bridge-turns is a number that varies. bridge-turns is 0;
 
@@ -3798,6 +3965,7 @@ The sound-file-name of the Beast's Lair is "silence".
 The description of the Beast's Lair is "Run!"
 
 Every turn when the player is in the Beast's Lair:
+	execute JavaScript command "audioManager.stopAll();";
 	clear the screen;
 	say "The sun dips low on the horizon, painting the desert in deep reds and purples. You've taken too long, and now dusk casts its heavy shadow over the barren landscape.";
 	say "[line break]Your heart races as you remember the lawgivers[apostrophe] warning: 'The ruins are off-limits to all. Shadow Beasts hunt there, and they'll tear apart any trespasser.'";
@@ -3935,11 +4103,22 @@ Final Resting Place is in the Afterlife.
 
 [Note that Stone Watchtower is not in any region so the Shadow Beast cannot get up there]
 
-Sand is a backdrop. It is in the Overtop. The description of the sand is "The sand stretches as far as the eye can see, shimmering in the heat."
+scrub brush is a backdrop. It is in the Overtop. The description of scrub brush is "A tangle of tenacious stems and sparse, wind-worn leaves."
 
-Desert landscape is a backdrop. It is in the Overtop. The description of the desert landscape is "The parched desert floor stretches endlessly, its sun-baked surface a intricate mosaic of deep fissures and jagged cracks."
+the wildflowers is a backdrop. It is in the Overtop. The description of the wildflowers is "Like splashes of sunlit gold, the wildflowers are jewels scattered across the barren sands."
+Understand "wildflower", "wild flower", "flower", and "flowers" as the wildflowers.
 
-The horizon is a backdrop. It is in the Overtop. The description of the horizon is "Imposing, rugged shapes with steep, dark slopes rise abruptly from the landscape."
+sun is a backdrop. It is in the Overtop. The description of the sun is "The sun looms, a merciless inferno suspended in a pale, searing sky. The air shimmers with a cruel mirage of heat"
+
+sand is a backdrop. It is in the Overtop. The description of the sand is "The sand stretches as far as the eye can see, shimmering in the heat." 
+
+sky is a backdrop. It is in the Overtop. The description of the sky is "The sky unfolds in a breathtaking display from warm amber to a deep indigo."
+
+space is a backdrop. It is in the Upperdeck. The description of space is "The infinite void stretches in all directions, a canvas of deepest black painted with countless points of light. Terra Nova hangs below like a fragile ruby. The utter silence and limitless expanse stirs both wonder and a primal unease."
+
+desert landscape is a backdrop. It is in the Overtop. The description of the desert landscape is "The parched desert floor stretches endlessly, its sun-baked surface a intricate mosaic of deep fissures and jagged cracks."
+
+the horizon is a backdrop. It is in the Overtop. The description of the horizon is "Imposing, rugged shapes with steep, dark slopes rise abruptly from the landscape."
 
 To decide whether beetle is available:
 	if the player has the Gem Beetle:
