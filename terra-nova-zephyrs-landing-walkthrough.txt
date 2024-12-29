@@ -257,6 +257,8 @@ or "touch reader" works to reveal the origin story of Terra Nova.  If you
 stay too long at these exhibits you will be captured and absorbed, so don't 
 delay.  If you hear the guard coming you can "hide" which puts you in the 
 capsule exhibit.  Or you could explore by typing "go in capsule." 
+You can't take bulky cyborg disquise with you, so if you happen to be 
+wearing it, "take off kit" works to slim you down so you can enter.
 The Caretaker's guards are likely nearby, so hiding is the best way forward.
 
 Lander Craft
