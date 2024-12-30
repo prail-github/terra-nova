@@ -35,8 +35,10 @@ Carry out requesting help:
 	say "...But be warned: hints can sometimes lead you astray."	
 Understand "commands" as requesting commands.
 Requesting commands is an action applying to nothing.
+commandsRequested is a number that varies. commandsRequested is 0.
 
 Carry out requesting commands:
+	increase commandsRequested by 1;
 	clear the screen;
 	say "Basic Commands:[line break]";
 	say " [bold type]look[roman type] (l) -- reveals current location and description[line break]";
@@ -227,6 +229,12 @@ This is the Stone Watchtower hint system rule:
 		say "No hints available.";
 
 [go ? shows directions you can go]
+After reading a command:
+	if the player's command matches the regular expression "^go\?$":
+		[change the text of the player's command to "go ?".]
+		let modified command be "go ?";
+		change the text of the player's command to "[modified command]";
+
 Understand "go [text]" as asking for exits.
 Asking for exits is an action applying to one topic.
 
@@ -543,7 +551,8 @@ Every turn:
 The report smelling rule is not listed in the report smelling rulebook.
 The last carry out smelling rule:
 	say "[if the odor of the noun is not empty][the odor of the noun][paragraph break][otherwise]You smell nothing unexpected.[end if]".
-
+	
+Understand "hear" as listening.
 Instead of listening:
 	if the sound of the location is not empty:
 		say "You hear [the sound of the location][paragraph break]";
@@ -955,7 +964,7 @@ When play begins:
 	choose row with a final response rule of immediately undo rule in the Table of Final Question Options;
 	blank out the final question wording entry;
 	execute JavaScript command "audioManager.stopAll();";
-	now the maximum score is 680;
+	now the maximum score is 600;
 	now handType is "normal";
 	now dwelling-with-shard is "Past an endless sea of sand, the shimmering outline of a collapsed dwelling awaits. As you approach, something catches your eye -- a glint of light reflecting off glass half-buried in the sand. More ruins to the east. The stone pit lies west.";
 	now dwelling-with-solar is "Past an endless sea of sand, the shimmering outline of a collapsed dwelling beckons. More ruins to the east. The stone pit lies west.";
@@ -993,6 +1002,16 @@ Every turn:
 			move the player to the Beast's Lair, without printing a room description;
 		otherwise:
 			increase death-warning by 1.
+			
+Every turn:
+	if the remainder after dividing turn count by 20 is 0:
+		if totalHints is 0:
+			say "Tip: type [bold type]hint[roman type] if you're stuck on what do try next.[line break]";
+	
+Every turn:
+	if the remainder after dividing turn count by 30 is 0:
+		if commandsRequested is 0:
+			say "Tip: type [bold type]commands[roman type] to see what actions are available to you.[line break]";
 	
 The print obituary headline rule is not listed in any rulebook.
 [The print final score rule is not listed in any rulebook.]
@@ -1146,7 +1165,10 @@ Understand "expose [something]" as opening.
 Understand "reveal [something]" as opening.
 Understand "uncover [something]" as opening.
 
-Understand "dig" as digging. Digging is an action applying to nothing.
+Understand "dig [text]" or "dig" as digging.
+Digging is an action applying to one topic.
+
+[Understand "dig" as digging. Digging is an action applying to nothing.]
 
 Check digging:
 	if the player is not in the Dwelling Ruins:
@@ -1337,6 +1359,9 @@ The ancient well is a container.
 The ancient well is fixed in place.
 The ancient well is in Water Supply.
 The description of the ancient well is "An abandoned stone well, decayed and crumbling, stands at the center of the ruins. Its dark, greenish water emits a foul odor, with algae clinging to the edges.  The well's stagnant water reflects the hazy sky.[if the ancient well is unexamined][paragraph break]As you approach the well, you notice weathered text carved into a fallen stone block: [italic type]'Three things mark a fool: walking alone at Dimming-Sky, seeking truth in ruins, and believing dead things stay dead.'[roman type] Below, in smaller letters: [italic type]'Heed this warning, children of Zephyr'.[roman type][end if]";
+
+The weathered text is scenery in the water supply.
+The description of the weathered text is "The text is weathered and difficult to read, suggesting that it is very old. It's a warning, likely intended for those who would disturb the well or the surrounding ruins."
 
 The molten lava is an enterable container in the Lava Pit. 
 The molten lava is undescribed.
@@ -1572,13 +1597,20 @@ The sound-file-name of Stone Tower Interior is "silence".
 Stone Tower Interior is inside from Stone Tower Exterior.
 Stone Tower Interior is above the Stone Tower Exterior.
 [could also try east]
-The description of Stone Tower Interior is "A carpet of fallen stones and debris clog the entry. Native plants peek through the rubble, nourished by sunlight streaming through the tower's fractured crown. Treacherous stone steps lead up to the summit or down to the desert.";
+The description of Stone Tower Interior is "A carpet of fallen stones and parched debris clog the entry. Native plants peek through the scattered rubble, nourished by sunlight streaming through the tower's fractured crown. Treacherous stone steps lead up to the summit or down to the desert.";
 
-The native plants and fractured crown are scenery in Stone Tower Interior.
-The description of native plants is "Bleak, low-lying scrub brush mixed with a few lonely wildflowers."
+The fractured crown is scenery in Stone Tower Interior.
+The description of the fractured crown is "A framework of crumbling stone, filters the harsh desert sunlight into dappled patterns on the stones below."
 
-The treacherous stone steps are scenery in the Stone Tower Interior.
+The treacherous stone steps and fallen stones are scenery in the Stone Tower Interior.
+
 The description of the treacherous stone steps is "Uneven stone steps covered in dust and debris lead upward to the tower's summit."
+
+The description of the fallen stones is "Jagged shards of sandstone and granite, baked by the relentless sun, litter the ground like scattered bones."
+
+The scattered rubble and parched debris are scenery in the Stone Tower Interior.
+The description of the scattered rubble is "A loose aggregation of pebbles, gravel, and dust, ground down by centuries of wind and erosion, forming a treacherous carpet that shifts and slides underfoot."
+The description of parched debris is "A chaotic jumble of crumbling mortar amid broken stone."
 
 Instead of entering the treacherous stone steps:
 	try climbing the treacherous stone steps.
@@ -1750,10 +1782,11 @@ The description of the bronze dedication plaque is "[if the telescope is operati
 Instead of reading the bronze dedication plaque:
 	try examining the bronze dedication plaque.
 
-swiveling stalk, swivel, powerful optics, and uneven stone steps are scenery in the Stone Watchtower.
+swiveling stalk, swivel, powerful optics, pedestal, and uneven stone steps are scenery in the Stone Watchtower.
 The description of the uneven stone steps is "Uneven stone steps covered in dust and debris lead downward."
 The description of the swiveling stalk is "The telescope can be aimed in eight different directions to explore views of the horizon."
 The description of powerful optics is "Although the telescope is quite old and worn, the focus and clarity of the view are exceptional."
+The description of the pedestal is "The telescope sits firmly atop a weathered stone pedestal which bears a plaque."
 
 Carry out looking:
 	if player is in the stone watchtower and the noun is the down:
@@ -1868,9 +1901,9 @@ The Fallen Shrine is east of the Water Supply.
 The Fallen Shrine is south of Stone Tower.
 The description of the Fallen Shrine is "Once a grand ceremonial chamber, this circular room now bears the scars of time and neglect. Natural light floods the interior, casting eerie shadows on the walls, once adorned with vibrant murals depicting the Caretaker and settlers working in harmony. These murals, now faded and forgotten, are hidden beneath layers of dust and decay. Broken stone benches lie scattered in rubble, a testament to the shrine's former glory. You can see a tower to the north. A path runs through the ruins east and west."
 
-The broken stone benches are scenery in the Fallen Shrine.
-Understand "mural" or "murals" as the mosaic.
-
+The broken stone benches and tiles are scenery in the Fallen Shrine.
+Understand "mural", "murals", "caretaker", "figure", "robot", "settler", "settlers", "scene", "scenes" as the mosaic when location is the Fallen Shrine.
+The description of the tiles is "Shiny metalic tiles gleam in the desert light."
 The altar is a supporter in the Fallen Shrine.
 The description of the altar is "At the room's center stands an ancient altar, once the focal point of the chamber. It is made of a smooth, metallic material that still gleams dully under the layers of dust. Your eye is drawn to a curious concave hollow near its center. The smooth precision of its curve stands in stark contrast to the surrounding weathered metal. As you study it, the hollow's interior seems to catch the light in an unusual way, its surface shimmering with a faint, rainbow luster that dances as you shift your perspective.";
 
@@ -2121,6 +2154,10 @@ The Lab Tunnel is northwest of the Research Lab.
 
 The description of the Lab Tunnel is "An abandoned tunnel extends ahead of you into near darkness. The floor is uneven pitted stone, the walls cracked and stained from neglect and dripping water.[if hasBuriedSolarPanel is true][paragraph break]The dim lighting confirms your theory -- cutting off the solar panel's power has affected systems throughout the underground complex.[end if][if location is unvisited][paragraph break]The complex seems to be awakening, you hear the whir of distant machinery as power returns.[end if][if using-beetle-light][paragraph break][one of]The beetle lights your way.[or]The beetle's glow illuminates the darkness.[or]Soft light from the beetle reveals the shadowy passage.[or]Your pocket glows faintly lighting the tunnel before you.[or]The beetle's radiance pierces the gloom, allowing you to proceed.[at random][end if]";
 
+The stained walls and uneven floor are scenery in the Lab Tunnel.
+The description of the stained walls is "Cracked and stained by neglect and constant seepage, their rough surfaces are damp and slick to the touch."
+The description of the uneven floor is "The stone floor is a hazardous mix of uneven slabs and abrupt recesses, a constant threat to balance."
+
 Before going to The Lab Tunnel:
 	if the Lab Tunnel is lit or the player has the beetle:
 		execute JavaScript command "updateImage('img/tunnel-2.jpg');";
@@ -2159,12 +2196,12 @@ The odor of the Blocked Passage is "The air is heavy with the scent of dust and 
 The image file name of the Blocked Passage is "blocked-tunnel-darker.jpg".
 The sound-file-name of the Blocked Passage is "609182__sleeping-beast.mp3". 
 The Blocked Passage is scored.
-The description of the Blocked Passage is "The passage ahead lies blocked by a recent cave-in, though you sense important discoveries await beyond. A rusty chain snakes out from beneath the debris, occasionally pulling taut with sudden jerks. The air here is heavy with the scent of dust and decay.[if the player does not carry the chunk of obsidian] A hefty chunk of obsidian, broken loose from the cave-in, lies among the rubble.[end if] Though you could retreat west, your curiosity about what lies beyond the obstruction pulls at you.[paragraph break][one of]a low, menacing growl emanates from behind the obstruction, causing you to pause[or]The silence is oppressive, and the sense of entrapment weighs heavily as you survey the rubble[or]The way forward is blocked, leaving only the echo of your own footsteps and the distant murmur of hidden dangers[cycling]."
+The description of the Blocked Passage is "The passage ahead lies blocked by a recent cave-in, though you sense important discoveries await beyond. A rusty chain snakes out from beneath the sandy debris, occasionally pulling taut with sudden jerks. The air here is heavy with the scent of dust and decay.[if the player does not carry the chunk of obsidian] A hefty chunk of obsidian, broken loose from the cave-in, lies among the fallen rubble.[end if] Though you could retreat west, your curiosity about what lies beyond the obstruction pulls at you.[paragraph break][one of]a low, menacing growl emanates from behind the obstruction, causing you to pause[or]The silence is oppressive, and the sense of entrapment weighs heavily as you survey the rubble[or]The way forward is blocked, leaving only the echo of your own footsteps and the distant murmur of hidden dangers[cycling]."
 
 The chunk of obsidian is in the Blocked Passage.
 The description of the chunk of obsidian is "A dense piece of black volcanic rock the size of a farmer's mallet, though considerably heavier. Its jagged edges are sharp where it broke free from the cave-in."
 
-The cave-in, rock, gap, rocks, air, dust, decay, debris pile, ground, dirt, rubble are scenery in the Blocked Passage.
+The cave-in, rock, gap, obstruction, rocks, air, dust, decay, sandy debris, ground, dirt, fallen rubble are scenery in the Blocked Passage.
 
 Understand "kick [something]" as attacking.
 Understand "hit [something] with [something]" as attacking it with.
@@ -2175,6 +2212,12 @@ Understand "break [something] with [something]" as attacking it with.
 
 Attacking it with is an action applying to two things.
 
+Instead of cutting the chain:
+	if the player can see the chunk of obsidian:
+		try attacking the chain with the chunk of obsidian;
+	otherwise:
+		try attacking the chain.
+	
 Check attacking it with:
 	if the noun is not the rusty chain:
 		say "Violence won't help with [the noun]." instead;
@@ -2203,6 +2246,12 @@ Every turn when the player is in the Blocked Passage:
 			now nagHintBlockedPassage is true.
 		
 [too late dude; you're toast]
+Instead of digging in the Blocked Passage:
+	clear the screen;
+	say "You move some rocks aside and begin to dig around the cave-in, hesitantly at first, then with increasing energy. Suddenly, you heard the shifting of loose debris.";
+	pause the game;
+	try climbing the rubble.
+	
 Instead of entering in the Blocked Passage:
 	try climbing the rubble.
 
@@ -4102,6 +4151,8 @@ Kai Transformed is in the Afterlife.
 Final Resting Place is in the Afterlife.
 
 [Note that Stone Watchtower is not in any region so the Shadow Beast cannot get up there]
+
+native plants is a backdrop. It is in the Overtop. The description of native plants is "Bleak, low-lying scrub brush mixed with a few lonely wildflowers."
 
 scrub brush is a backdrop. It is in the Overtop. The description of scrub brush is "A tangle of tenacious stems and sparse, wind-worn leaves."
 
