@@ -113,10 +113,25 @@ Carry out requesting a hint:
 		follow the Stone Watchtower hint system rule;
 	otherwise if the player is in the Archives Chamber:
 		follow the Archives Chamber hint system rule;
+	otherwise if the player is in The Lander Craft:
+		follow the Lander Craft hint system rule;
 	otherwise:
 		say "No specific hint available. Explore your surroundings, and examine objects carefully.";
 		now the hint-count of the location is 0.
 
+This is the Lander Craft hint system rule:
+	let hc be the hint-count of the location;
+	if the narrow slot is unexamined:
+		say "Do you notice anything important about the console?";
+	otherwise if hc is 2:
+		say "Try putting the key card in the slot.";
+		now the hint-count of the location is 1;
+	otherwise if the player has the silver key card:
+		say "I wonder what you have that might fit in that slot.";
+		now the hint-count of the location is 2;
+	otherwise:
+		continue the action.
+		
 This is the Archives Chamber hint system rule:
 	let hc be the hint-count of the location;
 	if security-door-approach-count is 0:
@@ -1152,7 +1167,7 @@ The sound-file-name of Dwelling Ruins is "608439__wind-less.mp3".
 
 Instead of listening in the Dwelling Ruins:
 	if LabPower is true:
-		say "You hear the faint crackle of electricity and distant whir of machines below ground.";
+		say "You hear the faint crackle of electricity and the distant whir of machines below ground.";
 	otherwise:
 		say "You hear nothing but the sounds of the desert.";
 
@@ -1373,7 +1388,10 @@ The greenish water is undescribed.
 The description of the greenish water is "A foul-smelling pool of stagnant water."
 Understand "algae" as the greenish water.
 
-The broken pillars, collapsed walls, and scraggly weeds are scenery in Water Supply.
+The broken pillars, collapsed walls, and the scraggly weeds are scenery in Water Supply.
+The description of the broken pillars is "Shattered and crumbling, the pillars lie in broken fragments."
+The description of the collapsed walls is "The walls lie in jagged heaps due to the site's long neglect."
+The description of the scraggly weeds is "Stubborn weeds cling to life amid the rubble."
 
 Rule for printing the name of the ancient well:
 	say "[printed name of the ancient well]";
@@ -1489,7 +1507,8 @@ After examining the forge for the first time:
 After taking the diary for the first time:
 	increase the score by Easy_Score_Bonus.
 
-The cracked stone walls, sturdy structure, and roof are scenery in the Village Foundry.
+The cracked stone walls, sturdy structure, and the collapsed roof are scenery in the Village Foundry.
+The description of the collapsed roof is "The roof has long since collapsed, leaving the foundry's interior open to the sky."
 
 The heat-resistant glove is in Village Foundry.
 The heat-resistant glove is wearable.
@@ -1636,6 +1655,16 @@ Understand "examine [something] through [something]" as examining it through.
 Understand "look at [something] through [something]" as examining it through.
 Understand "look through [something] at [something]" as examining it through (with nouns reversed).
 
+Using it is an action applying to one touchable thing.
+Understand "use [something]" as using it.
+
+Instead of using:
+	try searching the noun.
+	
+After examining the telescope for the first time:
+	if the telescope is operational:
+		say "To use the telescope try gazing in a direction, like 'gaze nw' or 'gaze east'";
+			
 After examining something through the telescope:
 	if the noun is the horizon:
 		say "The horizon looks closer.";
@@ -2680,7 +2709,7 @@ Before going to Cyborg Assembly:
 			say "[line break]For a moment, Kael's robotic demeanor cracks, and a ghost of a smile touches his ancient lips. 'New... Eden,' he whispers. Then, his cyborg arm shoots out suddenly, attempting to grab you.";
 			say "[line break]Taken by surprise, you stumble back. You see Kael's ancient head twitch, his jaw clench in an obvious struggle. Slowly, painfully, his metal arm lowers.";
 			say "[line break]'You... must... go,' he forces out, fighting against his programming with every word."; 
-			say "[line break]With visible effort, Kael lifts a trembling hand and points down the dimly lit corridor to the east. His struggle is evident in every motion, as if each fraction of movement is a battle against his programming.";
+			say "[line break]With visible effort, Kael lifts a trembling hand and points down the dimly lit corridor to the east. His struggle is evident in every motion as if each fraction of movement is a battle against his programming.";
 			say "[line break]You realize there is nothing you can do to reason with this living relic. You came to Zephyr seeking artifacts, and instead found Kael, a legend to your people trapped in a nightmare of eternal servitude.";
 			say "[line break]You follow his guidance and follow the corridor to the east.";
 		otherwise:
@@ -2801,7 +2830,7 @@ jumble, forgotten machinery, cramped shelves, and forgotten forms are scenery in
 
 Understand "unity collar" as obedience collar.
 The obedience collar is a wearable thing in Equipment Storage.
-The description of the obedience collar is "A prized relic worn by the original settlers of Zephyr as a sign of deference and respect to their beloved Caretaker, euphemistically referred to as a 'unity collar' by her most loyal followers. Its metallic surface is now dulled with age.[if collar is damaged]The clasp appears broken, it's locking mechanism twisted and broken. It's nothing but a harmless relic now.[end if]"
+The description of the obedience collar is "A prized relic worn by the original settlers of Zephyr as a sign of deference and respect to their beloved Caretaker, euphemistically referred to as a 'unity collar' by her most loyal followers. Its metallic surface is now dulled by age.[if collar is damaged]The clasp appears broken, it's locking mechanism twisted and broken. It's nothing but a harmless relic now.[end if]"
 
 Before going from Equipment Storage:
 	if the player wears the obedience collar:
@@ -3002,6 +3031,11 @@ Before going to the Research Lab:
 	otherwise:
 		now the image file name of the Research Lab is "lab-without-caretaker.jpg";
 		now the Caretaker is nowhere;	
+		if the visit-count of the Research Lab is 0:
+			clear the screen;
+			say "As you approach the Research Lab, you hesitate at the threshold. Despite the apparent emptiness, something is unsettling about the constant drone of equipment. Standing here in the open, you feel as exposed and vulnerable as a smidglet far from the safety of its burrow.";
+			say "[line break]'I'll just have a quick look around,' you mumble to yourself, 'no need to linger.'"; 
+			pause the game;
 	continue the action.
 	
 The description of the Research Lab is "This circular chamber serves as the beating heart of the underground complex, [if LabPower is true]humming with the quiet vibrations of machinery and the soft beeping of various monitors[else]the usual hum and beep replaced by an unsettling stillness[end if]. Everything here is carefully controlled. At the room's center, elevated on a slight platform, sits the main control console. It's a semicircular array of screens and holographic displays, all oriented toward a single, high-backed chair. [if the player can see the Caretaker]And there, perfectly still except for her fingers tapping at the controls, sits the Caretaker.[end if][paragraph break]The lab itself tells the story of the rebellion's aftermath. Amid the functioning equipment are rows of lifeless gestation pods and a silent DNA databank that once held the promise of new life. Now irreparable, they stand as grim reminders of the Caretaker's lost purpose.[paragraph break]To the north, is the testing station. There is an equipment storage room to the northeast. The restricted area is west. To the northwest is a tunnel to the surface." 
@@ -3048,7 +3082,53 @@ After asking the Caretaker Bot about something:
 
 The description of the Caretaker Bot is "The Caretaker was once a marvel of robotics designed to evoke a sense of maternal care despite her artifical nature, but no more. Now her mechanized form is fused with the lab's electronics in a tangle of cables and tubes. Her face is a cruel mask, one side mostly intact and the other a jumble of improvised repairs. Her eyes gleam with malevolent intelligence.[paragraph break]Ask Caretaker about _____[line break]- the DNA Databank[line break]- the gestation pods[line break]- the Restricted Area."
 
-The various monitors, slight platform, screens, screen, holographic displays, high-backed chair, workstations, organized chaos, cyborg parts, maze of buttons, switches, and modified keypad are scenery in the Research Lab.
+The various monitors, slight platform, screens, screen, the holographic displays, the holographic display, workstations, organized chaos, cyborg parts, maze of buttons, switches, line items, line item, modified key, and modified keypad are scenery in the Research Lab.
+
+The high-backed chair is an enterable supporter in the Research Lab.
+The high-backed chair is fixed in place.
+The high-backed chair is undescribed.
+The description of the high-backed chair is "The chair's imposing design, with its high back and angular edges, reinforces the Caretaker's dominion over the lab. It evokes the image of a throne, emphasizing control and confirming that she is the ultimate arbiter of life and death within this complex."
+
+Instead of entering the high-backed chair:
+	if the player can see the Caretaker Bot:
+		say "The Caretaker's gleaming eyes lock onto you with unblinking malice. 'That is [italic type]my[roman type] station,' she warns, her voice a cold metallic rasp. The seat no longer seems inviting.";
+	otherwise:
+		say "The chair is uniquely shaped and configured to interface with the Caretaker's robotic form. Its structure -- complete with embedded cables and sensors -- make it physically impossible for you to sit in."
+
+Instead of examining the holographic display:
+	try examining the main control console.
+	
+Instead of examining the holographic displays:
+	try examining the main control console.
+	
+The description of the line items is "The entries shed light on the missing settlers, showing conversions aren't always successful 'New Eden Arrivals: 3, Phase B Conversions: 1'[paragraph break]It appears that only one of three settlers has been successfully converted in the process. This means the other two settlers perished during the attempt. You fear that the low success rate means the procedure is experimental, dangerous, or both."
+
+The description of the modified key is "The keypad's original numbers are worn smooth from years of use, and several new keys have been crudely attached, their plastic yellowed with age."
+The description of the modified keypad is "The keypad's original numbers are worn smooth from years of use, and several new keys have been crudely attached, their plastic yellowed with age."
+
+Instead of reading the holographic display:
+	try examining the main control console.
+	
+Instead of reading the main control console:
+	try examining the main control console.
+	
+Instead of pushing the modified key:
+	try pushing the main control console.
+	
+Instead of touching the modified key:
+	try pushing the main control console.
+	
+Instead of pushing the modified keypad:
+	try pushing the main control console.
+	
+Instead of touching the modified keypad:
+	try pushing the main control console.
+	
+Instead of touching the main control console:
+	try pushing the main control console.
+	
+Instead of pushing the main control console:
+	say "You press the keypad and hear a dry, clicking sound, almost like bone on bone, followed by a low hum from within the console."
 
 The gestation pods and the DNA databank are scenery in the Research Lab.
 
@@ -3631,7 +3711,7 @@ Understand "console" as the narrow slot.
 
 The narrow slot is an open container in the Lander Craft.
 The narrow slot is fixed in place.
-The description of the narrow slot is "The slot is in the center of the console. A silver, swirling pattern surrounds its rim."
+The description of the narrow slot is "A slot is in the center of the console. A silver, swirling pattern surrounds its rim."
 
 Rule for printing the name of the narrow slot:
 	say "[printed name of the narrow slot]";
