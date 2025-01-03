@@ -620,27 +620,74 @@ document.body.style.fontSize = "14pt";
 window.dispatchEvent(new Event('resize'));
 });
 
-window.addEventListener('resize', function() {
-const containerDiv = document.getElementById('my_container');
-const windowWidth = window.innerWidth;
-
-if (windowWidth < 600) {
-containerDiv.style.gridTemplateColumns = '0 1fr';  // Single column for small screens
-document.body.style.fontSize = "10pt";
-} else if (windowWidth < 1200) {
-containerDiv.style.gridTemplateColumns = '300px 1fr';  // Two columns, smaller left column
-document.body.style.fontSize = "12pt";
-} else {
-containerDiv.style.gridTemplateColumns = '500px 1fr';  // Original layout for larger screens
-document.body.style.fontSize = "16pt";
+let scrollRaf;
+// Debounce function to limit resize calculations
+function debounce(func, wait) {
+let timeout;
+return function() {
+clearTimeout(timeout);
+timeout = setTimeout(() => func.apply(this, arguments), wait);
+};
 }
 
-var statusLine = document.getElementById('status-line-container');
-if (statusLine) {
-statusLine.style.marginRight = '25px';
+function handleScroll() {
+if (scrollRaf) {
+cancelAnimationFrame(scrollRaf);
+}
 
+scrollRaf = requestAnimationFrame(() => {
+const sideWindow = document.getElementById('side_window');
+if (!sideWindow) return;
+
+const windowWidth = window.innerWidth;
+if (windowWidth >= 600) {
+const scrollTop = window.scrollY;
+sideWindow.style.transform = `translateY(${scrollTop}px)`;
+} else {
+sideWindow.style.transform = 'none';
 }
 });
+}
+
+window.addEventListener('scroll', handleScroll);
+
+function handleResize() {
+const containerDiv = document.getElementById('my_container');
+const sideWindow = document.getElementById('side_window');
+if (!containerDiv || !sideWindow) return;
+
+const windowWidth = window.innerWidth;
+const baseFontSize = Math.max(10, Math.min(16, windowWidth / 75));
+
+if (windowWidth < 600) {
+containerDiv.style.cssText = `
+display: grid;
+grid-template-columns: 1fr;
+max-width: 100vw;
+overflow-x: hidden;
+`;
+sideWindow.style.transform = 'none';
+document.body.style.fontSize = "10pt";
+} else {
+containerDiv.style.cssText = `
+display: grid;
+grid-template-columns: ${windowWidth < 1200 ? '300px' : '500px'} 1fr;
+max-width: 100vw;
+overflow-x: hidden;
+gap: 20px;
+`;
+document.body.style.fontSize = `${baseFontSize}pt`;
+}
+
+const images = document.getElementsByTagName('img');
+Array.from(images).forEach(img => {
+img.style.maxWidth = '100%';
+img.style.height = 'auto';
+});
+}
+
+window.addEventListener('resize', debounce(handleResize, 150));
+handleResize();
 
 // All our images
 const imageArray = [
