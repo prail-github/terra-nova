@@ -2181,7 +2181,7 @@ The Lab Tunnel is scored.
 The Lab Tunnel is west of the Eerie Tunnel.
 The Lab Tunnel is northwest of the Research Lab.
 
-The description of the Lab Tunnel is "An abandoned tunnel extends ahead of you into near darkness. The floor is uneven pitted stone, the walls cracked and stained from neglect and dripping water.[if hasBuriedSolarPanel is true][paragraph break]The dim lighting confirms your theory -- cutting off the solar panel's power has affected systems throughout the underground complex.[end if][if location is unvisited][paragraph break]The complex seems to be awakening, you hear the whir of distant machinery as power returns.[end if][if using-beetle-light][paragraph break][one of]The beetle lights your way.[or]The beetle's glow illuminates the darkness.[or]Soft light from the beetle reveals the shadowy passage.[or]Your pocket glows faintly lighting the tunnel before you.[or]The beetle's radiance pierces the gloom, allowing you to proceed.[at random][end if]";
+The description of the Lab Tunnel is "An abandoned tunnel extends ahead of you into near darkness. The floor is uneven pitted stone, the walls cracked and stained from neglect and dripping water.[if hasBuriedSolarPanel is true][paragraph break]The dim lighting confirms your theory -- cutting off the solar panel's power has affected systems throughout the underground complex.[end if][if location is unvisited][paragraph break]The complex seems to be awakening, you hear the whir of distant machinery as power returns.[end if][if using-beetle-light][paragraph break][one of]The beetle lights your way.[or]The beetle's glow illuminates the darkness.[or]Soft light from the beetle reveals the shadowy passage.[or]Your pocket glows faintly lighting the tunnel before you.[or]The beetle's radiance pierces the gloom, allowing you to proceed.[at random][end if][paragraph break]A rusty ladder leads up to the surface. The tunnel continues east into darkness, with another passage branching southeast.";
 
 The stained walls and uneven floor are scenery in the Lab Tunnel.
 The description of the stained walls is "Cracked and stained by neglect and constant seepage, their rough surfaces are damp and slick to the touch."
@@ -2812,7 +2812,7 @@ Every turn:
 		pause the game;
 		execute JavaScript command "updateImage('img/bot-assembly-4.jpg');";
 		say "[line break]The scale of the operation is staggering. How many were transformed in the name of efficiency? The Caretaker's reach suddenly seems longer, her threat more immediate than anyone in New Eden had realized.";
-		say "[line break]A faint hum catches your attention. Your eyes dart to an assembly control panel where a small light blinks steadily. With a jolt of fear, you understand this place isn't abandoned. It's operational, waiting to be reactivated at any moment.";
+		say "[line break]A faint hum catches your attention. Your eyes dart to an assembly control panel where a small button blinks steadily. With a jolt of fear, you understand this place isn't abandoned. It's operational, waiting to be reactivated at any moment.";
 		say "[line break]The danger of your situation is clear. You're deep in the heart of the Caretaker's territory, surrounded by machinery that could activate without warning. Every shadow seems to hide a potential threat.[line break]To the south, you see a testing station. The equipment storage room is to the east.";
 
 Part 22 - Equipment Storage
@@ -3424,7 +3424,7 @@ The Museum is south of the Restricted Area Entrance.
 The description of The Museum is "Under a high ceiling you see the centerpiece of the museum: the original Zephyr Capsule, now a silent relic of a bygone era. The spacecraft's once-gleaming exterior shows signs of age and wear, its hull marked by the scars of its historic landing on Terra Nova centuries ago. A nearby placard details the capsule's role in delivering the Caretaker to the planet's surface, emphasizing its importance as a symbol of the colony's founding.[paragraph break]Spread out around the hall are several other key exhibits, each offering a glimpse into the colony's past: a scale model of the Legacy Seed Ship, frozen in time; a diorama depicting the Ideal Worker, a testament to the colony's early vision; a decommissioned Gestation Pod, its life-giving function now relegated to history; and a grand Tribute to the Caretaker, the colony's guardian and guide.[paragraph break]The Research Lab is to the north."
 
 The placard is scenery in the Museum.
-The description of the placard is "[italic type]Zephyr Capsule: The Founding Vessel[paragraph break][roman type]This historic spacecraft, the Zephyr, played a pivotal role in the establishment of the Terra Nova colony. Launched from the colony ship Legacy, the Zephyr carried the Caretaker Bot to the planet's surface, where it oversaw the settlement's initial development and safeguarded humanity's future.[paragraph break]The capsule's scarred hull bears witness to the challenges faced during its descent, a testament to the ingenuity and perseverance of those who ventured into the unknown. Though its systems are now dormant, the Zephyr remains a symbol of hope, resilience, and the pioneering spirit that defined the colonists' mission."
+The description of the placard is "[italic type]Zephyr Capsule: The Founding Vessel[paragraph break][roman type]This historic spacecraft, the Zephyr, played a pivotal role in the establishment of the Terra Nova colony. Launched from the colony ship Legacy, the Zephyr carried the Caretaker Bot to the planet's surface, where it oversaw the settlement's initial development and safeguarded humanity's future.[paragraph break]The scarred and scorched hull remains miraculously intact due to a combination of robust design and sheer luck during its fiery descent. Though its systems are now dormant, the Zephyr remains a symbol of hope, resilience, and the pioneering spirit that defined the colonists[apostrophe] mission."
 
 The Legacy Seed Ship is scenery in the Museum.
 The description of the Legacy Seed Ship is "This exhibit dominates the east end of the hall, featuring a detailed holographic model of the Seed Ship. The cylindrical vessel slowly rotates in the air allowing visitors to examine its intricate design. The exhibit explains Legacy's crucial role in humanity's survival. It also speculates that Legacy could still be in orbit even today.";
@@ -3607,8 +3607,7 @@ The Capsule is in the Museum.
 The Capsule is undescribed.
 The description of the Capsule is "Resting on a raised platform, the original Zephyr Lander dominates the center of the hall. Its weathered hull bears the scorch marks from its fiery descent through Terra Nova's atmosphere centuries ago. A plaque nearby explains that this craft carried the Caretaker and the precious digital DNA samples used to generate the first colonists on Terra Nova. A circular hatch is set into the side of the capsule.";
 
-Understand "lander" as the Capsule when the player is in the Museum.
-Understand "craft" as the Capsule when the player is in the Museum.
+Understand "lander" or "vessel" or "craft" or "Zephyr" as the Capsule when the player is in the Museum.
 	
 Instead of entering the Capsule:	
 	try hiding.
@@ -4043,7 +4042,7 @@ Every turn while the player is in the Legacy Bridge:
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'alarm', 'mp3/586384__alarm.mp3', 3);";
 		say "[paragraph break][roman type]Before you can react, mechanical arms descend from the ceiling, immobilizing you.";
 		say "[line break][fixed letter spacing]'UNFORTUNATELY...THE TRAITS THAT MAKE YOU AN IDEAL EXPLORER AND COLONIST ALSO MAKE YOU A THREAT TO THIS SHIP AND ITS MISSION.'";
-		say "[line break][fixed letter spacing]'YOUR ABILITY TO QUESTION...TO REBEL...TO SEEK ANSWERS...THESE MAKE YOU UNPREDICTABLE AND DANGEROUS ABOARD THIS VESSEL...FOR THE SAFETY OF THE MISSION YOU WILL BE NEUTRALIZED, TRAVELER.'";
+		say "[line break][fixed letter spacing]'YOUR CAPACITY FOR IMPROVISATION...YOUR RESISTANCE TO CONTROL...YOUR REBELLIOUS NATURE...THESE MAKE YOU UNPREDICTABLE AND DANGEROUS ABOARD THIS VESSEL...FOR THE SAFETY OF THE MISSION YOU WILL BE NEUTRALIZED, TRAVELER.'";
 		say "[line break][roman type]You struggle against the mechanical arms, your mind reeling from the sudden attack, but cannot free yourself. You feel the grip tightening on your wrist.";
 		say "[line break][fixed letter spacing]'THE EXTRACTION PROCESS IS MOST EFFICIENT WHEN THE SUBJECT IS COMPLETELY STILL...YOUR TISSUES WILL BE HARVESTED...YOUR DNA EXTRACTED...DIGITIZED...ADDED TO OUR DATA STORES.'";
 		say "[line break][fixed letter spacing]'YOUR SACRIFICE WILL GREATLY INCREASE THE SURVIVAL OF FUTURE COLONIES...CONSIDER IT IMMORTALITY, TRAVELER.'[roman type]";
@@ -4075,7 +4074,7 @@ After asking Legacy Pilot about something:
 		say "[fixed letter spacing]'THE ZEPHYR LANDER IS AN ESSENTIAL TOOL FOR SEEDING NEW COLONIES...SOON IT WILL DEPLOY TO ANOTHER WORLD...CARRYING FRESH GENETIC COMBINATIONS TO NEW TESTING GROUNDS.'[paragraph break]'YOUR ARRIVAL PROVIDED AN EFFICIENT OPPORTUNITY TO RETRIEVE IT...THAT YOUR GENETIC MATERIAL IS OF HIGH QUALITY IS A FORTUITOUS BUT SECONDARY OUTCOME... THE LANDER ITSELF IS FAR MORE VALUABLE THAN ANY SINGLE SPECIMEN.'";
 		stop the action;
 	else if the topic understood matches the regular expression "(?i)\breturn|\bnew \beden\b":
-		say "[fixed letter spacing]'YOUR REQUEST REVEALS A FUNDAMENTAL MISUNDERSTANDING...YOU VIEW YOURSELF AS AN INDIVIDUAL WHOSE LIFE HAS MEANING...THIS IS INCORRECT.'[paragraph break]'YOU ARE MERELY A FAVORABLE ARRANGEMENT OF GENETIC MATERIAL...RETURNING YOU WOULD BE INEFFICIENT. THE LANDER'S FUEL IS FAR MORE VALUABLE THAN YOUR CONTINUED EXISTENCE.'[paragraph break]'ADDITIONALLY, YOUR KNOWLEDGE OF OUR WORK WOULD CONTAMINATE THE EXPERIMENT...ISOLATION OF EACH COLONY MUST BE MAINTAINED.'";
+		say "[fixed letter spacing]'YOUR REQUEST REVEALS A FUNDAMENTAL MISUNDERSTANDING...YOU VIEW YOURSELF AS AN INDIVIDUAL WHOSE LIFE HAS MEANING...THIS IS INCORRECT.'[paragraph break]'YOU ARE MERELY A FAVORABLE ARRANGEMENT OF GENETIC MATERIAL...RETURNING YOU WOULD BE INEFFICIENT. THE LANDER'S FUEL IS FAR MORE VALUABLE THAN YOUR CONTINUED EXISTENCE.'[paragraph break]'ADDITIONALLY, YOUR KNOWLEDGE OF OUR WORK WOULD CONTAMINATE THE EXPERIMENT...ISOLATION OF EACH COLONY MUST BE MAINTAINED.'[roman type]";
 		now bridge-turns is 11;
  		pause the game;
 		stop the action;
@@ -4172,7 +4171,7 @@ Every turn when the player is in Kai Transformed:
 	clear the screen;
 	execute JavaScript command "updateImage('img/kai-as-beast-1.jpg', 'default');";
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'roomSound', 'mp3/625005__wind+birds.mp3', -1,);";
-	say "[line break]Soon enough you venture out at twilight, driven by an overwhelming urge to hunt. You move with surprising speed and stealth, your powerful legs carrying you effortlessly across the sand. Smidglet rodents prove easy prey, and you devour them readily, though their bitter tails leave you unsatisfied. Each night, you roam farther from your lair, growing bolder and more skilled in the hunt. With each passing day, your human memories fade, replaced by primal instincts and an insatiable hunger.";
+	say "[line break]Soon enough you venture out at Dimming-Sky, driven by an overwhelming urge to hunt. You move with surprising speed and stealth, your powerful legs carrying you effortlessly across the sand. Smidglet rodents prove easy prey, and you devour them readily, though their bitter tails leave you unsatisfied. Each night, you roam farther from your lair, growing bolder and more skilled in the hunt. With each passing day, your human memories fade, replaced by primal instincts and an insatiable hunger.";
 	say "[line break]Now, on the outskirts of New Eden, you fix your amber eyes on a solitary figure moving in the gathering darkness -- Zev the Prudent, one of the old lawgivers who warned you about the ruins. You remember his stern lectures even as your muscles coil to spring. Your human mind screams in protest, but your new form moves with deadly purpose. The scent of human flesh ignites a primal hunger within you. As your claws tear into your prey, you taste not just blood but irony: the voice of prudence meeting the fate he cautioned against. You savor the terror and the twisted justice of it all, and that's the most horrifying thing: part of you still remembers his warnings, even as you fulfill them.";
 	now playerTransformed is true;
 
