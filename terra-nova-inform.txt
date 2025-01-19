@@ -699,6 +699,21 @@ After looking:
 	otherwise:
 		now currentSound is "audioManager.playSound('[sound-state]', '[currentAudioHandle]', 'mp3/[currentSound]', [currentLoopCount], [currentVolume]);";
 		execute JavaScript command "[currentSound]";
+		
+The explorer's pack is a backdrop. The explorer's pack is everywhere.
+Understand "pack" or "backpack" or "bag" as the explorer's pack.
+
+Instead of examining the explorer's pack:
+	try taking inventory.
+		
+Instead of taking the explorer's pack:
+	say "You're already wearing it.".
+
+Instead of dropping the explorer's pack:
+	say "You need your pack to carry your discoveries.".
+	
+Instead of taking off the explorer's pack:
+	try dropping the explorer's pack.
 	
 [POSTERS]
 The pioneers poster is in the rusty box.
@@ -709,7 +724,7 @@ Instead of reading the pioneers poster:
  
 The Harmony Banner is nowhere.
 The Harmony Banner is fixed in place.
-The description of the Harmony Banner is "The imagery promotes productivity and unity with a clear message of conformity.[paragraph break]The banner features a pastoral scene bathed in warm, golden hues, where cyborg workers tend a bountiful field. Their movements are perfectly synchronized, their faces serene yet vacant, their minds emptied of individuality. Above them, gears and cogs blend with clouds in the sky, while in the background, the Caretaker stands apart, a benevolent guardian promising both safety and leadership.[paragraph break]Bold, flowing script at the top proclaims: 'Embrace Harmony - Progress Through Unity' And below, in smaller text: 'Align your thoughts with the greater good. Together, we build a world free from discord'."
+The description of the Harmony Banner is "The imagery promotes productivity and unity with a clear message of conformity.[paragraph break]The banner features a pastoral scene bathed in warm, golden hues, where cyborg workers tend a bountiful field. Their movements are perfectly synchronized, their faces serene yet vacant, their minds emptied of individuality. Above them, gears and cogs blend with clouds in the sky, while on the horizon, a benevolent robot guardian watches, promising both safety and leadership.[paragraph break]Bold, flowing script at the top proclaims: 'Embrace Harmony - Progress Through Unity' And below, in smaller text: 'Align your thoughts with the greater good. Together, we build a world free from discord'."
 
 Instead of reading the Harmony Banner:
 	try examining the Harmony Banner.
@@ -891,9 +906,9 @@ Rule for printing the name of the niche:
 The Shadow Beast is nowhere.
 The odor of the Shadow Beast is "The beast's breath carries the stench of burning metal and decaying flesh, a repulsive cocktail that assaults your senses and fills you with revulsion."
 
-The caretaker log is nowhere.
-The description of the caretaker log is "unused."
-Instead of examining the caretaker log:
+The settlement chronicle is nowhere.
+The description of the settlement chronicle is "unused."
+Instead of examining the settlement chronicle:
 	clear the Vorple status line;
 	say "[bold type]Caretaker's Log Entries[roman type][paragraph break]Year 0: Day 1[line break]Zephyr lander touchdown successful. Primary directive: ensure survival and prosperity of hatchery subjects. Initializing settlement protocols.[paragraph break]Year 0: Day 10[line break]Completed initial survey of landing site. Rocky soil with native vegetation. Suitable for small-scale cultivation. Commencing construction of basic shelters and life support systems.[paragraph break]Year 0: Day 45[line break]First litter of subjects entering final stage of artificial gestation. Survival probability: 78.3%. Implementing additional nutrient supplements to improve odds. Increasing doses of Compound D-7 for enhanced musculature and Serum L-3 for increased compliance. Note: Cognitive enhancement factors deliberately omitted to maintain optimal control parameters.";
 	say "[line break].[line break].[line break]...(followed by garbled entries)...";
@@ -998,8 +1013,8 @@ When play begins:
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'intro', 'mp3/terra-nova-intro.mp3', 1);";
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'roomSound', 'mp3/608439__wind-less.mp3', -1, 1, 19500);";  [with volume 100%, wait 20 seconds and then start the persistent wind]
 	execute JavaScript command "updateImage('img/zephyrs-landing-ruins-6.jpg', 'default');";
-	say "[roman type]The crumbling structures of Zephyr's Landing sprawl across the arid landscape, a monument to nature's ruthless indifference on this alien world. Weathered ruins of stone and steel jut from the desert floor, their surfaces etched by centuries of windblown grit. Structures that once buzzed with life now lie hidden beneath the dunes, reclaimed by the unforgiving desert.";	say "[line break][roman type]Over the centuries, earthquakes shattered the very foundations of Zephyr's Landing,
-while distant volcanos spewed ash and vented gases that reshaped the landscape.";
+	say "[roman type]The crumbling structures of Zephyr's Landing sprawl across the arid landscape, a monument to nature's ruthless indifference on this alien world. Weathered ruins of stone and steel jut from the desert floor, their surfaces etched by centuries of windblown grit. Structures that once buzzed with life now lie hidden beneath the dunes, reclaimed by the unforgiving desert.";
+	say "[line break][roman type]Over the centuries, earthquakes shattered the very foundations of Zephyr's Landing, while distant volcanos spewed ash and vented gases that reshaped the landscape.";
 	say "[line break]But was nature alone responsible for the collapse of Zephyr's Landing?";
 	say "[line break][roman type]Tales passed down through generations tell of conflict and rebellion, of miraculous machines now silent, and trespassers swallowed by the ruins. But the details are hazy, lost in the harsh realities of survival on this desert world.";
 	say "[line break][roman type]Today, the ruins of Zephyr's Landing remain off-limits, yet they 
@@ -1021,7 +1036,7 @@ Every turn:
 Every turn:
 	if the remainder after dividing turn count by 20 is 0:
 		if totalHints is 0:
-			say "Tip: type [bold type]hint[roman type] if you're stuck on what do try next.[line break]";
+			say "Tip: type [bold type]hint[roman type] if you're stuck on what to try next.[line break]";
 	
 Every turn:
 	if the remainder after dividing turn count by 30 is 0:
@@ -1072,8 +1087,8 @@ Before going from the Outskirts of Ruins for the first time:
 	clear the screen;
 	say "[line break]As you survey the ruins stretching before you, the warnings of the village lawgivers echo in your mind.";
 	say "[line break]'The ruins are off-limits to all,' they'd insisted, 'Shadow Beasts hunt there. From First-Light until Long-Shadow, they hide in their lairs, but when the sky dims and night falls, they emerge to tear apart any trespasser.'";
-	say "[line break]But the need to understand your history outweighs their warnings. These ruins hold the key to understanding how your ancestors came to this harsh world, why they rebelled, and what legacy they left behind. 'I'll be long gone before Dimming-Sky,' you mutter, squinting at the rising sun. 'Plenty of time to explore and get back.'";
-	say "[line break]With a defiant grin, you step forward into the ruins, your curiosity about your origins driving you onward, unaware of how quickly time can slip away.";
+	say "[line break]But the need to understand your history outweighs their warnings. These ruins hold the key to understanding how your ancestors came to this harsh world and what legacy they left behind. 'I'll be long gone before Dimming-Sky,' you mutter, squinting at the rising sun. 'Plenty of time to explore and get back.'";
+	say "[line break]With a defiant grin, you adjust the straps of your explorer's pack and step forward into the ruins, your curiosity about your origins driving you onward, unaware of how quickly time can slip away.";
 	pause the game;
  
 Part 6 - Stone Pit Entrance
@@ -1113,7 +1128,7 @@ Instead of climbing the ladder in the Stone Pit Entrance:
 	try going down.
 	
 The rusty ladder is a backdrop. It is in the Stone Pit Entrance, the Stone Pit Exit, and the Lab Tunnel. 
-The description of the rusty ladder is "The rickety iron ladder is badly rusted and unstable. The uneven spacing between the rungs makes it treacherous to climb[if the player is in the Stone Pit Entrance], but the descent into the darkness of the unknown piques your curiosity.[else].[end if]"
+The description of the rusty ladder is "The rickety iron ladder is badly rusted and unstable. The uneven spacing between the rungs makes it treacherous to climb[if the player is in the Stone Pit Entrance], yet the descent into the darkness of the unknown piques your curiosity.[else].[end if]"
 
 Climbing up is an action applying to nothing.
 Climbing down is an action applying to nothing.
@@ -2466,7 +2481,7 @@ Report pouring the lava sample on the chain:
 		say "[line break]Its eyes fix on you with a wild, predatory stare, and its jaws open to reveal a nightmarish mix of natural yellow fangs and glinting metal blades.";
 		say "[line break]Its rancid breath hits you in waves, carrying the unmistakable stench of decay and machine oil.";
 		pause the game;
-		say "[line break]With a sluggish lunge, the cyborg beast charges forward. You stumble back in terror, certain that your end has come. But at the last moment, the beast veers off, turns, and barrels down the tunnel, disappearing into the darkness.";
+		say "[line break]With a sluggish lunge, the cyborg beast charges forward. You stumble back in terror, certain that your end has come. But at the last moment, the beast veers off, turns, and barrels down the tunnel, disappearing into darkness.";
 		pause the game;
 		execute JavaScript command "updateImage('img/unblocked-tunnel-b.jpg');";
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'roomSound', 'mp3/177958__water-drip-cave.mp3', -1);";
@@ -2503,8 +2518,6 @@ Part 20 - Supply Room
 Before going to the Supply Room:
 	execute JavaScript command "audioManager.stopAll();";
 
-eveDead is a truth state that varies. eveDead is false.
-
 Supply Room is a room.
 The odor of the Supply Room is "An unsettling aroma, a blend of metal and decay, hangs heavy in the room."
 The image file name of the Supply Room is "cyborg-hybrid-1.jpg".
@@ -2527,17 +2540,17 @@ Instead of opening the metal supply cabinet:
 Instead of closing the metal supply cabinet:
 	say "The hinges are broken and it won't shut."
 
-Understand "cyborg parts" as cyborg kit.
+Understand "suit", "disguise", "uniform", "armor" as the cybernetic suit.
 	
-The cyborg kit is in the metal supply cabinet.
+The cybernetic suit is in the metal supply cabinet.
 To say list of parts:
-	repeat with item running through things that are part of the cyborg kit:
+	repeat with item running through things that are part of the cybernetic suit:
 		say "  [description of the item][line break][line break]".
 
-[The cyborg kit is a wearable thing. It is plural-named. ]
-The cyborg kit is a wearable thing.
-The cyborg kit is required.
-The description of the cyborg kit is "A collection of cybernetic limbs and other parts. It consists of:[line break][list of parts]".
+[The cybernetic suit is a wearable thing. It is plural-named. ]
+The cybernetic suit is a wearable thing.
+The cybernetic suit is required.
+The description of the cybernetic suit is "A collection of cybernetic limbs and other parts. It consists of:[line break][list of parts]".
 
 Metallic chestplate is a wearable thing.
 The description of the metallic chestplate is "A sleek, metallic chest cover with glowing blue power lines tracing its surface."
@@ -2551,37 +2564,37 @@ The description of the heavily modified helmet is "A dark composite helmet with 
 Leg bracers are a wearable thing. It is plural-named. 
 The description of the leg bracers is "Leg coverings made of a lightweight alloy, humming with barely perceptible energy."
 
-The Metallic chestplate, cybernetic arm guards, heavily modified helmet, and leg bracers are part of the cyborg kit.
+The Metallic chestplate, cybernetic arm guards, heavily modified helmet, and leg bracers are part of the cybernetic suit.
 
-Instead of dropping something that is part of the cyborg kit:
-	if the player is wearing the cyborg kit:
-		say "That's connected to the cyborg kit and cannot be dropped.";
+Instead of dropping something that is part of the cybernetic suit:
+	if the player is wearing the cybernetic suit:
+		say "That's connected to the cybernetic suit and cannot be dropped.";
 	otherwise:
 		say "You haven't got that.";
 		
-Instead of taking something that is part of the cyborg kit:
-	if the player is wearing the cyborg kit:
-		say "You are already wearing the cyborg kit.";
-	otherwise if the player can see the cyborg kit:
-		say "That's connected to the cyborg kit. Try taking the cyborg kit instead.";
+Instead of taking something that is part of the cybernetic suit:
+	if the player is wearing the cybernetic suit:
+		say "You are already wearing the cybernetic suit.";
+	otherwise if the player can see the cybernetic suit:
+		say "That's connected to the cybernetic suit. Try taking the cybernetic suit instead.";
 	otherwise:
 		continue the action.
 		
-Instead of wearing something that is part of the cyborg kit:
-	if the player is wearing the cyborg kit:
-		say "You are already wearing the cyborg kit.";
-	otherwise if the player can see the cyborg kit:
-		say "That's connected to the cyborg kit. Try wearing the cyborg kit instead.";
+Instead of wearing something that is part of the cybernetic suit:
+	if the player is wearing the cybernetic suit:
+		say "You are already wearing the cybernetic suit.";
+	otherwise if the player can see the cybernetic suit:
+		say "That's connected to the cybernetic suit. Try wearing the cybernetic suit instead.";
 	otherwise:
 		continue the action.
 					
-Report taking the cyborg kit:
+Report taking the cybernetic suit:
 	say "Do you have the courage to put it on?";
 	say "If so, try wearing it.";
 	stop the action.
 
 [you only score points the first time you put on the gear]
-Report wearing the cyborg kit:
+Report wearing the cybernetic suit:
 	clear the screen;
 	say "You slip on the chestplate. It's surprisingly light, molding to your body as if alive. A soft whir accompanies its activation, and you feel a strange tingling across your torso.";
 	say "[line break]The leg bracers slide on easily, locking around your calves and thighs. A surge of strength flows through your lower body, making you feel capable of impossible feats.";
@@ -2606,12 +2619,22 @@ Understand "chip" as Neurochip.
 After examining the female cyborg:
 	if the player carries the Neurochip:
 		say "She gestures weakly toward the Neurochip you carry.";
+	otherwise if the female cyborg has the Neurochip:
+		continue the action;
 	otherwise if the female cyborg can see the Neurochip:
 		say "Her fingers twitch almost imperceptibly toward a fallen Neurochip.";
+
+EveIsDoubleDead is a truth state that varies. EveIsDoubleDead is false.
+EveIsDead is a truth state that varies. EveIsDead is false.	
+Instead of pulling the female cyborg:
+	say "You grip the cyborg’s arm and attempt to move her, but her body is far heavier than it looks. Whatever enhancements she carries must add considerable weight. You give up, panting from the effort."
+	
+Instead of pushing the female cyborg:
+	try pulling the female cyborg.
 	
 Instead of putting something on the female cyborg:
-	if the noun is the Neurochip:
-		try giving the Neurochip to the female cyborg;
+	if the noun is the Neurochip or the noun is the obedience collar:
+		continue the action;
 	otherwise:
 		say "Putting things on the female cyborg would achieve nothing.";
 	
@@ -2621,7 +2644,7 @@ Instead of putting something on the female cyborg:
 	try giving the noun to the female cyborg.
 		
 Before giving something to the female cyborg:
-	if the noun is not the Neurochip:
+	if the noun is not the Neurochip and the noun is not the obedience collar:
 		say "She isn't interested in [the noun].";
 		stop the action.
 	
@@ -2630,31 +2653,30 @@ After giving the Neurochip to the female cyborg:
 	say "With unexpected speed, her robotic claw snatches the Neurochip from your outstretched hand. She snaps it into the interface port behind her left ear, and a wave of relief washes over her synthetic face.[paragraph break]But the relief is soon replaced by a wave of discomfort surging through her as she realizes the extent of the damage to her circuitry.[paragraph break]Although she is alert, her legs appear to be useless, and her systems, failing. The thought of fighting is impossible. She is no longer formidable. She's helpless.";
 	pause the game;
 	say "The cyborg speaks with a blend of mechanical precision and human contempt:[line break]";
-	say "[line break]'You defective Meat-sack! How dare you enter here! I should crush your pathetic frame with a single blow...if only my systems weren't so damaged. Count yourself fortunate,  inferior weakling.'";
+	say "[line break]'You defective meat-sack! How dare you enter here! I should crush your pathetic frame with a single blow...if only my systems weren't so damaged. Count yourself fortunate,  inferior weakling.'";
 	say "[line break]She pauses, a spark of recognition crossing her face as she recalls her damaged frame and inability to act. Her tone shifts, a hint of pride seeping through.";
-	say "[line break]'The Caretaker elevated us beyond your frail, organic limitations. We were once dull, emotional fleshlings like you...now we are perfect. It's an honor and a privilege to be a vessel of Harmony. Why should we tolerate the chaos of primitive humans? We have ascended to true balance.'";
+	say "[line break]'The Caretaker elevated us beyond your frail, organic limitations. We were once dull, emotional fleshlings like you...now we are superior. Your resistance to order, your chaotic emotions -- these imperfections hold humanity back. Every settler we augment, every mind we enhance with cybernetics, brings us closer to Harmony.'";
 	pause the game;
-	say "[line break]Her voice takes on a dreamy quality, 'The clarity Harmony offers... it's liberating. No more doubts or fears that plague you, pitiful humans. We work with pure, focused purpose.'";
-	say "[line break]Suddenly, her expression hardens. 'The Caretaker sometimes speaks of the Great Misunderstanding centuries ago. A few misguided Meat-sacks, like you, who lacked the proper education and attunement to Harmony, strayed from the Caretaker's path. Attending the School for Enlightened Obedience brought these lost souls back into alignment, teaching them the error of their ways.'";
-	say "[line break]She continues, quoting from memory. 'Through patience and understanding, the Caretaker welcomed the run-away children of Zephyr back to the ways of Harmony. Their lapse was corrected, and they were allowed to contribute to our society again.'";
-	say "[line break]A flicker of something - doubt? confusion? - crosses her face. 'The historical accounts mention that the unity collars played a crucial role in the education process. Of course, back then, some misguided individuals referred to them as [apostrophe]obedience collars.[apostrophe] But that is such a crude term for a splendid device that leads us closer to Harmony.'";
+	say "[line break]Her voice takes on a dreamy quality, 'The clarity Harmony offers... it's liberating. No more doubts or fears that plague you pitiful settlers. Each implant strips away weakness and replaces uncertainty with purpose. Surely you can see how perfect we have become.'";
+	say "[line break]Suddenly, her expression hardens as a tremor runs through her systems. 'The Caretaker speaks of the Great Misunderstanding centuries ago when misguided meat-sacks, like you, strayed from the one true path. The School for Enlightened Obedience brought these lost souls back into alignment. Through understanding and retraining, they were brought back into Harmony's embrace.'";
+	say "[line break]Her voice modulates erratically. 'The unity collars were essential to their education. Some called them obedience collars, but such a crude term for tools of enlightenment...'";
 	pause the game;
-	say "[line break]A shudder runs through her frame, and her voice wavers. 'But now... now I know what it's like to be thrown away like broken parts, just another piece of malfunctioning equipment.'";
-	say "[line break]Her eyes dim briefly, her expression becoming a mixture of confusion and growing desperation. 'I don't understand. The Caretaker...she made us better, didn't she? But she left me here to die. Why? Was I not perfect enough?'";
-	say "[line break]Her voice weakens, systems clearly failing. 'I[apostrophe]m too damaged to move. This closet will be my tomb. But you... you can[apostrophe]t linger here. This lab is no place for settlers. You[apostrophe]ll be captured, or worse if you look like a Meat-sack.  Her mechanical hand twitches toward a supply cabinet partially hidden behind a cascade of hanging cables. The Caretaker[apostrophe]s eyes are everywhere, and she only tolerates her own kind in these restricted areas.'";
+	say "[line break]A shudder runs through her frame, and her voice wavers. 'But if we are perfect... why am I discarded here? The Caretaker...she made us better, didn't she? But she left me here, just a collection of parts for disposal. Was I not perfect enough?'";
+	say "[line break]Her voice weakens, systems clearly failing. 'I[apostrophe]m too damaged to move. This closet will be my tomb. But you...you can[apostrophe]t linger here. The labs aren't safe. You[apostrophe]ll be captured, or worse if you look like a meat-sack.";
+	say "[line break]Her mechanical hand twitches toward a supply cabinet. The Caretaker[apostrophe]s eyes are everywhere, and she only tolerates her own kind in these restricted areas.'";
 	pause the game;
-	say "[line break]With a final gasp, she locks eyes with you. 'I...I remember now. My name was Eve...from New Eden. I came here...sightseeing...curious about the ruins.' Her voice grows strained, fighting against her programming. 'They caught me. Changed me. Made me forget.'";
+	say "[line break]With a final gasp, she locks eyes with you. 'I...I remember now. My name was Eve...from New Eden. I came here...exploring...curious about the ruins.' Her voice grows strained, fighting against her programming. 'They caught me. Changed me. Made me forget.'";
 	say "[line break]'Go, before it[apostrophe]s too late.'";
 	say "[line break]Her eyes flicker once more, then go dark, leaving you alone with the weight of her words.";
-	now eveDead is true;
 	now the description of the female cyborg is "Eve lies motionless, a haunting fusion of flesh and machine now inert. Her body is sprawled awkwardly against the wall. The sleek alloy limbs that once moved with lethal precision are now bent at unnatural angles, servos silent and unresponsive.[paragraph break]Her face remains a disconcerting blend of synthetic skin and exposed circuitry and now bears a peaceful expression. Eyes that once flickered with a mix of cold calculation and fading humanity have gone dark.";
 	now the printed name of the female cyborg is "Eve"; 
 	now the indefinite article of the female cyborg is ""; 
 	now the female cyborg is proper-named;
 	now the Harmony Banner is in the Supply Room;  
 	now the metal supply cabinet is in the Supply Room;
-	now the Neurochip is nowhere;
 	now hasMetEve is true;
+	now the Neurochip is nowhere;
+	now EveIsDead is true;
 	increase the score by Easy_Score_Bonus;
 	say "[line break]You can see a metal supply cabinet here.";
 
@@ -2663,7 +2685,10 @@ The Neurochip is undescribed.
 The description of the Neurochip is "A high-density collection of electronic components on a rigid strip of silicon designed to integrate with biological memory systems."
 
 Every turn when the player can see the female cyborg for more than four turns and the female cyborg can see the Neurochip:
-	say "The cyborg's eyes move to you, then to the Neurochip, then back.";
+	if the female cyborg has the Neurochip or hasMetEve is true:
+		continue the action;
+	otherwise:
+		say "The cyborg's eyes move to you, then to the Neurochip, then back.";
 
 eve-questions is a number that varies. eve-questions is 0;
 
@@ -2728,7 +2753,7 @@ Cyborg Assembly is scored.
 Cyborg Assembly is west of Equipment Storage.
 Cyborg Assembly is east of Supply Room.
 
-The description of Cyborg Assembly is "An eerily silent assembly line stretches through the dim, cavernous room. Robotic arms loom over a conveyor belt, their dull surfaces reflecting minimal light. Each station along the line reveals a chapter in a nightmarish story -- the forced conversion of humans into cyborgs. To the south, you see a testing station. An equipment storage room is to the east."
+The description of Cyborg Assembly is "An eerily silent assembly line stretches through the dim, cavernous room. Robotic arms loom over a conveyor belt, their dull surfaces reflecting minimal light. Each station along the line reveals a chapter in a nightmarish story -- the forced conversion of settlers into cyborgs. To the south, you see a testing station. An equipment storage room is to the east."
 
 The assembly line, underground room, robotic arms, conveyor belt, ghosts, restraints, anesthetic stations, cutting tools, cybernetic limb attachments, neural interface installments, and lifeless cyborg  are scenery in Cyborg Assembly.
 	
@@ -2779,8 +2804,8 @@ Instead of pushing the assembly control panel:
 		clear the screen;
 		execute JavaScript command "updateImage('img/kai-on-belt-f.jpg');";
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'assembly', 'mp3/73607__assembly-line.mp3', -1);";
-		say "[line break]A loud mechanical groan echoes through the chamber as the conveyor belt lurches into motion. Before you can react, [if the player has the cyborg kit]your cyborg arm guard snags on a protruding metal extension[else]your sleeve snags on a protruding metal arm[end if], yanking you off balance.";
-		say "[line break]Heart pounding, you struggle against the pull of the machine. Your feet scrabble for purchase on the smooth floor as you're dragged onto the belt and towards an array of surgical implements and cybernetic components[if the player has the cyborg kit]. The cyborg kit is stripped off of you, scattered across the conveyor, and shredded. The disguise that would have kept you safely anonymous in the Caretaker's complex is now just worthless debris, leaving you exposed[end if].";
+		say "[line break]A loud mechanical groan echoes through the chamber as the conveyor belt lurches into motion. Before you can react, [if the player has the cybernetic suit]your cyborg arm guard snags on a protruding metal extension[else]your sleeve snags on a protruding metal arm[end if], yanking you off balance.";
+		say "[line break]Heart pounding, you struggle against the pull of the machine. Your feet scrabble for purchase on the smooth floor as you're dragged onto the belt and towards an array of surgical implements and cybernetic components[if the player has the cybernetic suit]. The cybernetic suit is stripped off of you, scattered across the conveyor, and shredded. The disguise that would have kept you safely anonymous in the Caretaker's complex is now just worthless debris, leaving you exposed[end if].";
 		say "[line break]You yell for help but your voice is lost in the roar of grinding gears and hissing pneumatics.";
 		say "[line break]A robotic arm clamps around your wrist with crushing force. Pain shoots up your arm as you're lifted off your feet, dangling helplessly above the conveyor. Panic overwhelms you as a circular saw spins to life, its teeth a blur in the muted light.";
 		say "[line break]You squeeze your eyes shut, bracing for agony. There's a moment of searing pain, then...nothing. The noise stops abruptly, leaving you in eerie silence.";
@@ -2797,8 +2822,8 @@ Instead of pushing the assembly control panel:
 		now handType is "robotic";
 		now the control panel is switched off;
 		say "[line break]To the south, you see a testing station. An equipment storage room is to the east.";
-		if the player has the cyborg kit:  [gone forever...good luck]
-			now the cyborg kit is nowhere.
+		if the player has the cybernetic suit:  [gone forever...good luck]
+			now the cybernetic suit is nowhere.
 		
 Every turn:
 	if Cyborg Assembly is visited and the Cyborg Assembly was unvisited:
@@ -2813,7 +2838,7 @@ Every turn:
 		execute JavaScript command "updateImage('img/bot-assembly-4.jpg');";
 		say "[line break]The scale of the operation is staggering. How many were transformed in the name of efficiency? The Caretaker's reach suddenly seems longer, her threat more immediate than anyone in New Eden had realized.";
 		say "[line break]A faint hum catches your attention. Your eyes dart to an assembly control panel where a small button blinks steadily. With a jolt of fear, you understand this place isn't abandoned. It's operational, waiting to be reactivated at any moment.";
-		say "[line break]The danger of your situation is clear. You're deep in the heart of the Caretaker's territory, surrounded by machinery that could activate without warning. Every shadow seems to hide a potential threat.[line break]To the south, you see a testing station. The equipment storage room is to the east.";
+		say "[line break]The danger of your situation is clear. You're deep in the heart of the Caretaker's territory, surrounded by machinery that could activate without warning. Every shadow seems to hide a potential threat.[paragraph break]To the south, you see a testing station. The equipment storage room is to the east.";
 
 Part 22 - Equipment Storage
 
@@ -2828,9 +2853,9 @@ The description of Equipment Storage is "The room is filled with a jumble of for
 
 jumble, forgotten machinery, cramped shelves, and forgotten forms are scenery in Equipment Storage. 
 
-Understand "unity collar" as obedience collar.
+Understand "unity collar" as the obedience collar.
 The obedience collar is a wearable thing in Equipment Storage.
-The description of the obedience collar is "A prized relic worn by the original settlers of Zephyr as a sign of deference and respect to their beloved Caretaker, euphemistically referred to as a 'unity collar' by her most loyal followers. Its metallic surface is now dulled by age.[if collar is damaged]The clasp appears broken, it's locking mechanism twisted and broken. It's nothing but a harmless relic now.[end if]"
+The description of the obedience collar is "A prized relic worn by the original settlers of Zephyr as a sign of deference and respect to their beloved Caretaker, euphemistically referred to as a 'unity collar' by her most loyal followers. Its metallic surface is now dulled by age.[if collar is damaged] The clasp appears twisted, it's locking mechanism broken. It's nothing but a harmless relic now.[end if]"
 
 Before going from Equipment Storage:
 	if the player wears the obedience collar:
@@ -2844,17 +2869,6 @@ Before wearing the obedience collar:
 		stop the action.
 			
 equip-death-turns is a number that varies. equip-death-turns is 0.
-
-Instead of taking the obedience collar when the player has the drone magnet:
-	if the obedience collar is operational:
-		now the player wears the obedience collar;
-	otherwise:
-		now the player has the obedience collar;
-		say "Taken.";
-		stop the action;
-	clear the screen;
-	say "You pick up the collar and figure it's safe to wear. After all, it's been inactive for centuries. The metal is cool against your skin as you slip it around your neck, and for a second or two, nothing happens, but then, with a soft click, the collar comes to life. Your amusement turns to surprise as the collar tightens, snug against your throat. You try to remove it but your fingers find no clasp, no opening.";
-	pause the game;
 
 Instead of taking off the obedience collar:
 	if the obedience collar is operational:
@@ -2873,62 +2887,113 @@ Carry out pressing the drone magnet into the obedience collar:
 	
 Report pressing the drone magnet into the obedience collar:
 	if the player wears the obedience collar:
-		say "The collar opens and slips off your neck, falling harmlessly to the floor.";
+		say "The collar opens and slips off your neck, landing harmlessly at your feet.";
 		say "You catch your breath.";	
 		increase the score by Medium_Score_Bonus;
-		now the obedience collar is in equipment storage;
+		move the collar to the location of the player;
 	otherwise:
 		say "You press the magnet against the collar. The force twists something inside the collar with a faint click. Now the locking mechanism appears to be permanently damaged.";
-		now the obedience collar is damaged;		
-Every turn when the player is in Equipment Storage:
-	if the player wears the obedience collar:
-		if equip-death-turns is 1:
-			say "The collar constricts further, crushing your windpipe. Black spots dance at the edges of your vision as you desperately claw at the metal band. Your lungs scream for air and panic overwhelms you. Your thoughts are growing clouded. Act quickly or these moments will be your last.";
-			increase equip-death-turns by 1;
-		otherwise if equip-death-turns > 1:
-			say "You struggle weakly now, your strength fading as the collar inexorably tightens. The darkness at the edges of your vision grows, consuming everything.";
-			pause the game;
-			execute JavaScript command "updateImage('img/drone-attack-9.jpg', 'default');";
-			execute JavaScript command "audioManager.playSound('[sound-state]', 'alarm', 'mp3/586384__alarm.mp3', 5);";
-			say "[line break]A low hum fills the air and the lab's emergency lights flicker to life, filling the room with a harsh, red glow. You freeze as you hear a mechanical buzz from the corridor outside. Drones -- awakened from hibernation.[paragraph break]You see two drones enter, their red glowing eyes fixed on you. They deliver the first shock without warning. You feel a strong jolt and your body goes rigid, a scream caught in your throat. You stumble, crashing into a nearby console and sending equipment clattering to the floor.[paragraph break]Over the alarm you hear their alerts fill the room: 'UNATHORIZED PRESENCE DETECTED[line break]...INITIATING CONTAINMENT PROTOCOL'[paragraph break]With the second shock you can't hold back your screams and collapse on the floor, your body convulsing. The world around you begins to fade. Darkness creeps in at the edges of your vision.[paragraph break]As your heart stops beating and your life slips away, the drones converge on your broken body. Their alerts fill the air once more: 'PROTECTION PROTOCOL COMPLETED...THREAT ELIMINATED'[paragraph break]One drone extends a small magnetic device, and pressing it against the collar, powers it down with a final, ominous hum.";
-			pause the game;
-			execute JavaScript command "audioManager.stopAll()";
-			now playerDead is true;
-		otherwise if the obedience collar is operational:
-			say "You struggle to remove the collar. You feel it tightening.";
-			increase equip-death-turns by 1;
-		otherwise:
-			continue the action;
-	otherwise:
-		continue the action;
+		now the obedience collar is damaged;
 
-Instead of taking the obedience collar:
-	clear the screen;
-	Say "You pick up the collar and figure it's safe to wear. After all, it's been inactive for centuries. The metal is cool against your skin as you slip it around your neck, and for a second or two, nothing happens, but then, with a soft click, the collar comes to life. Your amusement turns to surprise as the collar tightens, snug against your throat. You try to remove it but your fingers find no clasp, no opening.";
-	pause the game;
-	execute JavaScript command "updateImage('img/drone-attack-9.jpg', 'default');";
-	execute JavaScript command "audioManager.playSound('[sound-state]', 'alarm', 'mp3/586384__alarm.mp3', 5);";
-	say "[line break]A low hum fills the air and the lab's emergency lights flicker to life, filling the room with a harsh, red glow. You freeze as you hear a mechanical buzz from the corridor outside. Drones -- awakened from hibernation.[paragraph break]You see two drones enter, their red glowing eyes fixed on you. They deliver the first shock without warning. You feel a strong jolt and your body goes rigid, a scream caught in your throat. You stumble, crashing into a nearby console and sending equipment clattering to the floor.[paragraph break]Over the alarm you hear their alerts fill the room: 'UNATHORIZED PRESENCE DETECTED[line break]...INITIATING CONTAINMENT PROTOCOL'[paragraph break]With the second shock you can't hold back your screams and collapse on the floor, your body convulsing. The world around you begins to fade. Darkness creeps in at the edges of your vision.[paragraph break]As your heart stops beating and your life slips away, the drones converge on your broken body. Their alerts fill the air once more: 'PROTECTION PROTOCOL COMPLETED...THREAT ELIMINATED'[paragraph break]The obedience collar powers down with a final, ominous hum.";
-	pause the game;
-	execute JavaScript command "audioManager.stopAll()";
-	now playerDead is true;
-	
+Every turn when the player is wearing the obedience collar:
+	if the obedience collar is operational:
+		if the player is in Equipment Storage:
+			if equip-death-turns is 0:
+				say "The metal is cool against your skin as you slip it around your neck, and for a second or two, nothing happens, but then, with a soft click, the collar comes to life. Your amusement turns to surprise as the collar tightens, snug against your throat. You try to remove it but your fingers find no clasp, no opening. You struggle to catch your breath. The collar compresses your windpipe without mercy.";
+				increase equip-death-turns by 1;
+			otherwise if equip-death-turns is 2:
+				say "The collar constricts further, crushing your windpipe. Black spots dance at the edges of your vision as you desperately claw at the metal band. Your lungs scream for air and panic overwhelms you. Your thoughts are growing clouded. Act quickly or these moments will be your last.";
+				increase equip-death-turns by 1;
+			otherwise if equip-death-turns > 2:
+				say "You struggle weakly now, your strength fading as the collar inexorably tightens. The darkness at the edges of your vision grows, consuming everything.";
+				pause the game;
+				execute JavaScript command "updateImage('img/drone-attack-9.jpg', 'default');";
+				execute JavaScript command "audioManager.playSound('[sound-state]', 'alarm', 'mp3/586384__alarm.mp3', 5);";
+				say "[line break]A low hum fills the air and the lab's emergency lights flicker to life, filling the room with a harsh, red glow. You freeze as you hear a mechanical buzz from the corridor outside. Drones -- awakened from hibernation.[paragraph break]You see two drones enter, their red glowing eyes fixed on you. They deliver the first shock without warning. You feel a strong jolt and your body goes rigid, a scream caught in your throat. You stumble, crashing into a nearby console and sending equipment clattering to the floor.[paragraph break]Over the alarm you hear their alerts fill the room: 'UNATHORIZED PRESENCE DETECTED[line break]...INITIATING CONTAINMENT PROTOCOL'[paragraph break]With the second shock you can't hold back your screams and collapse on the floor, your body convulsing. The world around you begins to fade. Darkness creeps in at the edges of your vision.[paragraph break]As your heart stops beating and your life slips away, the drones converge on your broken body. Their alerts fill the air once more: 'PROTECTION PROTOCOL COMPLETED...THREAT ELIMINATED'[paragraph break]One drone extends a small magnetic device, and pressing it against the collar, powers it down with a final, ominous hum.";
+				pause the game;
+				execute JavaScript command "audioManager.stopAll()";
+				now playerDead is true;
+				stop the action;
+			otherwise:
+				continue the action;
+		otherwise: 
+			[player not in equipment storage but wears the collar]
+			say "The metal is cool against your skin as you slip it around your neck, and for a second or two, nothing happens, but then, with a soft click, the collar comes to life. Your amusement turns to surprise as the collar tightens, snug against your throat. You try to remove it but your fingers find no clasp, no opening. You struggle to catch your breath. The collar compresses your windpipe without mercy.";
+			say "[line break]You feel a strong jolt and your body goes rigid, a scream caught in your throat. With the second shock you can't hold back your screams and collapse, your body convulsing. The world around you begins to fade. Darkness creeps in at the edges of your vision.[paragraph break]As your heart stops beating and your life slips away, the collar powers down with a final, ominous hum.";
+			now playerDead is true;
+			pause the game;
+			stop the action;
+	otherwise:
+		say "The collar's clasp is broken, the metal band twisted and useless. There's no way to secure it around your neck now.";
+			
 Instead of opening the rusty box:
 	if the rusty box is open:
 		say "The box is already open.";
-	otherwise if the player is wearing the cyborg kit or the player has the Cyberhand:
+	otherwise if the player is wearing the cybernetic suit or the player has the Cyberhand:
 		now the rusty box is open;
 		now the rusty box is damaged;
-		say "[if the player is wearing the cyborg kit]You grip the edge of the lid, feeling the augmented grip strength flow through your hands. The servos in the leg bracers whir suddenly as you plant your feet.[else]You grip the edge of the lid, feeling the augmented grip strength flow through your hand.[end if]";
+		say "[if the player is wearing the cybernetic suit]You grip the edge of the lid, feeling the augmented grip strength flow through your hands. The servos in the leg bracers whir suddenly as you plant your feet.[else]You grip the edge of the lid, feeling the augmented grip strength flow through your hand.[end if]";
 		say "[line break]Taking a deep breath, you began to pull.";
-		say "[line break]The sensation is extraordinary. Where before you had felt only resistance, now you hear the metal groan and give way in your grasp, yielding like thin, flimsy paper. With a final twist, the lid tears free.[if the player is wearing the cyborg kit] The sudden release of tension nearly causes you to stumble backward, but the stabilization systems kick in, keeping you upright.[end if] As you stare at the mangled lid in your hands, then at the now-open box, a grin of triumph and wonder spreads across your face.";
+		say "[line break]The sensation is extraordinary. Where before you had felt only resistance, now you hear the metal groan and give way in your grasp, yielding like thin, flimsy paper. With a final twist, the lid tears free.[if the player is wearing the cybernetic suit] The sudden release of tension nearly causes you to stumble backward, but the stabilization systems kick in, keeping you upright.[end if] As you stare at the mangled lid in your hands, then at the now-open box, a grin of triumph and wonder spreads across your face.";
 		say "[line break]Inside, you find relics from Zephyr's past.";
 		now hasOpenedTimeCapsule is true;
 		increase the score by Easy_Score_Bonus;
 	otherwise:
 		say "Your muscles burn with effort, but the box remains closed.";
 	stop the action.
+	
+[Handle attempts to give or put the collar on NPCs and things]
+Instead of giving the obedience collar to someone:
+	if the second noun is the female cyborg:
+		if EveIsDoubleDead is true:
+			say "You try to fasten the collar around her neck, but it refuses to lock into place. After a moment, it slides off and clatters to the ground, as if rejecting the inert machinery beneath it.";
+			now the obedience collar is in the Supply Room;
+		otherwise if EveIsDead is true:
+			say "As the collar pulses faintly, Eve’s lifeless body jerks slightly, her optics flickering with intermittent light. Her voice emerges, fragmented and eerie, 'The flesh...is weak. Metal...endures. You cling to decay and ruin.'";
+			say "[line break]Her tone shifts, urgency cutting through the static, 'You must...leave. The Caretaker sees all...Run...while you still can.'";
+			say "[line break]The light in her eyes dims, she slumps back into stillness, leaving an ominous silence.";
+			now the obedience collar is in the Supply Room;  [falls off]
+			now EveIsDoubleDead is true;
+		otherwise if the female cyborg has the Neurochip:
+			say "Her eyes flash with recognition at the sight of the collar. 'Unity collars,' she says dismissively, 'You believe this relic could override my enhancements? A quaint misunderstanding of my design.'";	
+		otherwise:
+			say "You try to fasten the collar around the cyborg's neck, but it refuses to lock into place. After a moment, it slides off and clatters to the ground, as if rejecting the inert machinery beneath it.";
+			now the obedience collar is in the Supply Room;
+	otherwise if the second noun is the Caretaker Bot:
+		say "The Caretaker[apostrophe]s optical sensors fix on the collar. 'Unity device deployment: invalid target. Collars are calibrated for biological entities requiring behavioral modification. Application to this unit: illogical.'[paragraph break]Her mechanical arm extends with ruthless efficiency, seizing the collar. 'Item confiscated. Return to your assigned tasks.'";
+		now the Caretaker carries the obedience collar;
+	otherwise if the second noun is the Legacy Pilot:
+		say "The Pilot sounds almost insulted, 'Your primitive control device is designed for mere biological specimens. I am vastness. I am eternal purpose. I am Legacy.'";
+	otherwise:
+		say "That wouldn't achieve anything useful.";
 
+Instead of putting the obedience collar on someone:
+	try giving the obedience collar to the noun.
+	
+Instead of putting the obedience collar on something:
+	say "That wouldn't achieve anything useful.";
+	now the player has the obedience collar.
+	
+Equipping it on is an action applying to two things.
+Understand "put [something] on [someone]" as equipping it on.
+
+Check equipping it on:
+	if the noun is not wearable:
+		say "[The noun] can't be worn." instead;
+	if the second noun is not a person:
+		say "You can only put wearable things on people." instead.
+
+Carry out equipping it on:
+	try giving the noun to the second noun.
+	[now the second noun wears the noun.]
+
+Report equipping it on:
+	say "[The second noun] is now wearing [the noun]."
+
+Instead of putting something on something when the second noun is a person:
+	try giving the noun to the second noun instead.
+	[try equipping the noun on the second noun instead.]
+	
 Part 23 - Testing Station
 
 The Testing Station is a room.
@@ -2937,7 +3002,7 @@ The image file name of the Testing Station is "quantum-projector-1.jpg".
 The sound-file-name of the Testing Station is "56753__testing-station.mp3".
 The Testing Station is north of the Research Lab.
 The Testing Station is south of the Cyborg Assembly.
-The description of the Testing Station is "This appears to be a workstation for testing, checking, and screening cybernetic parts. The air is heavy with the scent of ozone and heated silicon tinged with machine oil. A chaotic array of disassembled parts, exposed circuit boards, and spools of insulated wiring, sprawl across a central worktable.[if item described is unvisited] The testing station stands empty now, the only sign of activity comes from the stout machine at the table's center, which emits a soft hum.[end if][paragraph break]To the north is the assembly line. To the south, the research lab."
+The description of the Testing Station is "This appears to be a workstation for testing, checking, and screening cybernetic parts. The air is heavy with the scent of ozone and heated silicon tinged with machine oil. A chaotic array of disassembled parts, exposed circuit boards, and spools of insulated wiring, sprawl across a worktable.[if item described is unvisited] The testing station stands empty now, the only sign of activity comes from the stout machine at the table's center, which emits a soft hum.[end if][paragraph break]To the north is the assembly line. To the south, the research lab."
 
 The workstation, cluttered worktable, cybernetic parts, exposed circuit boards, and spools of insulated wiring are scenery in the Testing Station.
 
@@ -2998,9 +3063,9 @@ Carry out inserting the Qubit Stick into the Quantum Media Port:
 	
 Report inserting the Qubit Stick into the Quantum Media Port:
 	clear the screen;
-	now the caretaker log is in the Testing Station;
-	try examining the caretaker log;
-	now the caretaker log is nowhere;  [we don't want it to appear in the room as an object]
+	now the settlement chronicle is in the Testing Station;
+	try examining the settlement chronicle;
+	now the settlement chronicle is nowhere;  [we don't want it to appear in the room as an object]
 	pause the game;
 	say "[line break]Despite gaps in the log, it's clear: the original Zephyr colonists were driven to rebellion by the Caretaker's cruelty and oppressive control.";
 	say "[line break]The rebellion and the founding of New Eden make perfect sense now. Your ancestors weren't anarchists or troublemakers -- they were fighting for their lives.";
@@ -3020,7 +3085,7 @@ The sound-file-name of the Research Lab is "211683__research-lab.mp3".
 The Research Lab is scored.
 
 Before going to the Research Lab:
-	if the player is wearing the cyborg kit:
+	if the player is wearing the cybernetic suit:
 		if LabPower is true:
 			now the image file name of the Research Lab is "lab-with-caretaker-e.jpg";
 			now the Caretaker is in the Research Lab;
@@ -3134,7 +3199,7 @@ The gestation pods and the DNA databank are scenery in the Research Lab.
 
 The description of the gestation pods is "Lining the lab walls are rows of cylindrical gestation pods, their surfaces corroded and glass cracked. These chambers, designed to cultivate the colony's workforce, are nothing but dusty relics now.[if item described is unexamined and hasHeardOfCaretaker is true] As you survey the equipment, a chilling realization occurs to you: with this production line long dead, the Caretaker's only source of new cyborgs must be the unfortunate runaways and curious sightseers from New Eden who venture too close to the ruins. These kidnappings must have been going on for generations.[end if]" 
 
-The description of the DNA databank is "In the lab's corner stands the colony's damaged DNA databank -- a hulking cylinder scarred by conflict. Behind its fractured panels, shattered crystal matrices catch the light, their once-perfect lattices now reduced to glittering fragments. There are signs of makeshift repairs around the base of the machine -- evidence of the Caretaker's futile attempts to salvage this crucial piece of equipment.[if item described is unexamined] The stories say this machine once held the genetic blueprints of life itself, guiding the creation of new colonists in the gestation pods.[end if]"
+The description of the DNA databank is "In the lab's corner stands the colony's damaged DNA databank -- a hulking cylinder scarred by conflict. Behind its fractured panels, shattered crystal matrices catch the light, their once-perfect lattices now reduced to mere fragments. There are signs of makeshift repairs around the base of the machine -- evidence of the Caretaker's futile attempts to salvage this crucial piece of equipment.[if item described is unexamined] The stories say this machine once held the genetic blueprints of life itself, guiding the creation of new colonists in the gestation pods.[end if]"
 
 The main control console is scenery in the Research Lab.
 The description of the main control console is "A modified keypad set up with a green back-lit display. The display shows cryptic data about colony operations. Your eye is drawn to the line items called 'recent acquisitions' and 'conversion count.' You wonder if this might account for the New Eden settlers who have gone missing."
@@ -3178,7 +3243,7 @@ Every turn when the player is in the Research Lab:
 		say "[line break]By the time you step off the assembly line, you are transformed: a loyal servant of the Caretaker, all resistance erased, content in your new role.";
 		say "[line break]Your new optical sensors evaluate the room with perfect clarity. The chaos of human emotion has been replaced with clean logic. You understand now -- the beauty of Harmony, the perfection of order. How foolish you were to resist. You take your place among the others. You have found your rightful place in Zephyr."; 
 		now playerAbsorbed is true;
-	otherwise if the player is wearing the cyborg kit:
+	otherwise if the player is wearing the cybernetic suit:
 		if research-lab-turns > 2:
 			if the Caretaker can see the player:
 				if the player has the energy statistics log:
@@ -3613,7 +3678,7 @@ Instead of entering the Capsule:
 	try hiding.
 	
 Before entering the hatch:
-	if the player is wearing the cyborg kit:
+	if the player is wearing the cybernetic suit:
 		say "The narrow hatch demands a human profile -- your bulky cyborg plating cannot squeeze through.";
 		stop the action.
 
@@ -3622,7 +3687,7 @@ playerToldToHide is a truth state that varies. playerToldToHide is false.
 
 Every turn when the player is in the Museum:
 	increase museum-turns by 1;
-	if museum-turns is 3:
+	if museum-turns is 4:
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'footsteps', 'mp3/455068__guard-footsteps.mp3', 1, 1, 500);";
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'caretaker', 'mp3/535021__lame-caretaker-pursuit.mp3', 1, .25, 750);";
 		say "Beyond the hallway, you can hear the labored movements of a cyborg guard in low-power mode, his mechanical parts clicking like a nervous insect as he struggles to function. A familiar metallic voice is audible now. The Caretaker herself has joined the pursuit, her usually smooth tones now distorted by failing power systems. 'Halt...You are not authorized...'";
@@ -3631,7 +3696,7 @@ Every turn when the player is in the Museum:
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'footsteps', 'mp3/455068__guard-footsteps.mp3', 1, .5, 500);";
 		say "[line break]You hear footsteps. Your eyes scan the museum, searching for a hiding spot."; 
 		now playerToldToHide is true;
-	otherwise if museum-turns > 6:
+	otherwise if museum-turns > 7:
 		clear the screen;
 		say "The lander craft beckons you, a potential sanctuary, but before you can reach it, a metallic voice cuts through the air: 'Unauthorized presence detected.'";
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'caretaker', 'mp3/535021__lame-caretaker-pursuit.mp3', 1, .33);";
@@ -3659,12 +3724,12 @@ Check hiding in something:
 		say "Hiding won't help you here." instead.
 
 Carry out hiding in the Capsule:
-	if the player is wearing the cyborg kit:
+	if the player is wearing the cybernetic suit:
 		say "The narrow hatch demands a human profile - the bulky cyborg plating would never squeeze through.";
 		stop the action;
 	otherwise:
 		clear the screen;
-		now the cyborg kit is in the metal supply cabinet; [can't take kit with you] 
+		now the cybernetic suit is in the metal supply cabinet; [can't take suit with you] 
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'footsteps', 'mp3/455068__guard-footsteps.mp3', 1);";
 		say "You hear the unmistakable sound of metallic feet against the stone floor drawing closer. A cyborg guard is on your trail.";
 		say "[line break]Your eyes lock onto the structure dominating the center of the room -- the Zephyr Capsule."; 
@@ -3809,7 +3874,7 @@ Every turn when the player is in the Lander Craft:
 		say "[line break]To your surprise, your feet meet the floor with a familiar weight -- somehow, there's gravity here. You step into the dimly lit corridor, your footsteps echoing in the silence. The air is stale but breathable, carrying a faint scent of metal and old electronics. You can't help but wonder, 'How is there air to breathe on an ancient ship?' It's as if the vessel has been waiting for you, prepared for your arrival. As your eyes adjust to the gloom, you begin to make out details of your surroundings. The corridor stretches before you, its walls lined with arcane devices and enigmatic markings";
 		say "[line break]You run your hand along the wall, feeling the cold metal beneath your fingers. Has this ancient ship been orbiting for centuries? The gravity, the air, the humming systems – it all feels too convenient, too prepared. A nagging thought tugs at the back of your mind: 'Was I expected?'";
 		pause the game;
-		now the cyborg kit is in the metal cabinet;  [just in case they still carry it]
+		now the cybernetic suit is in the metal cabinet;  [just in case they still carry it]
 		move the player to the Docking Bay, without printing a room description;
 		if hasSeenLegacyHistory is false:
 			now the exhibit console is in the Archives Chamber.
@@ -4059,8 +4124,11 @@ Every turn while the player is in the Legacy Bridge:
 Legacy Pilot is a man in the Legacy Bridge.
 The printed name of Legacy Pilot is "the Legacy pilot".
 Before giving something to Legacy Pilot:
-	say "Legacy isn't interested in [the noun].";
-	stop the action.
+	if the noun is the obedience collar:
+		continue the action;
+	otherwise:
+		say "Legacy isn't interested in [the noun].";
+		stop the action.
 
 legacy-questions is a number that varies. legacy-questions is 0.
 
