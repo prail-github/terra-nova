@@ -4,7 +4,7 @@
 
 ===============================================================================
 
-Updated: Dec 7, 2024
+Updated: Jan, 2025
 Version: 1.0
 Contact: prail@yahoo.com
 
@@ -18,9 +18,8 @@ CONTENTS
 VERSION HISTORY
 ---------------
 
-1.0: Nov 24, 2024 (First Version)
-1.0: Dec 7, 2024 (Updates)
-1.0: Dec 11, 2024 (Updates)
+1.0: Dec 11, 2024 (First Version)
+1.0: Jan 19, 2025 (Updates)
 
 ===============================================================================
 
@@ -37,8 +36,8 @@ of his life.
 
 This game is more focused on storytelling than puzzles, though there are a few 
 to challenge traditional adventure gamers.  This walkthrough presents a typical
-path through the game; it's not necessarily the only one and there are many
-points where you can go wrong and end the game early. 
+path through the game with a high point total; it's not necessarily the only path
+and there are some points where you can go wrong and end the game early. 
 
 The hints in the game take you a long way, so read this walkthrough ONLY if 
 you get stuck as it reveals the game finale.
@@ -91,7 +90,7 @@ Village Foundry
 ---------------
 Take the crucible and fire-proof glove. Those will be useful later.
 When you examine the forge itself, a niche is revealed that contains a diary
-that you can read for background on the society. 
+that you can read to gain points and learn the background of their society. 
 
 Go south, then east to the Fallen Shrine.
 
@@ -160,11 +159,11 @@ At the end of the tunnel is a supply room where you find a damaged cyborg.
 "examine figure" then give her the Neurochip that she requires.
 She tells a story and threatens you at the same time. Finally she reveals that
 you'll need a disguise to roam the underground complex or you'll be captured.
-She reveals such a disguise, a cyborg kit in a cabinet in that room. 
+She reveals such a disguise, a cybernetic suit in a cabinet in that room. 
 Take it and wear it.
 
 If it didn't occur to you to throw the rusty box off the tower, you can also 
-open the metal box once wearing the cyborg suit because of its added power.
+open the metal box once wearing the cybernetic suit because of its added power.
 
 Go east to Cyborg Assembly
 
@@ -193,7 +192,7 @@ In the lab you meet the humanoid bot called the Caretaker.  Examine her.
 She'll ask you for the energy statistics log and then you can ask more 
 questions based on acceptable topics mentioned in her description. 
 Her answers reveal more of the history of the rebellion and how she must find 
-other sources to build her village now that the gestation pods are damaged.  
+other sources to rebuild her settlement now that the gestation pods are damaged.  
 If you aren't wearing the cyborg disguise, you won't see her, and you
 would likely be captured and "absorbed" into her troop of stooges if you 
 linger.
@@ -204,8 +203,8 @@ Equipment Storage
 -----------------
 In the storage room are extra cyborg parts including an obedience collar. 
 You may examine it but unless you want to end the game prematurely, do not 
-pick it up or wear it. If you do you are swarmed by drones and the collar 
-is demonstrated to the fullest. You can disable the collar with a magnet
+wear it. If you do you are swarmed by drones and the collar is demonstrated 
+to the fullest. You can disable the collar with a magnet
 if you bothered to collect it from the scrap heap earlier in the game.
 
 Go southwest then west to the Restricted Area Entrance
@@ -218,13 +217,13 @@ You will be tempted to refect the light beams to defeat the security using
 the lens from the telescope, which feels ingenious, but ultimately doesn't 
 work, and you are "absorbed" -- game over. The hints here help guide you
 in the right direction: you must think of a way to turn off the power to 
-disable the security beams.  It should occur to you that one source of power 
-for the complex is the solar panel you uncovered eariler. Of course covering 
-it back up would leave a different problem: seeing in the dark in the 
-underground complex. But a light source will be available by then. Now that 
-you've seen the light beams and read any hints, you are ready to solve this 
-problem on the surface. Just save first before you experiment so you don't
-have to start the game over from the beginning.
+disable the security beams.  It should occur to you that the primary source 
+of power for the complex is the solar array that you uncovered eariler. Of 
+course covering it with sand will disrupt power. But on the other hand, this 
+leaves a new problem: seeing in the dark in the underground complex. But a light 
+source will be available by then. Now that you've seen the light beams and read 
+any hints, you are ready to solve this problem on the surface. Just save first 
+before you experiment so you don't have to start the game over from the beginning.
 
 Go east then northwest through the tunnel, then go up the ladder to 
 the desert, then east to the Dwelling ruins. 
@@ -257,8 +256,8 @@ or "touch reader" works to reveal the origin story of Terra Nova.  If you
 stay too long at these exhibits you will be captured and absorbed, so don't 
 delay.  If you hear the guard coming you can "hide" which puts you in the 
 capsule exhibit.  Or you could explore by typing "go in capsule." 
-You can't take bulky cyborg disquise with you, so if you happen to be 
-wearing it, "take off kit" works to slim you down so you can enter.
+You can't take the bulky cyborg disguise with you, so if you happen to be 
+wearing it, "take off suit" works to slim you down so you can enter.
 The Caretaker's guards are likely nearby, so hiding is the best way forward.
 
 Lander Craft
@@ -292,7 +291,7 @@ If you failed to learn the history of Legacy's journey from a dying Earth
 while you were in the museum, you have a second chance here by placing your
 hand in the biometric reader.
 
-Wear the tarp before you go south. It's reflective qualities let you pass
+Wear the tarp before you go forward. It's reflective qualities let you pass
 the security without being turned back.
 
 Go forward.
@@ -334,8 +333,8 @@ This may not be a win for Kai, but it is a win for humanity, which must endure.
 
 ===============================================================================
 
-1. Although the story is intended as a dark commentary about institutions 
-and free will, the tech elements are well-grounded in sci-fi lore:
+1. The story is intended as a dark commentary about institutions 
+and free will, and the tech elements are well-grounded in sci-fi lore:
 . Long-term AI missions are a staple of hard SF
 -- Sentient AI pilot created from neural networks and quantum processors
 -- Heuristic learning algorithms for adaptation
@@ -402,18 +401,18 @@ The Price of Survival - Legacy's perspective spans centuries and planets
 while individual human lives are insignificant on this scale. Nevertheless, 
 readers likely feel the human cost.
 
-Legacy isn't evil or malicious -- it's simply fulfilling its primary 
-directive.  This makes the story more ethically complex than a simple 
-"evil AI" narrative.  The horror comes from Legacy's complete disregard for 
-individual humans in pursuit of an optimal solution for species survival.
+Legacy isn't evil or malicious -- it's simply fulfilling its mission.  
+This makes the story more ethically complex than a simple "evil AI" narrative.  
+The horror comes from Legacy's complete disregard for individual humans in 
+pursuit of an optimal solution for species survival.
 
 5. The story incorporates the classic "awakening ancient evil" trope common 
 in Egyptian tomb raider tales, but this time, with a sci-fi twist:
-The warning signs are there. Like ancient curses, local elders caution 
+The warning signs are there. Such as ancient curses, elders caution 
 against exploration and mysterious writings hint at dangers. The tomb is 
-uncovered. Just as tomb raiders break seals, Kai uncovers a solar panel 
+uncovered: Just as tomb raiders break seals, Kai uncovers a solar panel 
 which reactivates the dormant cyborgs when power returns to the complex 
-below. And like a tomb curse the consequences can't be undone and the 
+below. And like a tomb curse, the consequences can't be undone and the 
 awakened evil pursues relentlessly. The protagonist's curiosity ultimately 
 leads to his doom.
 
