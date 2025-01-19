@@ -342,42 +342,101 @@ const hiddenCtx = hiddenCanvas.getContext('2d');
 var audioManager = new AudioManager();
 
 function setupMobileContinue() {
-// Create a continue button
-let continueBtn = document.createElement('button');
+// Create a continue button if it doesn't exist
+let continueBtn = document.getElementById('mobile-continue-btn');
+if (!continueBtn) {
+continueBtn = document.createElement('button');
+continueBtn.id = 'mobile-continue-btn';
 continueBtn.innerText = 'Continue';
-continueBtn.style.position = 'fixed';
-continueBtn.style.bottom = '20px';
-continueBtn.style.left = '50%';
-continueBtn.style.transform = 'translateX(-50%)';
-continueBtn.style.padding = '10px 20px';
-continueBtn.style.display = 'none';  // Hidden by default
+continueBtn.style.cssText = `
+position: fixed;
+bottom: 20px;
+left: 50%;
+transform: translateX(-50%);
+padding: 15px 30px;
+font-size: 16px;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 5px;
+z-index: 9999;
+display: none;
+touch-action: manipulation;
+-webkit-tap-highlight-color: transparent;
+cursor: pointer;
+`;
 document.body.appendChild(continueBtn);
+}
+
+// Function to check if device is mobile
+function isMobileDevice() {
+const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+return mobileRegex.test(navigator.userAgent) ||
+(navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /MacIntel/.test(navigator.platform)) ||
+window.innerWidth <= 768;
+}
+
+// Function to show/hide continue button
+function updateButtonVisibility() {
+if (isMobileDevice() && document.body.innerText.includes("Press SPACE to Continue")) {
+continueBtn.style.display = 'block';
+console.log("Showing continue button for mobile device");
+} else {
+continueBtn.style.display = 'none';
+}
+}
 
 // Monitor for the "Press SPACE to continue" message
 const observer = new MutationObserver(function(mutations) {
-mutations.forEach(function(mutation) {
-if (mutation.addedNodes.length) {
-if (document.body.innerText.includes("Press SPACE to Continue.")) {
-continueBtn.style.display = 'block';
-}
-}
-});
+updateButtonVisibility();
 });
 
-// Watch for DOM changes
-observer.observe(document.body, { childList: true, subtree: true });
+// Watch for DOM changes in the game output area
+const outputElement = document.getElementById('window0') || document.body;
+observer.observe(outputElement, {
+childList: true,
+subtree: true,
+characterData: true
+});
 
 // When button is clicked, simulate a space keypress
-continueBtn.addEventListener('click', function() {
+continueBtn.addEventListener('click', function(e) {
+e.preventDefault();
+console.log("Continue button clicked");
+
 const spaceEvent = new KeyboardEvent('keydown', {
 key: ' ',
 keyCode: 32,
 which: 32,
+code: 'Space',
 bubbles: true
 });
 document.dispatchEvent(spaceEvent);
-continueBtn.style.display = 'none';
+
+// Also dispatch keyup event for better compatibility
+const spaceUpEvent = new KeyboardEvent('keyup', {
+key: ' ',
+keyCode: 32,
+which: 32,
+code: 'Space',
+bubbles: true
 });
+document.dispatchEvent(spaceUpEvent);
+});
+
+// Check visibility on page load
+updateButtonVisibility();
+
+// Check visibility on orientation change
+window.addEventListener('orientationchange', updateButtonVisibility);
+window.addEventListener('resize', updateButtonVisibility);
+}
+
+// Initialize as soon as DOM is ready
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', setupMobileContinue);
+} else {
+setupMobileContinue();
 }
 
 function setBackgroundColorAndTextColor(rgb) {
@@ -911,11 +970,6 @@ console.warn('Failed to load some sounds:', errors);
 
 console.error('Preloading sounds...');
 initializeSounds();
-
-// Only create and show the button if we're on a mobile device
-if (/iPhone|iPad|Android/i.test(navigator.userAgent) || window.innerWidth <= 768) {
-setupMobileContinue();
-}
 
 </script>
 
