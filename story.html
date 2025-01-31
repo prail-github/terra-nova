@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>P.Rail - Terra-Nova — Play</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta name="author" content="P.Rail">
+  <link rel="stylesheet" href="style.css">
+  
+  <link rel="shortcut icon" type="image/x-icon" href="/terra-nova/favicon.ico">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="robots" content="noimageindex">
+<meta name="robots" content="noarchive">
+<meta name="robots" content="nocache">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="interpreter/roboto.css">
+<link rel="stylesheet" type="text/css" href="interpreter/jquery.powertip.css">
+<link rel="stylesheet" type="text/css" href="interpreter/toastr.css">
+<link rel="stylesheet" type="text/css" href="interpreter/vex.css">
+<link rel="stylesheet" type="text/css" href="interpreter/vex-theme-plain.css">
+
+<link rel="stylesheet" type="text/css" href="interpreter/haven.css">
+<link rel="stylesheet" type="text/css" href="interpreter/vorple.css">
+<style>
+/* Center the vex-content dialog */
+.vex-content {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+/* Optionally, add some width to prevent it from being too small */
+width: auto; /* Adjust or set a fixed width if needed */
+max-width: 90%; /* Optional, ensures it doesn't go beyond the screen size */
+box-sizing: border-box; /* Ensures padding is included in width calculation */
+}
+.command-echo { display: none; }
+</style>
+
+  
+ </head>
+<body class="play">
+<div class="container">
+<div class="coverimage"><span><a href="Cover.jpg"><img src="Small Cover.jpg" border="1"></a></span></div>
+<div class="links">
+<div class="smalltitle">Terra-Nova</div>
+<ul>
+<li><a href="index.html">Home page</a></li>
+</ul>
+</div>
+
+<div id="gameport">
+<main id="vorple">
+<div id="loader">
+<h2 id="loader-message">Loading scripts</h2>
+<div id="spinner">V</div>
+</div>
+</main>
+
+<script src="interpreter/vorple.min.js"></script>
+<script src="interpreter/Terra-Nova.gblorb.js"></script>
+
+<script>
+function showHideTranscriptButton(show_me) { // show_me = none | block
+const ting = document.getElementById('downloadTranscript');
+if (ting) {
+ting.style.display = show_me;
+}
+}
+
+function downloadLatestTranscript() {
+const fs = vorple.file.getFS();
+
+fs.readdir(vorple.file.TRANSCRIPT_PATH, function(error, files) {
+if (error) {
+console.log("Error reading transcript directory:", error);
+return;
+}
+
+if (files && files.length > 0) {
+// Get the most recent transcript file
+const latestFile = files[files.length - 1];
+
+fs.readFile(
+vorple.file.path(latestFile, vorple.file.TRANSCRIPT_PATH),
+"utf8",
+function(error, contents) {
+if (error) {
+console.log("Error reading transcript:", error);
+return;
+}
+
+// Create and trigger download
+const blob = new Blob([contents], {type: 'text/plain'});
+const url = window.URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = latestFile;
+a.click();
+window.URL.revokeObjectURL(url);
+}
+);
+}
+});
+}
+</script>
+
+<script>
+if( location.protocol === "file:" ) {
+$( 'body' )
+.empty()
+.html( "<div><p>You are currently viewing the page from the filesystem. " +
+"Unfortunately Vorple requires that the page is viewed through " +
+"the HTTP protocol, that is, you'll need to either upload it " +
+"to the Internet or install a local server.</p>" +
+'<p>See <a href="https://vorple-if.com/docs/localhost" style="color:#dde">vorple-if.com/docs/localhost</a> ' +
+"for more information.</p>" +
+"</div>" )
+.find( 'div' )
+.css({
+margin: "2em",
+padding: "1em",
+color: "#fff",
+backgroundColor: "rgb(137, 50, 58)",
+border: "3px solid gray"
+});
+
+throw new Error( "Vorple can't be run from the filesystem" );
+}
+
+$( function() {
+$( '.container, .interpretercredit' ).remove();
+});
+
+vorple.options = {
+autosave: false,
+engineColors: false,
+story: ""
+};
+
+vorple.debug.off();
+vorple.init();
+
+</script>
+
+<script>
+// Complete Audio Manager System with async support, volume control,
+// and automatic cleanup of completed sounds
+class AudioManager {
+constructor() {
+this.activeAudio = new Map();
+this.fadeOutDuration = 500;
+this.pendingOperations = new Map();
+}
+
+async playSound(audible, audioHandle, filePath, loopCount = 1, initialVolume = 1, delay = 0) {
+if (this.pendingOperations.has(audioHandle)) {
+clearTimeout(this.pendingOperations.get(audioHandle));
+this.pendingOperations.delete(audioHandle);
+}
+
+if (delay === 0) {
+return this.playSoundNow(audible, audioHandle, filePath, loopCount, initialVolume);
+}
+
+return new Promise((resolve, reject) => {
+const timeoutId = setTimeout(async () => {
+this.pendingOperations.delete(audioHandle);
+try {
+const result = await this.playSoundNow(audible, audioHandle, filePath, loopCount, initialVolume);
+resolve(result);
+} catch (error) {
+reject(error);
+}
+}, delay);
+
+this.pendingOperations.set(audioHandle, timeoutId);
+});
+}
+
+async playSoundNow(audible, audioHandle, filePath, loopCount, initialVolume) {
+const operationId = Symbol();
+
+if (audible == 'off' || filePath.toLowerCase().includes("silence")) {
+if (this.activeAudio.has(audioHandle)) {
+await this.fadeOutAndStop(audioHandle);
+}
+return audioHandle;
+}
+
+if (this.activeAudio.has(audioHandle)) {
+const currentAudio = this.activeAudio.get(audioHandle);
+if (currentAudio.filePath === filePath) {
+return audioHandle;
+}
+await this.fadeOutAndStop(audioHandle);
+}
+
+const audio = new Audio(filePath);
+audio.volume = Math.max(0, Math.min(1, initialVolume));
+let playCount = 0;
+
+// For infinite or multiple loops
+if (loopCount === -1 || loopCount > 1) {
+audio.addEventListener('ended', () => {
+if (this.activeAudio.has(audioHandle)) {
+if (loopCount !== -1) {
+playCount++;
+if (playCount >= loopCount) {
+this.activeAudio.delete(audioHandle);
+return;
+}
+}
+audio.currentTime = 0;
+audio.play().catch(error => console.error('Error restarting audio:', error));
+}
+});
+} else {
+// Single play
+audio.addEventListener('ended', () => {
+if (this.activeAudio.has(audioHandle)) {
+this.activeAudio.delete(audioHandle);
+}
+});
+}
+
+this.activeAudio.set(audioHandle, {
+audio: audio,
+filePath: filePath,
+volume: initialVolume,
+loopCount: loopCount,
+playCount: 0,
+currentOperation: operationId
+});
+
+try {
+await audio.play();
+} catch (error) {
+console.error('Error playing audio:', audioHandle, error);
+this.activeAudio.delete(audioHandle);
+throw error;
+}
+
+return audioHandle;
+}
+
+stop(audioHandle) {
+if (this.pendingOperations.has(audioHandle)) {
+clearTimeout(this.pendingOperations.get(audioHandle));
+this.pendingOperations.delete(audioHandle);
+}
+
+if (this.activeAudio.has(audioHandle)) {
+const audioObj = this.activeAudio.get(audioHandle);
+audioObj.audio.pause();
+audioObj.audio.currentTime = 0;
+this.activeAudio.delete(audioHandle);
+}
+}
+
+stopAll() {
+for (const [handle, timeoutId] of this.pendingOperations.entries()) {
+clearTimeout(timeoutId);
+}
+this.pendingOperations.clear();
+
+for (const handle of this.activeAudio.keys()) {
+this.stop(handle);
+}
+}
+
+fadeOutAndStop(audioHandle) {
+if (this.pendingOperations.has(audioHandle)) {
+clearTimeout(this.pendingOperations.get(audioHandle));
+this.pendingOperations.delete(audioHandle);
+}
+
+return new Promise((resolve) => {
+if (this.activeAudio.has(audioHandle)) {
+const audioObj = this.activeAudio.get(audioHandle);
+if (!audioObj || !audioObj.audio) {
+this.activeAudio.delete(audioHandle);
+resolve();
+return;
+}
+
+const audio = audioObj.audio;
+const originalVolume = audio.volume || 0;
+const fadeSteps = 20;
+const fadeInterval = this.fadeOutDuration / fadeSteps;
+
+let currentStep = 0;
+
+const fadeTimer = setInterval(() => {
+currentStep++;
+if (!this.activeAudio.has(audioHandle)) {
+clearInterval(fadeTimer);
+resolve();
+return;
+}
+
+const newVolume = originalVolume * (1 - currentStep / fadeSteps);
+audio.volume = Math.max(0, newVolume);
+
+if (currentStep >= fadeSteps) {
+clearInterval(fadeTimer);
+this.stop(audioHandle);
+resolve();
+}
+}, fadeInterval);
+} else {
+resolve();
+}
+});
+}
+
+isPlaying(audioHandle) {
+return this.activeAudio.has(audioHandle) &&
+!this.activeAudio.get(audioHandle).audio.paused;
+}
+
+setVolume(audioHandle, volume) {
+if (this.activeAudio.has(audioHandle)) {
+const audioObj = this.activeAudio.get(audioHandle);
+audioObj.audio.volume = Math.max(0, Math.min(1, volume));
+}
+}
+}
+</script>
+
+<script>
+// Create a hidden canvas element at page load
+const hiddenCanvas = document.createElement('canvas');
+hiddenCanvas.style.display = 'none';
+document.body.appendChild(hiddenCanvas);  
+const hiddenCtx = hiddenCanvas.getContext('2d');
+
+// set up audio
+var audioManager = new AudioManager();
+
+function setupMobileContinue() {
+// Create a continue button if it doesn't exist
+let continueBtn = document.getElementById('mobile-continue-btn');
+if (!continueBtn) {
+continueBtn = document.createElement('button');
+continueBtn.id = 'mobile-continue-btn';
+continueBtn.innerText = 'Continue';
+continueBtn.style.cssText = `
+position: fixed;
+bottom: 20px;
+left: 50%;
+transform: translateX(-50%);
+padding: 15px 30px;
+font-size: 16px;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 5px;
+z-index: 9999;
+display: none;
+touch-action: manipulation;
+-webkit-tap-highlight-color: transparent;
+cursor: pointer;
+`;
+document.body.appendChild(continueBtn);
+}
+
+// Function to check if device is mobile
+function isMobileDevice() {
+const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+return mobileRegex.test(navigator.userAgent) ||
+(navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /MacIntel/.test(navigator.platform)) ||
+window.innerWidth <= 768;
+}
+
+// Function to show/hide continue button
+function updateButtonVisibility() {
+if (isMobileDevice() && document.body.innerText.includes("Press SPACE to Continue")) {
+continueBtn.style.display = 'block';
+console.log("Showing continue button for mobile device");
+} else {
+continueBtn.style.display = 'none';
+}
+}
+
+// Monitor for the "Press SPACE to continue" message
+const observer = new MutationObserver(function(mutations) {
+updateButtonVisibility();
+});
+
+// Watch for DOM changes in the game output area
+const outputElement = document.getElementById('window0') || document.body;
+observer.observe(outputElement, {
+childList: true,
+subtree: true,
+characterData: true
+});
+
+// When button is clicked, simulate a space keypress
+continueBtn.addEventListener('click', function(e) {
+e.preventDefault();
+console.log("Continue button clicked");
+
+const spaceEvent = new KeyboardEvent('keydown', {
+key: ' ',
+keyCode: 32,
+which: 32,
+code: 'Space',
+bubbles: true
+});
+document.dispatchEvent(spaceEvent);
+
+// Also dispatch keyup event for better compatibility
+const spaceUpEvent = new KeyboardEvent('keyup', {
+key: ' ',
+keyCode: 32,
+which: 32,
+code: 'Space',
+bubbles: true
+});
+document.dispatchEvent(spaceUpEvent);
+});
+
+// Check visibility on page load
+updateButtonVisibility();
+
+// Check visibility on orientation change
+window.addEventListener('orientationchange', updateButtonVisibility);
+window.addEventListener('resize', updateButtonVisibility);
+}
+
+// Initialize as soon as DOM is ready
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', setupMobileContinue);
+} else {
+setupMobileContinue();
+}
+
+function setBackgroundColorAndTextColor(rgb) {
+// Ensure the RGB value is a hexadecimal color code
+if (!rgb.startsWith('#')) {
+console.error('Invalid RGB value. Must start with "#"', rgb);
+return;
+}
+
+// Extract the hexadecimal color code
+const hexCode = rgb.substring(1);
+
+// Convert hexadecimal color code to RGB values
+const red = parseInt(hexCode.substring(0, 2), 16);
+const green = parseInt(hexCode.substring(2, 4), 16);
+const blue = parseInt(hexCode.substring(4, 6), 16);
+
+// Calculate luminance for contrast determination
+const luminance = (0.299 * red + 0.587 * green + 0.114 * blue) / 255;
+
+// Choose contrasting text color based on luminance
+let textColor = luminance > 0.5 ? "black" : "white";
+
+// Additional logic for more sophisticated color choices
+if (luminance > 0.7) {
+// For very light backgrounds, consider a darker shade of black
+textColor = "#333333";
+} else if (luminance < 0.3) {
+// For very dark backgrounds, consider a lighter shade of white
+textColor = "#cccccc";
+}
+
+// Set background and text colors
+document.getElementById('vorple').style.backgroundColor = rgb;
+let bs = document.getElementById('lineinput-field');
+if ( bs != null ) {
+bs.style.color = textColor;
+//bs.style.fontFamily = "Georgia";
+}
+
+bs = document.getElementById('lineinput-prefix');
+if ( bs != null ) {
+bs.style.backgroundColor = rgb;
+bs.style.color = textColor;
+//bs.style.fontFamily = "Georgia";
+}
+
+bs = document.getElementById('output');
+if ( bs != null ) {
+bs.style.backgroundColor = rgb;
+bs.style.color = textColor;
+}
+
+bs = document.getElementById('my_container');
+if ( bs != null ) {
+bs.style.backgroundColor = rgb;
+bs.style.color = textColor;
+}
+
+bs = document.getElementById('side_window');
+if ( bs != null ) {
+bs.style.backgroundColor = rgb;
+bs.style.color = textColor;
+}
+
+bs = document.getElementById('window0');
+if ( bs != null ) {
+bs.style.backgroundColor = rgb;
+bs.style.color = textColor;
+}
+
+bs = document.querySelector('.status-line-container');
+if ( bs != null ) {
+bs.style.backgroundColor = rgb;
+bs.style.color = textColor;
+}
+
+document.body.style.color = textColor;
+document.body.style.backgroundColor = rgb;
+}
+
+function getMostCommonRGB(image) {
+// Set canvas dimensions to match the image
+hiddenCanvas.width = image.width;
+hiddenCanvas.height = image.height;
+
+// Draw the image onto the hidden canvas
+hiddenCtx.drawImage(image, 0, 0);
+
+// Get the image data
+const imageData = hiddenCtx.getImageData(0, 0, hiddenCanvas.width, hiddenCanvas.height);
+const data = imageData.data;
+
+// Create a map to store RGB values and their frequencies
+const rgbMap = {};
+
+// Iterate over each pixel and increment the frequency of its RGB value
+for (let i = 0; i < data.length; i += 4) {
+const r = data[i];
+const g = data[i + 1];
+const b = data[i + 2];
+const key = `${r},${g},${b}`;
+rgbMap[key] = (rgbMap[key] || 0) + 1;
+}
+
+// Find the most frequent RGB value
+let mostCommonRGB = null;
+let maxFrequency = 0;
+for (const key in rgbMap) {
+if (rgbMap[key] > maxFrequency) {
+mostCommonRGB = key;
+maxFrequency = rgbMap[key];
+}
+}
+
+let result = `#${mostCommonRGB.split(',').map(Number).map(v => v.toString(16).padStart(2, '0')).join('')}`;
+return result;
+}
+
+function updateImage(src, backgroundColor = 'default') {
+var sideWindow = document.getElementById('side_window');
+sideWindow.innerHTML = '<img src="' + src + ' "style="max-width:100%;height:auto;">';
+
+const image = new Image();
+image.src = src;
+
+image.onload = () => {
+let mostCommonRGB = getMostCommonRGB(image);
+if (backgroundColor != 'default' ) {
+mostCommonRGB = backgroundColor;   // override background color (rare)
+}
+const textColor = setBackgroundColorAndTextColor(mostCommonRGB);
+};
+}
+
+// These function all have to do with trying to RESTORE the interface after
+// the user types 'restore' ... it is still imperfect, but pretty good.
+var lastCmd;
+
+// Function to return the last command the user typed
+function getLastCommand() {
+let result = "none";
+if (lastCmd) {
+result = lastCmd;
+}
+//console.log("lastCmd:", result);
+return result;
+}
+
+var restoreRequested;
+
+// Function to return the last command the user typed
+function checkRestore() {
+let result = restoreRequested;
+restoreRequested = 'no';  // reset to not fire
+//console.log("checkRestore:", result);
+return (result && result == "yes");
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+// Attach an event listener to the document (or a parent element) for keydown events
+document.body.addEventListener('keydown', function(event) {
+// Check if the target of the event is the dynamically created input field
+const inputField = document.getElementById('lineinput-field');
+
+if (inputField && event.target === inputField) {
+// Check if the pressed key is 'Enter' (key code 13)
+if (event.key === 'Enter' || event.keyCode === 13) {
+//event.preventDefault();  // Prevent the default form submission
+
+// Log the value of the input field to the console
+//console.log("Line input value:", inputField.value);
+lastCmd = inputField.value;
+if ( lastCmd.toLowerCase() == "restore" || lastCmd.toLowerCase() == "undo" ) {
+restoreRequested = 'yes';
+}
+
+}
+}
+});
+});
+
+vorple.addEventListener('init', function() {
+var containerDiv = document.createElement('div');
+containerDiv.id = 'my_container';
+
+// move side_window inside container
+var sideWindow = document.createElement('div');
+sideWindow.id = 'side_window';
+
+// Move sideWindow & window0 into new container
+var window0 = document.getElementById('window0');
+
+containerDiv.appendChild(sideWindow);
+containerDiv.appendChild(window0);
+
+// move container inside output div
+var outputDiv = document.getElementById('output');
+outputDiv.appendChild(containerDiv);
+
+// create transcript button
+const button = document.createElement('button');
+button.id = 'downloadTranscript';
+button.innerHTML = 'Transcript';
+button.onclick = downloadLatestTranscript;
+button.style.cssText = 'z-index: 1000; position: fixed; top: 10px; left: 10px; display: none;';
+const body = document.body;
+body.insertAdjacentElement('afterbegin', button);
+
+// Adjust CSS styles as needed for layout
+sideWindow.style.marginTop = '10px';
+sideWindow.style.paddingTop = '10px';
+sideWindow.style.paddingRight = '10px';
+
+containerDiv.style.height = '95vh';
+containerDiv.style.paddingTop = '10px';
+containerDiv.style.marginTop = '10px';
+containerDiv.style.display = 'grid';
+containerDiv.style.gridTemplateColumns = '500px 1fr';
+
+window0.style.overflowY= 'auto';
+window0.style.paddingTop = '10px';
+window0.style.paddingLeft = '10px';
+window0.style.marginTop = '10px';
+
+var playArea = document.getElementById('output');
+playArea.style.maxWidth = '1400px';
+
+playArea.style.margin = '0 auto';    // Center the container
+
+var vorp = document.getElementById('vorple');
+vorp.style.maxWidth = '1500px';
+vorp.style.margin = '0 auto';    // Center the container
+
+outputDiv.style.marginRight = '25px';
+
+document.body.style.fontSize = "14pt";
+
+// Trigger the event initially on page load
+window.dispatchEvent(new Event('resize'));
+});
+
+let scrollRaf;
+// Debounce function to limit resize calculations
+function debounce(func, wait) {
+let timeout;
+return function() {
+clearTimeout(timeout);
+timeout = setTimeout(() => func.apply(this, arguments), wait);
+};
+}
+
+function handleScroll() {
+if (scrollRaf) {
+cancelAnimationFrame(scrollRaf);
+}
+
+scrollRaf = requestAnimationFrame(() => {
+const sideWindow = document.getElementById('side_window');
+if (!sideWindow) return;
+
+const windowWidth = window.innerWidth;
+if (windowWidth >= 600) {
+const scrollTop = window.scrollY;
+sideWindow.style.transform = `translateY(${scrollTop}px)`;
+} else {
+sideWindow.style.transform = 'none';
+}
+});
+}
+
+window.addEventListener('scroll', handleScroll);
+
+function handleResize() {
+const containerDiv = document.getElementById('my_container');
+const sideWindow = document.getElementById('side_window');
+if (!containerDiv || !sideWindow) return;
+
+const windowWidth = window.innerWidth;
+const baseFontSize = Math.max(10, Math.min(16, windowWidth / 75));
+
+if (windowWidth < 600) {
+containerDiv.style.cssText = `
+display: grid;
+grid-template-columns: 1fr;
+max-width: 100vw;
+overflow-x: hidden;
+`;
+sideWindow.style.transform = 'none';
+document.body.style.fontSize = "10pt";
+} else {
+containerDiv.style.cssText = `
+display: grid;
+grid-template-columns: ${windowWidth < 1200 ? '300px' : '500px'} 1fr;
+max-width: 100vw;
+overflow-x: hidden;
+gap: 20px;
+`;
+document.body.style.fontSize = `${baseFontSize}pt`;
+}
+
+const images = document.getElementsByTagName('img');
+Array.from(images).forEach(img => {
+img.style.maxWidth = '100%';
+img.style.height = 'auto';
+});
+}
+
+window.addEventListener('resize', debounce(handleResize, 150));
+handleResize();
+
+// All our images
+const imageArray = [
+'assembly-line-scale-1.jpg',
+'blackwood-portrait-3.jpg',
+'blast-off.gif',
+'blocked-tunnel-1.jpg',
+'blocked-tunnel-darker.jpg',
+'bot-assembly-4.jpg',
+'caretaker-closeup-4.jpg',
+'caretaker-peeps.jpg',
+'colony-monitor-1.jpg',
+'crumbling-ruins.jpg',
+'cyborg-agony-1.jpg',
+'cyborg-blocks-your-path-3.jpg',
+'cyborg-hybrid-1.jpg',
+'dark-tunnel.jpg',
+'dead-game-over-1.jpg',
+'dna-library-2.jpg',
+'docking-bay-normal-hand.jpg',
+'docking-bay-robotic-hand.jpg',
+'drone-attack-9.jpg',
+'drones-appear-1.jpg',
+'embrace-harmony-poster-rotated-1.jpg',
+'equipment-storage-3.jpg',
+'foundry-1.jpg',
+'future-village-5.jpg',
+'future-village-n.jpg',
+'hiroshi-portrait-1.jpg',
+'horizon-east.jpg',
+'horizon-north.jpg',
+'horizon-northeast.jpg',
+'horizon-northwest.jpg',
+'horizon-south.jpg',
+'horizon-southwest.jpg',
+'horizon-up-6.jpg',
+'horizon-west.jpg',
+'kai-as-beast-1.jpg',
+'kai-at-console-in-bay-1.jpg',
+'kai-captured-normal-hand.jpg',
+'kai-captured-robotic-hand.jpg',
+'kai-cyborg-5.jpg',
+'kai-exhibit-1.jpg',
+'kai-in-orbit-normal-hand.jpg',
+'kai-in-orbit-robotic-hand.jpg',
+'kai-in-well-c.jpg',
+'kai-is-grabbed-33.jpg',
+'kai-modified-2.jpg',
+'kai-new-hand-3.jpg',
+'kai-on-belt-f.jpg',
+'kai-on-bridge-1.jpg',
+'lab-with-caretaker-e.jpg',
+'lab-without-caretaker.jpg',
+'ladder-down-5a.jpg',
+'ladder-up-8.jpg',
+'lander-fff.jpg',
+'lander-interior-5.jpg',
+'lander-museum-z.jpg',
+'lava-pit-1.jpg',
+'legacy-bay-1.jpg',
+'legacy-bridge-2.jpg',
+'legacy-deep-space-11a.jpg',
+'legacy-deploys-zephyr-1.jpg',
+'legacy-docking-approach-5.jpg',
+'legacy-leaves-earth-55.jpg',
+'legacy-orbits-terra-nova-aa.jpg',
+'okafor-portrait-1.jpg',
+'parachute-2.jpg',
+'portal-view-of-terra-nova-3.jpg',
+'quantum-projector-1.jpg',
+'restricted-hallway-1.jpg',
+'restricted-hallway-beams-1.jpg',
+'ruins-solar-glass-1.jpg',
+'ruins-solar-glass-2.jpg',
+'settlement-1.jpg',
+'shadow-beast-attacks-3.jpg',
+'shrine-5.jpg',
+'splash-4.jpg',
+'stein-portrait-2.jpg',
+'stone-ruins-hide-2.jpg',
+'stone-tower-1.jpg',
+'stone-tower-interior-3.jpg',
+'sundown-1.jpg',
+'telescope-damaged-1.jpg',
+'tower-animation.gif',
+'tower-summit-4.jpg',
+'tunnel-2.jpg',
+'tunnel-3.jpg',
+'tunnel-beast-robot-3.jpg',
+'tunnel-beast-robot-freed-3.jpg',
+'unblocked-tunnel-b.jpg',
+'volcano-landscape-3.jpg',
+'well-1.jpg',
+'zephyrs-landing-ruins-6.jpg'
+];
+
+function preloadImages(imageFiles) {
+imageFiles.forEach(function(file) {
+const img = new Image();
+img.src = "img/" + file;
+});
+}
+
+console.error('Preloading images...');
+preloadImages(imageArray);
+
+// Preload audio files into browser cache
+const soundFiles = [
+'119782__tremor.mp3',
+'156847__run-from-shadow-beast.mp3',
+'169553__climbing-rubble.mp3',
+'177958__water-drip-cave.mp3',
+'198300__emerging-from-well.mp3',
+'211683__legacy-docking-bay.mp3',
+'211683__research-lab.mp3',
+'315769__beast-growl.mp3',
+'32899__supply-room.mp3',
+'396062__well-dripping.mp3',
+'415609__lava-bubbles.mp3',
+'428740__page-turn.mp3',
+'434137__projector-blip.mp3',
+'449013__light-beams.mp3',
+'455068__guard-footsteps.mp3',
+'459838__docking-alert-beeps.mp3',
+'468442__smidglet-squeak.mp3',
+'505127__beast-roar.mp3',
+'535021__lame-caretaker-pursuit.mp3',
+'547472__wind-more.mp3',
+'56753__testing-station.mp3',
+'586384__alarm.mp3',
+'608439__wind-less.mp3',
+'609182__sleeping-beast.mp3',
+'625005__wind+birds.mp3',
+'688249__legacy-bridge.mp3',
+'71852__page-turn.mp3',
+'723973__absorbed.mp3',
+'724217__kai-in-orbit.mp3',
+'73607__assembly-line.mp3',
+'733261__cyborg-assembly.mp3',
+'738438__beast-grunt-2.mp3',
+'699928__beast-grunt-4.mp3',
+'738439__beast-grunt-3.mp3',
+'744790__beast-snores.mp3',
+'738437__beast-grunt-1.mp3',
+'318320__beast-roar-2.mp3',
+'332520__beast-roar-big.mp3',
+'60085__rockslide.mp3',
+'terra-nova-ending-music.mp3',
+'terra-nova-intro.mp3'
+];
+
+function preloadSounds(soundFiles, concurrentLimit = 6) {
+// Create a queue of files to load
+const queue = [...soundFiles];
+const loading = new Set();
+const errors = [];
+
+function loadNext() {
+// If queue is empty or we've hit the concurrent limit, return
+if (queue.length === 0 || loading.size >= concurrentLimit) {
+return;
+}
+
+// Get next file from queue
+const file = queue.shift();
+const audio = new Audio();
+
+// Add to loading set
+loading.add(file);
+
+// Set up event handlers
+audio.addEventListener('canplaythrough', () => {
+console.log(`Loaded: ${file}`);
+loading.delete(file);
+loadNext(); // Try to load another
+}, { once: true });
+
+audio.addEventListener('error', (e) => {
+console.error(`Error loading ${file}:`, e.message);
+errors.push(file);
+loading.delete(file);
+loadNext(); // Try to load another
+}, { once: true });
+
+// Start loading
+try {
+audio.src = "mp3/" + file;
+} catch (e) {
+console.error(`Exception loading ${file}:`, e);
+errors.push(file);
+loading.delete(file);
+loadNext(); // Try to load another
+}
+}
+
+// Start initial batch of loads
+for (let i = 0; i < concurrentLimit; i++) {
+loadNext();
+}
+
+// Return a promise that resolves when all files are loaded
+return new Promise((resolve) => {
+const checkComplete = setInterval(() => {
+if (queue.length === 0 && loading.size === 0) {
+clearInterval(checkComplete);
+if (errors.length > 0) {
+console.warn('Some sounds failed to load:', errors);
+}
+resolve(errors);
+}
+}, 100);
+});
+}
+
+async function initializeSounds() {
+const errors = await preloadSounds(soundFiles);
+if (errors.length > 0) {
+console.warn('Failed to load some sounds:', errors);
+}
+}
+
+console.error('Preloading sounds...');
+initializeSounds();
+
+</script>
+
+</div>
+
+</div>
+<div class="interpretercredit"><a href="https://vorple-if.com">Vorple</a></div>
+</body>
+</html>
+
