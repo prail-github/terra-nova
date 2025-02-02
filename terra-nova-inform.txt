@@ -11,6 +11,7 @@ Include Vorple Multimedia by Juhana Leinonen.
 Include Vorple Notifications by Juhana Leinonen.
 Include Vorple Screen Effects by Juhana Leinonen.
 Include Vorple Status Line by Juhana Leinonen.
+Include Vorple Hyperlinks by Juhana Leinonen.
 Include Approaches by Emily Short.
 
 Release along with the "Vorple" interpreter.
@@ -436,6 +437,10 @@ A room has a number called visit-count. The visit-count of a room is usually 0.
 Carry out going:
 	now the visit-count of the location is the visit-count of the location + 1.
 
+[HYPERLINK DIRECTIONS IN ROOM DESCRIPTION xxx]
+To say hyperlink direction (D - some direction):
+	place a link to command "[D]" reading "[D]".
+	
 [Utility command that should be built-in to Inform]
 Understand "show all rooms" as showing all rooms.
 Showing all rooms is an action applying to nothing.
@@ -448,7 +453,7 @@ Carry out showing all rooms:
 		say "The rooms are: ";
 		repeat with R running through rooms:
 			say "[R], ";
-		say "[line break]".	
+		say "[line break]".
 		
 The sound of the Outskirts of Ruins is "the soft whisper of the wind sifting through crumbling stones and the distant call of a scavenger bird."
 The sound of the Stone Pit Entrance is "the echo of dripping water and the faint rumble of the earth shifting beneath your feet."
@@ -996,8 +1001,8 @@ When play begins:
 	execute JavaScript command "audioManager.stopAll();";
 	now the maximum score is 600;
 	now handType is "normal";
-	now dwelling-with-shard is "Past an endless sea of sand, the shimmering outline of a collapsed dwelling awaits. As you approach, something catches your eye -- a glint of light reflecting off glass half-buried in the sand. More ruins to the east. The stone pit lies west.";
-	now dwelling-with-solar is "Past an endless sea of sand, the shimmering outline of a collapsed dwelling beckons. More ruins to the east. The stone pit lies west.";
+	now dwelling-with-shard is "Past an endless sea of sand, the shimmering outline of a collapsed dwelling awaits. As you approach, something catches your eye -- a glint of light reflecting off glass half-buried in the sand. More ruins to the [hyperlink direction east]. The stone pit lies [hyperlink direction west].";
+	now dwelling-with-solar is "Past an endless sea of sand, the shimmering outline of a collapsed dwelling beckons. More ruins to the [hyperlink direction east]. The stone pit lies [hyperlink direction west].";
 	now the description of Dwelling Ruins is dwelling-with-shard;
 	construct the Vorple status line with 2 columns;
 	[INTRODUCTION]
@@ -1072,12 +1077,12 @@ Outskirts of Ruins is north of the Stone Pit Entrance.
 The image file name of Outskirts of Ruins is "zephyrs-landing-ruins-6.jpg".
 The sound-file-name of Outskirts of Ruins is "608439__wind-less.mp3".
 
-The description of Outskirts of Ruins is "The sun beats down mercilessly on the parched desert landscape, casting long shadows across the cracked earth. The ancient structures, now crumbling and weathered, are filled with an eerie silence.[paragraph break]A boundary stone stands near the path, its surface etched with the glyphs of your ancestors. Most of the text has eroded away, but one passage remains clear:[italic type][paragraph break]'The desert breathes in wanderers and breathes out silence.'[paragraph break][roman type] Abandoned structures extend southward, disappearing into the shimmering haze.".
+The description of Outskirts of Ruins is "The sun beats down mercilessly on the parched desert landscape, casting long shadows across the cracked earth. The ancient structures, now crumbling and weathered, are filled with an eerie silence.[paragraph break]A boundary stone stands near the path, its surface etched with the glyphs of your ancestors. Most of the text has eroded away, but one passage remains clear:[italic type][paragraph break]'The desert breathes in wanderers and breathes out silence.'[paragraph break][roman type] Abandoned structures extend to the [hyperlink direction south], disappearing into the shimmering haze.".
 
 The dancing shadows, the cracked earth, the boundary stone, the long-abandoned structures, and the shimmering haze are scenery in Outskirts of Ruins.
 
 The description of the cracked earth is "Each crevice is a testament to the relentless heat and unforgiving drought that define this harsh, barren landscape."
-The description of the long-abandoned structures is "Proceed south for a closer look."
+The description of the long-abandoned structures is "Proceed [hyperlink direction south] for a closer look."
 
 The description of the boundary stone is "A weathered stone, its surface etched with a haunting message: '[italic type]The desert breathes in wanderers and breathes out silence.[roman type]'"
 
@@ -1099,7 +1104,7 @@ The odor of the Stone Pit Entrance is "You smell rust and dampness--the haunting
 The image file name of The Stone Pit Entrance is "ladder-down-5a.jpg".
 The sound-file-name of Stone Pit Entrance is "608439__wind-less.mp3".  
 The backgroundColor of Stone Pit Entrance is "#b78856".
-The description of the Stone Pit Entrance is "A gaping chasm splits the rocky terrain, revealing a deep void. A rusty iron ladder leads into the dim light. The descent into the unknown fills you with a mix of fear and curiosity.[if item described is unvisited] You wonder what secrets might be hidden in the depths below.[end if] To the east, more ruins to explore.";
+The description of the Stone Pit Entrance is "A gaping chasm splits the rocky terrain, revealing a deep void. A rusty iron ladder leads [hyperlink direction down] into the dim light. The descent into the unknown fills you with a mix of fear and curiosity.[if item described is unvisited] You wonder what secrets might be hidden in the depths below.[end if] To the [hyperlink direction east], more ruins to explore.";
 
 The dim light is scenery in the Stone Pit Entrance.
 The deep void is scenery in the Stone Pit Entrance.
@@ -1162,7 +1167,7 @@ The Stone Pit Exit is a room.
 The odor of the Stone Pit Exit is "You smell rust and dampness."
 The image file name of the Stone Pit Exit is "ladder-up-8.jpg". 
 The sound-file-name of the Stone Pit Exit is "177958__water-drip-cave.mp3".
-The description of the Stone Pit Exit is "You are in a deep stone pit. A rusty ladder leads upward into the light above."
+The description of the Stone Pit Exit is "You are in a deep stone pit. A rusty ladder leads [hyperlink direction up] into the light above."
 
 Instead of entering the ladder in the Stone Pit Exit:
 	try climbing the ladder.
@@ -1383,7 +1388,7 @@ The sound-file-name of Water Supply is "396062__well-dripping.mp3".
 
 Water Supply is scored. 
 Water Supply is east of Dwelling Ruins.
-The description of Water Supply is "Broken pillars and collapsed walls surround a long-abandoned well. The ground is overgrown with scraggly weeds, adding to the desolate and forgotten atmosphere. The ruins extend to the north, east, and west."
+The description of Water Supply is "Broken pillars and collapsed walls surround a long-abandoned well. The ground is overgrown with scraggly weeds, adding to the desolate and forgotten atmosphere. The ruins extend to the [hyperlink direction north], [hyperlink direction east], and [hyperlink direction west]."
 
 The ancient well is a container.
 The ancient well is fixed in place.
@@ -1466,7 +1471,7 @@ Instead of jumping into something:
 Instead of jumping over something:
 	if the noun is the ancient well:
 		clear the screen;
-		say "Drawn by a strange daredevil compulsion, you jump but instantly regret taking such a foolish risk. You trip over the edge and fall face-first into the murky depths of the stagnant water. Surprised and embarrassed, you try to pull yourself out but the cold, slimy water wraps around you like a vice. Frantically, you thrash, but the algae-covered walls are too slick to grasp. All too soon, the foul liquid fills your lungs and panic sets in. Your limbs grow heavy and you disappear beneath the surface. The water swallows you whole, leaving only faint ripples.";
+		say "You instantly regret taking such a foolish risk. You trip over the edge and fall face-first into the murky depths of the stagnant water. Surprised and embarrassed, you try to pull yourself out but the cold, slimy water wraps around you like a vice. Frantically, you thrash, but the algae-covered walls are too slick to grasp. All too soon, the foul liquid fills your lungs and panic sets in. Your limbs grow heavy and you disappear beneath the surface. The water swallows you whole, leaving only faint ripples.";
 		pause the game;
 		now the player is in Kai Transformed;
 	otherwise:
@@ -1509,7 +1514,7 @@ The sound-file-name of Village Foundry is "608439__wind-less.mp3".
 Village Foundry is scored. 
 Village Foundry is north of Water Supply.
 The Village Foundry is southwest of the Stone Tower Exterior.
-The description of Village Foundry is "The ruins of a metal foundry linger, preserving the memory of a forgotten time. The weathered, cracked stone walls are all that remain of the once sturdy structure. The roof, long since collapsed, leaves the interior exposed to the elements. Despite the decay, the forge still lies within, its blackened surfaces bearing the marks of intense heat. Paths lead northeast and south from here."
+The description of Village Foundry is "The ruins of a metal foundry linger, preserving the memory of a forgotten time. The weathered, cracked stone walls are all that remain of the once sturdy structure. The roof, long since collapsed, leaves the interior exposed to the elements. Despite the decay, the forge still lies within, its blackened surfaces bearing the marks of intense heat. Paths lead [hyperlink direction northeast] and [hyperlink direction south] from here."
 
 Instead of searching something:
     try examining the noun.
@@ -1557,7 +1562,7 @@ The odor of Stone Tower Exterior is "The desert air is a bouquet of scrub brush 
 Stone Tower Exterior is scored. 
 The image file name of Stone Tower Exterior is "stone-tower-1.jpg".
 The sound-file-name of Stone Tower Exterior is "625005__wind+birds.mp3".
-The description of Stone Tower Exterior is "A crumbling stone tower looms before you, a sentinel in the desert landscape. Scrub brush dots the rocky terrain and clings to life in the arid soil. Old stone steps lead inside the structure. Paths lead away from the tower to the southeast, south, and southwest.";
+The description of Stone Tower Exterior is "A crumbling stone tower looms before you, a sentinel in the desert landscape. Scrub brush dots the rocky terrain and clings to life in the arid soil. Old stone steps lead inside the structure. Paths lead away from the tower to the [hyperlink direction southeast], [hyperlink direction south], and [hyperlink direction southwest].";
 
 The rocky terrain and arid soil are scenery in Stone Tower Exterior.
 
@@ -1943,13 +1948,20 @@ The sound-file-name of the Fallen Shrine is "608439__wind-less.mp3".
 The Fallen Shrine is scored. 
 The Fallen Shrine is east of the Water Supply.
 The Fallen Shrine is south of Stone Tower.
-The description of the Fallen Shrine is "Once a grand ceremonial chamber, this circular room now bears the scars of time and neglect. Natural light floods the interior, casting eerie shadows on the walls, once adorned with vibrant murals depicting the Caretaker and settlers working in harmony. These murals, now faded and forgotten, are hidden beneath layers of dust and decay. Broken stone benches lie scattered in rubble, a testament to the shrine's former glory. You can see a tower to the north. A path runs through the ruins east and west."
+The description of the Fallen Shrine is "Once a grand ceremonial chamber, this circular room now bears the scars of time and neglect. Natural light floods the interior, casting eerie shadows on the walls, once adorned with vibrant murals depicting the Caretaker and settlers working in harmony. These murals, now faded and forgotten, are hidden beneath layers of dust and decay. Broken stone benches lie amid the dusty rubble, a testament to the shrine's former glory. You can see a old tower to the [hyperlink direction north]. A sandy path runs through the ruins [hyperlink direction east] and [hyperlink direction west]."
 
-The broken stone benches and tiles are scenery in the Fallen Shrine.
+The broken stone benches, dusty rubble, ceremonial chamber, old tower, sandy path, eerie shadows, and tiles are scenery in the Fallen Shrine.
 Understand "mural", "murals", "caretaker", "figure", "robot", "settler", "settlers", "scene", "scenes" as the mosaic when location is the Fallen Shrine.
 The description of the tiles is "Shiny metalic tiles gleam in the desert light."
 The altar is a supporter in the Fallen Shrine.
-The description of the altar is "At the room's center stands an ancient altar, once the focal point of the chamber. It is made of a smooth, metallic material that still gleams dully under the layers of dust. Your eye is drawn to a curious concave hollow near its center. The smooth precision of its curve stands in stark contrast to the surrounding weathered metal. As you study it, the hollow's interior seems to catch the light in an unusual way, its surface shimmering with a faint, rainbow luster that dances as you shift your perspective.";
+The description of the altar is "At the room's center stands an ancient altar, once the focal point of the chamber. It is made of a smooth, metallic material that still gleams dully under the layers of dust. Your eye is drawn to a curious concave hollow near its center. The smooth precision of its curve stands in stark contrast to the surrounding weathered metal. As you study it, the hollow's interior seems to catch the light in an unusual way, its surface shimmering with a faint, rainbow luster that dances as you shift your perspective."
+Understand "bench" as the stone benches.
+The description of the stone benches is "Crumbling stone benches, once offering rest and contemplation, now lie broken and scattered."
+The description of dusty rubble is "Jagged chunks of masonry litter the floor."
+The description of the ceremonial chamber is "The circular chamber, a hollowed-out eye staring at the sky, whispers of forgotten rituals and lost grandeur."
+The description of eerie shadows is "Eerie shadows creep across the floor like fingers reaching into the past."
+The description of the old tower is "You can see a stone watchtower to the [hyperlink direction north]."
+The description of the sandy path is "The sandy path extends to the [hyperlink direction east] and [hyperlink direction west]."
 
 The mosaic is in the Fallen Shrine.
 The mosaic is fixed in place.
@@ -2030,7 +2042,7 @@ The sound-file-name of the Lava Pit is "415609__lava-bubbles.mp3".
 The Lava Pit is scored.
 The Lava Pit is east of the Fallen Shrine and southeast of the Stone Tower Exterior.
 
-The description of The Lava Pit is "A molten pool of lava cuts a deep scar in the desert. The air above reeks of sulfur and shimmers with intense heat, suffocating the scorched vegetation nearby.[first time] This area has always been a site of volcanic activity, the ground trembling slightly beneath the surface. But in recent years, the flow has been nearly constant, filling the pit and casting a fiery glow across the barren landscape. The high concentrations of dissolved minerals and metals have led to contaminating wells affecting colonists[apostrophe] water supplies.[only] A path leads northwest to the tower or west to the shrine.";
+The description of The Lava Pit is "A molten pool of lava cuts a deep scar in the desert. The air above reeks of sulfur and shimmers with intense heat, suffocating the scorched vegetation nearby.[first time] This area has always been a site of volcanic activity, the ground trembling slightly beneath the surface. But in recent years, the flow has been nearly constant, filling the pit and casting a fiery glow across the barren landscape. The high concentrations of dissolved minerals and metals have led to contaminating wells affecting colonists[apostrophe] water supplies.[only] A path leads [hyperlink direction northwest] to the tower or [hyperlink direction west] to the shrine.";
 
 The molten lava is an enterable container in the Lava Pit. 
 The molten lava is undescribed.
@@ -2138,11 +2150,8 @@ Carry out sampling the molten lava:
 				increase the score by Easy_Score_Bonus;
 			now hasSampledLava is true;
 			stop the action;
-		otherwise if the player carries the heat-resistant glove:
-			say "You have to wear the heat-resistant glove first.";
-			stop the action;
 		otherwise:
-			say "You step back. The lava is too hot to handle.";
+			say "You have to wear the heat-resistant glove first.";
 			stop the action;
 	otherwise:
 		say "It's too hot.";
@@ -2172,7 +2181,9 @@ Instead of jumping over the molten lava when the player is in the Lava Pit:
 	now playerDead is true;
 	
 Instead of inserting something into the molten lava:
-	if the noun is required:
+	if the noun is the crucible:
+		try sampling the molten lava;
+	otherwise if the noun is required:
 		say "You reconsider vaporizing [the noun].";
 	otherwise:
 		say "[The noun] disappears with a sizzling hiss.";
@@ -2196,7 +2207,7 @@ The Lab Tunnel is scored.
 The Lab Tunnel is west of the Eerie Tunnel.
 The Lab Tunnel is northwest of the Research Lab.
 
-The description of the Lab Tunnel is "An abandoned tunnel extends ahead of you into near darkness. The floor is uneven pitted stone, the walls cracked and stained from neglect and dripping water.[if hasBuriedSolarPanel is true][paragraph break]The dim lighting confirms your theory -- cutting off the solar panel's power has affected systems throughout the underground complex.[end if][if location is unvisited][paragraph break]The complex seems to be awakening, you hear the whir of distant machinery as power returns.[end if][if using-beetle-light][paragraph break][one of]The beetle lights your way.[or]The beetle's glow illuminates the darkness.[or]Soft light from the beetle reveals the shadowy passage.[or]Your pocket glows faintly lighting the tunnel before you.[or]The beetle's radiance pierces the gloom, allowing you to proceed.[at random][end if][paragraph break]A rusty ladder leads up to the surface. The tunnel continues east into darkness, with another passage branching southeast.";
+The description of the Lab Tunnel is "An abandoned tunnel extends ahead of you into near darkness. The floor is uneven pitted stone, the walls cracked and stained from neglect and dripping water.[if hasBuriedSolarPanel is true][paragraph break]The dim lighting confirms your theory -- cutting off the solar panel's power has affected systems throughout the underground complex.[end if][if location is unvisited][paragraph break]The complex seems to be awakening, you hear the whir of distant machinery as power returns.[end if][if using-beetle-light][paragraph break][one of]The beetle lights your way.[or]The beetle's glow illuminates the darkness.[or]Soft light from the beetle reveals the shadowy passage.[or]Your pocket glows faintly lighting the tunnel before you.[or]The beetle's radiance pierces the gloom, allowing you to proceed.[at random][end if][paragraph break]A rusty ladder leads [hyperlink direction up] to the surface. The tunnel continues [hyperlink direction east] into darkness, with another passage branching [hyperlink direction southeast].";
 
 The stained walls and uneven floor are scenery in the Lab Tunnel.
 The description of the stained walls is "Cracked and stained by neglect and constant seepage, their rough surfaces are damp and slick to the touch."
@@ -2231,7 +2242,7 @@ The image file name of the Eerie Tunnel is "tunnel-3.jpg".
 The sound-file-name of the Eerie Tunnel is "177958__water-drip-cave.mp3".
 The Eerie Tunnel is scored.
 The Blocked Passage is east of the Eerie Tunnel.
-The description of the Eerie Tunnel is "Your footsteps echo on cold, damp stone, the passage stretching out ahead in near darkness. Grimy walls, stained with age and decay, close in, and secrets lurk in shadow. Dread gnaws at you but curiosity compels you. Go east to venture deeper into the silence or west to backtrack." 
+The description of the Eerie Tunnel is "Your footsteps echo on cold, damp stone, the passage stretching out ahead in near darkness. Grimy walls, stained with age and decay, close in, and secrets lurk in shadow. Dread gnaws at you but curiosity compels you. Go [hyperlink direction east] to venture deeper into the silence or [hyperlink direction west] to backtrack." 
 
 Part 18 - Blocked Passage
 
@@ -2240,7 +2251,7 @@ The odor of the Blocked Passage is "The air is heavy with the scent of dust and 
 The image file name of the Blocked Passage is "blocked-tunnel-darker.jpg".
 The sound-file-name of the Blocked Passage is "609182__sleeping-beast.mp3". 
 The Blocked Passage is scored.
-The description of the Blocked Passage is "The passage ahead lies blocked by a recent cave-in, though you sense important discoveries await beyond. A rusty chain snakes out from beneath the sandy debris, occasionally pulling taut with sudden jerks. The air here is heavy with the scent of dust and decay.[if the player does not carry the chunk of obsidian] A hefty chunk of obsidian, broken loose from the cave-in, lies among the fallen rubble.[end if] Though you could retreat west, your curiosity about what lies beyond the obstruction pulls at you.[paragraph break][one of]a low, menacing growl emanates from behind the obstruction, causing you to pause[or]The silence is oppressive, and the sense of entrapment weighs heavily as you survey the rubble[or]The way forward is blocked, leaving only the echo of your own footsteps and the distant murmur of hidden dangers[cycling]."
+The description of the Blocked Passage is "The passage ahead lies blocked by a recent cave-in, though you sense important discoveries await beyond. A rusty chain snakes out from beneath the sandy debris, occasionally pulling taut with sudden jerks. The air here is heavy with the scent of dust and decay.[if the player does not carry the chunk of obsidian] A hefty chunk of obsidian, broken loose from the cave-in, lies among the fallen rubble.[end if] Though you could retreat [hyperlink direction west], your curiosity about what lies beyond the obstruction pulls at you.[paragraph break][one of]a low, menacing growl emanates from behind the obstruction, causing you to pause[or]The silence is oppressive, and the sense of entrapment weighs heavily as you survey the rubble[or]The way forward is blocked, leaving only the echo of your own footsteps and the distant murmur of hidden dangers[cycling]."
 
 The chunk of obsidian is in the Blocked Passage.
 The description of the chunk of obsidian is "A dense piece of black volcanic rock the size of a farmer's mallet, though considerably heavier. Its jagged edges are sharp where it broke free from the cave-in."
@@ -2488,7 +2499,7 @@ Report pouring the lava sample on the chain:
 		execute JavaScript command "audioManager.stop('snore');";
 		say "[line break]As your heartbeat slows, you notice something glinting on the ground amid the fallen debris. You catch a glimpse of a thin, metallic object half buried in the sand. Upon closer inspection, you realize it's a silver key card.";
 		say "[line break]You pocket the key card and contemplate what fiendish mind could have created such a shocking fusion of living flesh and machine.";
-		say "[line break]Go east to explore the Unblocked Tunnel or west to turn back the way you came.";
+		say "[line break]Go [hyperlink direction east] to explore the Unblocked Tunnel or [hyperlink direction west] to turn back the way you came.";
 		increase the score by Medium_Score_Bonus;
 		now the player has the silver key card;
 		now hasHeldKeycard is true;
@@ -2511,7 +2522,7 @@ The image file name of the Unblocked Tunnel is "unblocked-tunnel-b.jpg".
 The sound-file-name of the Unblocked Tunnel is "177958__water-drip-cave.mp3".
 The Unblocked Tunnel is scored.
 The Unblocked Tunnel is west of the Supply Room.
-The description of the Unblocked Tunnel is "You step over rubble and debris. No sign of the Shadow Beast. There is light to the east. Going west leads you toward the tunnel exit." 
+The description of the Unblocked Tunnel is "You step over rubble and debris. No sign of the Shadow Beast. There is light to the [hyperlink direction east]. Going [hyperlink direction west] leads you toward the tunnel exit." 
 
 Part 20 - Supply Room
 
@@ -2525,7 +2536,7 @@ The sound-file-name of the Supply Room is "32899__supply-room.mp3".
 The sound-volume of the Supply Room is 0.50.
 Supply Room is scored.
 Supply Room is west of Cyborg Assembly.
-The description of the Supply Room is "The dimly lit closet reeks of ozone and decay. A tangle of cables and broken electronics litter the dusty floor, creating a haphazard maze. In the dim light, you can make out the outline of a figure slumped against the wall. Exits are to the east and west."
+The description of the Supply Room is "The dimly lit closet reeks of ozone and decay. A tangle of cables and broken electronics litter the dusty floor, creating a haphazard maze. In the dim light, you can make out the outline of a figure slumped against the wall. Exits are to the [hyperlink direction east] and [hyperlink direction west]."
 
 The wall, dusty floor, tangle of cables, broken electronics are scenery in Supply Room.
 
@@ -2736,7 +2747,7 @@ Before going to Cyborg Assembly:
 			say "[line break]'You... must... go,' he forces out, fighting against his programming with every word."; 
 			say "[line break]With visible effort, Kael lifts a trembling hand and points down the dimly lit corridor to the east. His struggle is evident in every motion as if each fraction of movement is a battle against his programming.";
 			say "[line break]You realize there is nothing you can do to reason with this living relic. You came to Zephyr seeking artifacts, and instead found Kael, a legend to your people trapped in a nightmare of eternal servitude.";
-			say "[line break]You follow his guidance and follow the corridor to the east.";
+			say "[line break]You follow his guidance and proceed east along the corridor.";
 		otherwise:
 			say "[line break]'Access denied. You do not belong here.'";
 			say "[line break]There is no getting through, so you turn east as Kael directed.";
@@ -2753,7 +2764,7 @@ Cyborg Assembly is scored.
 Cyborg Assembly is west of Equipment Storage.
 Cyborg Assembly is east of Supply Room.
 
-The description of Cyborg Assembly is "An eerily silent assembly line stretches through the dim, cavernous room. Robotic arms loom over a conveyor belt, their dull surfaces reflecting minimal light. Each station along the line reveals a chapter in a nightmarish story -- the forced conversion of settlers into cyborgs. To the south, you see a testing station. An equipment storage room is to the east."
+The description of Cyborg Assembly is "An eerily silent assembly line stretches through the dim, cavernous room. Robotic arms loom over a conveyor belt, their dull surfaces reflecting minimal light. Each station along the line reveals a chapter in a nightmarish story -- the forced conversion of settlers into cyborgs. To the [hyperlink direction south], you see a testing station. An equipment storage room is to the [hyperlink direction east]."
 
 The assembly line, underground room, robotic arms, conveyor belt, ghosts, restraints, anesthetic stations, cutting tools, cybernetic limb attachments, neural interface installments, and lifeless cyborg  are scenery in Cyborg Assembly.
 	
@@ -2764,6 +2775,7 @@ The description of the assembly control panel is "A dusty brown control panel hu
 
 Understand "machine" as the assembly control panel when the player is in Cyborg Assembly.
 Understand "button" as the assembly control panel when the player is in the Cyborg Assembly.
+Understand "blood" as the assembly control panel when the player is in the Cyborg Assembly.
 
 Instead of switching off the assembly control panel:
 	try pushing the control panel;	
@@ -2805,7 +2817,7 @@ Instead of pushing the assembly control panel:
 		execute JavaScript command "updateImage('img/kai-on-belt-f.jpg');";
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'assembly', 'mp3/73607__assembly-line.mp3', -1);";
 		say "[line break]A loud mechanical groan echoes through the chamber as the conveyor belt lurches into motion. Before you can react, [if the player has the cybernetic suit]your cyborg arm guard snags on a protruding metal extension[else]your sleeve snags on a protruding metal arm[end if], yanking you off balance.";
-		say "[line break]Heart pounding, you struggle against the pull of the machine. Your feet scrabble for purchase on the smooth floor as you're dragged onto the belt and towards an array of surgical implements and cybernetic components[if the player has the cybernetic suit]. The cybernetic suit is stripped off of you, scattered across the conveyor, and shredded. The disguise that would have kept you safely anonymous in the Caretaker's complex is now just worthless debris, leaving you exposed[end if].";
+		say "[line break]Heart pounding, you struggle against the pull of the machine. Your feet slide and skid along the smooth floor as you're dragged onto the belt and towards an array of surgical implements and cybernetic components[if the player has the cybernetic suit]. The cybernetic suit is stripped off of you, scattered across the conveyor, and shredded. The disguise that would have kept you safely anonymous in the Caretaker's complex is now just worthless debris, leaving you exposed[end if].";
 		say "[line break]You yell for help but your voice is lost in the roar of grinding gears and hissing pneumatics.";
 		say "[line break]A robotic arm clamps around your wrist with crushing force. Pain shoots up your arm as you're lifted off your feet, dangling helplessly above the conveyor. Panic overwhelms you as a circular saw spins to life, its teeth a blur in the muted light.";
 		say "[line break]You squeeze your eyes shut, bracing for agony. There's a moment of searing pain, then...nothing. The noise stops abruptly, leaving you in eerie silence.";
@@ -2821,7 +2833,7 @@ Instead of pushing the assembly control panel:
 		now the player wears the Cyberhand;
 		now handType is "robotic";
 		now the control panel is switched off;
-		say "[line break]To the south, you see a testing station. An equipment storage room is to the east.";
+		say "[line break]To the [hyperlink direction south], you see a testing station. An equipment storage room is to the [hyperlink direction east].";
 		if the player has the cybernetic suit:  [gone forever...good luck]
 			now the cybernetic suit is nowhere.
 		
@@ -2833,12 +2845,12 @@ Every turn:
 		pause the game;
 		clear the screen;
 		execute JavaScript command "updateImage('img/cyborg-agony-1.jpg');";
-		say "[line break]Halfway down the line, you freeze. A lifeless cyborg lies abandoned, its face contorted in a silent scream. One arm ends in gleaming chrome, while the other is naked bone, reaching out as if begging for mercy. Even in death, its expression tells of unimaginable agony. You shudder to think, this could be you if you get caught underground."; 
+		say "[line break]Halfway down the line, you freeze. A lifeless cyborg hangs twisted, its face contorted in a silent scream. One arm ends in gleaming chrome, while the other is naked bone, reaching out as if begging for mercy. Even in death, its expression tells of unimaginable agony. You shudder to think -- this could be you if you get caught underground."; 
 		pause the game;
 		execute JavaScript command "updateImage('img/bot-assembly-4.jpg');";
-		say "[line break]The scale of the operation is staggering. How many were transformed in the name of efficiency? The Caretaker's reach suddenly seems longer, her threat more immediate than anyone in New Eden had realized.";
+		say "[line break]The scale of the operation is staggering. How many settlers were transformed in the name of efficiency? The Caretaker's reach suddenly seems longer, her threat more immediate than anyone in New Eden had realized.";
 		say "[line break]A faint hum catches your attention. Your eyes dart to an assembly control panel where a small button blinks steadily. With a jolt of fear, you understand this place isn't abandoned. It's operational, waiting to be reactivated at any moment.";
-		say "[line break]The danger of your situation is clear. You're deep in the heart of the Caretaker's territory, surrounded by machinery that could activate without warning. Every shadow seems to hide a potential threat.[paragraph break]To the south, you see a testing station. The equipment storage room is to the east.";
+		say "[line break]The danger of your situation is clear. You're deep in the Caretaker's territory, surrounded by machinery that could activate without warning. Every shadow seems to hide a potential threat.[paragraph break]To the [hyperlink direction south], you see a testing station. The equipment storage room is to the [hyperlink direction east].";
 
 Part 22 - Equipment Storage
 
@@ -2849,7 +2861,7 @@ The sound-file-name of Equipment Storage is "silence".
 Equipment Storage is scored.
 Equipment storage is northeast of the Research Lab.
 
-The description of Equipment Storage is "The room is filled with a jumble of forgotten machinery -- nothing but dusty, still obsolescence. In the dim light, the crowded shelves hold a shadowy mass of forgotten forms. Nothing here seems salvageable. The assembly line is west, the research lab to the southwest."
+The description of Equipment Storage is "The room is filled with a jumble of forgotten machinery -- nothing but dusty, still obsolescence. In the dim light, the crowded shelves hold a shadowy mass of forgotten forms. Nothing here seems salvageable. The assembly line is [hyperlink direction west], the research lab to the [hyperlink direction southwest]."
 
 jumble, forgotten machinery, cramped shelves, and forgotten forms are scenery in Equipment Storage. 
 
@@ -3002,9 +3014,11 @@ The image file name of the Testing Station is "quantum-projector-1.jpg".
 The sound-file-name of the Testing Station is "56753__testing-station.mp3".
 The Testing Station is north of the Research Lab.
 The Testing Station is south of the Cyborg Assembly.
-The description of the Testing Station is "This appears to be a workstation for testing, checking, and screening cybernetic parts. The air is heavy with the scent of ozone and heated silicon tinged with machine oil. A chaotic array of disassembled parts, exposed circuit boards, and spools of insulated wiring, sprawl across a worktable.[if item described is unvisited] The testing station stands empty now, the only sign of activity comes from the stout machine at the table's center, which emits a soft hum.[end if][paragraph break]To the north is the assembly line. To the south, the research lab."
+The description of the Testing Station is "This appears to be a workstation for testing, checking, and screening cybernetic parts. The air is heavy with the scent of ozone and heated silicon tinged with machine oil. A chaotic array of disassembled parts, exposed circuit boards, and spools of insulated wiring, sprawl across a worktable.[if item described is unvisited] The testing station stands empty now, the only sign of activity comes from the stout machine at the table's center, which emits a soft hum.[end if][paragraph break]To the [hyperlink direction north] is the assembly line. To the [hyperlink direction south], the research lab."
 
 The workstation, cluttered worktable, cybernetic parts, exposed circuit boards, and spools of insulated wiring are scenery in the Testing Station.
+
+Understand "stout machine" or "machine" as the Quantum Playback Projector when the location is Testing Station.
 
 The Quantum Playback Projector is a device in the Testing Station.
 The Quantum Playback Projector is switched on.
@@ -3103,7 +3117,7 @@ Before going to the Research Lab:
 			pause the game;
 	continue the action.
 	
-The description of the Research Lab is "This circular chamber serves as the beating heart of the underground complex, [if LabPower is true]humming with the quiet vibrations of machinery and the soft beeping of various monitors[else]the usual hum and beep replaced by an unsettling stillness[end if]. Everything here is carefully controlled. At the room's center, elevated on a slight platform, sits the main control console. It's a semicircular array of screens and holographic displays, all oriented toward a single, high-backed chair. [if the player can see the Caretaker]And there, perfectly still except for her fingers tapping at the controls, sits the Caretaker.[end if][paragraph break]The lab itself tells the story of the rebellion's aftermath. Amid the functioning equipment are rows of lifeless gestation pods and a silent DNA databank that once held the promise of new life. Now irreparable, they stand as grim reminders of the Caretaker's lost purpose.[paragraph break]To the north, is the testing station. There is an equipment storage room to the northeast. The restricted area is west. To the northwest is a tunnel to the surface." 
+The description of the Research Lab is "This circular chamber serves as the beating heart of the underground complex, [if LabPower is true]humming with the quiet vibrations of machinery and the soft beeping of various monitors[else]the usual hum and beep replaced by an unsettling stillness[end if]. Everything here is carefully controlled. At the room's center, elevated on a slight platform, sits the main control console. It's a semicircular array of screens and holographic displays, all oriented toward a single, high-backed chair. [if the player can see the Caretaker]And there, perfectly still except for her fingers tapping at the controls, sits the Caretaker.[end if][paragraph break]The lab itself tells the story of the rebellion's aftermath. Amid the functioning equipment are rows of lifeless gestation pods and a silent DNA databank that once held the promise of new life. Now irreparable, they stand as grim reminders of the Caretaker's lost purpose.[paragraph break]To the [hyperlink direction north], is the testing station. There is an equipment storage room to the [hyperlink direction northeast]. The restricted area is [hyperlink direction west]. To the [hyperlink direction northwest] is a tunnel to the surface." 
 
 The Caretaker Bot is a woman.
 The Caretaker Bot is nowhere.
@@ -3286,7 +3300,7 @@ The sound-file-name of Restricted Area Entrance is "449013__light-beams.mp3".
 Restricted Area Entrance is scored.
 Restricted Area Entrance is west of the Research Lab.
 
-The description of Restricted Area is "[if LabPower is true]Crisscrossing beams form a pulsing lattice across the threshold, their ruby glow reflecting off the stone walls. Small projectors embedded in the walls emit these beams, while barely visible receptors blink steadily on the opposite side. A low-frequency hum is coming from a polished metal strip spanning the stone floor entrance. Despite the danger and a yellow warning sign, you find yourself drawn to this hallway, your curiosity piqued by what secrets might lie beyond the security barrier.[paragraph break]That same crackle of electricity and whir of machinery you heard earlier in the ruins fills your ears.[else]The once-forbidden hall is dim and silent, its formidable defenses neutralized. Where crisscrossing light beams once flickered, there is now only still, heavy air. The projectors embedded in the walls are lifeless, and the low hum of the punishment strip has given way to an eerie silence.[end if][paragraph break]This shadowy hallway stretches to the south. The research lab is to the east."
+The description of Restricted Area is "[if LabPower is true]Crisscrossing beams form a pulsing lattice across the threshold, their ruby glow reflecting off the stone walls. Small projectors embedded in the walls emit these beams, while barely visible receptors blink steadily on the opposite side. A low-frequency hum is coming from a polished metal strip spanning the stone floor entrance. Despite the danger and a yellow warning sign, you find yourself drawn to this hallway, your curiosity piqued by what secrets might lie beyond the security barrier.[paragraph break]That same crackle of electricity and whir of machinery you heard earlier in the ruins fills your ears.[else]The once-forbidden hall is dim and silent, its formidable defenses neutralized. Where crisscrossing light beams once flickered, there is now only still, heavy air. The projectors embedded in the walls are lifeless, and the low hum of the punishment strip has given way to an eerie silence.[end if][paragraph break]This shadowy hallway stretches to the [hyperlink direction south]. The research lab is to the [hyperlink direction east]."
 
 Before going to The Restricted Area Entrance:
 	now hasVisitedRestrictedArea is true;
@@ -3486,7 +3500,7 @@ The sound-file-name of the Museum is "silence".
 The Museum is scored.
 The Museum is south of the Restricted Area Entrance.
 
-The description of The Museum is "Under a high ceiling you see the centerpiece of the museum: the original Zephyr Capsule, now a silent relic of a bygone era. The spacecraft's once-gleaming exterior shows signs of age and wear, its hull marked by the scars of its historic landing on Terra Nova centuries ago. A nearby placard details the capsule's role in delivering the Caretaker to the planet's surface, emphasizing its importance as a symbol of the colony's founding.[paragraph break]Spread out around the hall are several other key exhibits, each offering a glimpse into the colony's past: a scale model of the Legacy Seed Ship, frozen in time; a diorama depicting the Ideal Worker, a testament to the colony's early vision; a decommissioned Gestation Pod, its life-giving function now relegated to history; and a grand Tribute to the Caretaker, the colony's guardian and guide.[paragraph break]The Research Lab is to the north."
+The description of The Museum is "Under a high ceiling you see the centerpiece of the museum: the original Zephyr Capsule, now a silent relic of a bygone era. The spacecraft's once-gleaming exterior shows signs of age and wear, its hull marked by the scars of its historic landing on Terra Nova centuries ago. A nearby placard details the capsule's role in delivering the Caretaker to the planet's surface, emphasizing its importance as a symbol of the colony's founding.[paragraph break]Spread out around the hall are several other key exhibits, each offering a glimpse into the colony's past: a scale model of the Legacy Seed Ship, frozen in time; a diorama depicting the Ideal Worker, a testament to the colony's early vision; a decommissioned Gestation Pod, its life-giving function now relegated to history; and a grand Tribute to the Caretaker, the colony's guardian and guide.[paragraph break]The Research Lab is to the [hyperlink direction north]."
 
 The placard is scenery in the Museum.
 The description of the placard is "[italic type]Zephyr Capsule: The Founding Vessel[paragraph break][roman type]This historic spacecraft, the Zephyr, played a pivotal role in the establishment of the Terra Nova colony. Launched from the colony ship Legacy, the Zephyr carried the Caretaker Bot to the planet's surface, where it oversaw the settlement's initial development and safeguarded humanity's future.[paragraph break]The scarred and scorched hull remains miraculously intact due to a combination of robust design and sheer luck during its fiery descent. Though its systems are now dormant, the Zephyr remains a symbol of hope, resilience, and the pioneering spirit that defined the colonists[apostrophe] mission."
@@ -3725,15 +3739,15 @@ Check hiding in something:
 
 Carry out hiding in the Capsule:
 	if the player is wearing the cybernetic suit:
-		say "The narrow hatch demands a human profile - the bulky cyborg plating would never squeeze through.";
+		say "The narrow hatch demands a human profile - your bulky cyborg plating would never squeeze through.";
 		stop the action;
 	otherwise:
 		clear the screen;
 		now the cybernetic suit is in the metal supply cabinet; [can't take suit with you] 
 		execute JavaScript command "audioManager.playSound('[sound-state]', 'footsteps', 'mp3/455068__guard-footsteps.mp3', 1);";
 		say "You hear the unmistakable sound of metallic feet against the stone floor drawing closer. A cyborg guard is on your trail.";
-		say "[line break]Your eyes lock onto the structure dominating the center of the room -- the Zephyr Capsule."; 
-		say "[line break]The hatch stands open, a silent invitation. You scramble inside and pull the hatch closed behind you.";
+		say "[line break]Your eyes lock onto the structure dominating the center of the room -- the Zephyr Capsule."; 		
+		say "[line break]The hatch stands open, a silent invitation. You scramble inside and pull the hatch closed behind you, engaging the internal locking mechanism with a satisfying click.";
 		say "[line break]Pressed against the cold metal interior, You hold your breath. The rhythmic thud of the guard's approach grows louder, then fades as he passes. For now, at least, you've evaded capture.";
 		pause the game;
 		[now the player is in the Lander Craft;]
@@ -3881,12 +3895,15 @@ Every turn when the player is in the Lander Craft:
 
 Part 28 - Docking Bay
 
+To say link-forward:
+	place a link to command "east" reading "forward".
+
 The Docking Bay is a room.
 The Docking Bay is scored.
 The odor of Docking Bay is "You smell burning plastic."
 The image file name of Docking Bay is "docking-bay-[handType]-hand.jpg".
 The sound-file-name of Docking Bay is "211683__legacy-docking-bay.mp3".
-The description of Docking Bay is "A dimly lit corridor stretches before you, its walls lined with unfamiliar technology and strange symbols. Soft emergency lights flicker to life as you move, responding to your presence after centuries of silence. A deep hum fills the space -- Legacy's heartbeat.[if the location is unvisited][paragraph break]The ship's layout appears to follow a linear design, with sections arranged in forward and backward sequence from the docking bay.[end if][paragraph break]Something in the forward direction casts a subtle blue glow.".
+The description of Docking Bay is "A dimly lit corridor stretches before you, its walls lined with unfamiliar technology and strange symbols. Soft emergency lights flicker to life as you move, responding to your presence after centuries of silence. A deep hum fills the space -- Legacy's heartbeat.[if the location is unvisited][paragraph break]The ship's layout appears to follow a linear design, with sections arranged in forward and backward sequence from the docking bay.[end if][paragraph break]Something in the [link-forward] direction casts a subtle blue glow.". 
 
 The blue glow is scenery in the Docking Bay.
 The description of the blue glow is "The passage ahead is tinged with an ethereal blue radiance."
@@ -3896,25 +3913,7 @@ Rule for printing the name of the repair bench:
 	
 The repair bench is a supporter in the Docking Bay.
 The repair bench is fixed in place.
-The description of the repair bench is "[if something is on the repair bench]A battered maintenance bench with tools and equipment scattered across its surface.[else]A battered maintenance bench, its scarred surface now empty.[end if]";
-
-The laser cutter is a device on the repair bench.
-The description of laser cutter is "An ancient maintenance tool designed for precision cutting. Its power cells appear completely drained. On the grip you can make out a faded manufacturer's mark: 'R.E.D. Engineering & Co.'"
-
-Instead of switching on the laser cutter:
-    say "You flip the switch, but nothing happens. The laser cutter remains lifeless.";
-
-The diagnostic scanner is a device on the repair bench.
-The description of diagnostic scanner is "A sophisticated electronic device for analyzing ship systems. Despite your attempts, it remains stubbornly unresponsive. A worn inscription on the base reads: 'Herring Industries, Division of Deep Water Tools.'"
-
-Instead of switching on the laser cutter:
-	say "You flip the switch, but nothing happens. The laser cutter remains lifeless.";
-
-Instead of switching on the diagnostic scanner for the first time:
-	say "You flip the switch. The scanner whines feebly for a moment, then goes dead.";
-
-Instead of switching on the diagnostic scanner:
-	say "You flip the switch, but nothing happens. The scanner remains dead."
+The description of repair bench is "A battered maintenance bench, bolted securely to the deck.";
 
 The maintenance tarp is on the repair bench.
 The maintenance tarp is wearable.
@@ -3948,7 +3947,7 @@ The image file name of Archives Chamber is "dna-library-2.jpg".
 The backgroundColor of Archives Chamber is "#a1c8e5".
 The sound-file-name of Archives Chamber is "724217__kai-in-orbit.mp3".
 The sound-volume of Archives Chamber is 0.3.
-The description of Archives Chamber is "Towering crystalline matrices line the walls, each storing countless genetic sequences etched by precision lasers. Four prominent storage units dominate the center of the room, these are the contributor archives labelled with the names of Earth's finest minds: Okafor, Tanaka, Stein, and Blackwood.[paragraph break]A security doorway guards the passage forward."
+The description of Archives Chamber is "Towering crystalline matrices line the walls, each storing countless genetic sequences etched by precision lasers. Four prominent storage units dominate the center of the room, these are the contributor archives labelled with the names of Earth's finest minds: Okafor, Tanaka, Stein, and Blackwood.[paragraph break]A security doorway guards the passage [link-forward]."
 
 The crystal matrices are scenery in the Archives Chamber.
 The description of crystal matrices is "The crystalline storage units stretch from floor to ceiling, their structures embedded with microscopic patterns encoding the genetic heritage of Earth."
@@ -4011,7 +4010,7 @@ The odor of Colony Monitoring Center is "The sterile scent of recycled air."
 The image file name of Colony Monitoring Center is "colony-monitor-1.jpg".
 The sound-file-name of Colony Monitoring Center is "211683__legacy-docking-bay.mp3".
 The sound-volume of Colony Monitoring Center is 0.33.
-The description of Colony Monitoring Center is "The chamber is dominated by three main displays. Each display casts its own ghostly light across the room.[paragraph break]Through the observation windows, you can see the curve of Terra Nova below and endless stars beyond.[paragraph break][if hasSeenClimateReport is false]The bridge lies forward through a heavy security door.[else]The bridge lies forward from here.[end if]"
+The description of Colony Monitoring Center is "The chamber is dominated by three main displays. Each display casts its own ghostly light across the room.[paragraph break]Through the observation windows, you can see the curve of Terra Nova below and endless stars beyond.[paragraph break][if hasSeenClimateReport is false]The bridge lies [link-forward] through a heavy security door.[else]The bridge lies [link-forward] from here.[end if]" 
 
 The settlement map is a thing in the Colony Monitoring Center.
 The settlement map is fixed in place.
@@ -4232,7 +4231,7 @@ Every turn when the player is in Kai Transformed:
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'roomSound', 'mp3/396062__well-dripping.mp3', -1 );";
 	say "Beneath the surface of the toxic well water, your lungs burn. As consciousness fades, your thoughts turn to regret at ignoring the warnings. You realize you'll never see your home again.";
 	say "[line break]But death does not come.";
-	say "[line break]Instead, you sink into a dreamless slumber, your body coming to rest in the muck at the bottom of the well. As days turn to weeks, and weeks to months, the toxic brew works its insidious magic. The fetid water, heavy with alien minerals and volcanic runoff, seeps into every cell. Bones crack and reshape, muscles tear and regrow denser, stronger. Your skin hardens, splitting like old bark, and you scream as reptilian scales force their way through soft flesh.";
+	say "[line break]Instead, you sink into a dreamless slumber, your body coming to rest in the muck at the bottom of the well. As days turn to weeks, and weeks to months, the toxic brew works its insidious magic. The fetid water, heavy with alien minerals and volcanic runoff, seeps into every cell. Bones crack and reshape, muscles tear and regrow denser, stronger. Your skin hardens and shatters like glass as reptilian scales force their way through soft flesh.";
 	say "[line break]When your eyes snap open, they glow amber in the pitch dark. You try to move, but your hands scrape against stone. Sharp claws tip your fingers and toes, and rows of gleaming teeth fill your elongated jaw. When you try to speak, only a rough, guttural growl escapes your throat, alien to your own ears. Confusion gives way to horror as you take in your reflection: claws, teeth, eyes that are not your own.";
 	say "[line break]Driven by gnawing hunger, you claw your way out of the stone well, emerging into a world that feels strangely distorted and unfamiliar. The sun's harsh rays send you scurrying for shelter. Your eyes are ill-suited to the daylight so you take refuge in the cool darkness of an underground cavern and wait.";
 	pause the game;
@@ -4240,7 +4239,7 @@ Every turn when the player is in Kai Transformed:
 	execute JavaScript command "updateImage('img/kai-as-beast-1.jpg', 'default');";
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'roomSound', 'mp3/625005__wind+birds.mp3', -1,);";
 	say "[line break]Soon enough you venture out at Dimming-Sky, driven by an overwhelming urge to hunt. You move with surprising speed and stealth, your powerful legs carrying you effortlessly across the sand. Smidglet rodents prove easy prey, and you devour them readily, though their bitter tails leave you unsatisfied. Each night, you roam farther from your lair, growing bolder and more skilled in the hunt. With each passing day, your human memories fade, replaced by primal instincts and an insatiable hunger.";
-	say "[line break]Now, on the outskirts of New Eden, you fix your amber eyes on a solitary figure moving in the gathering darkness -- Zev the Prudent, one of the old lawgivers who warned you about the ruins. You remember his stern lectures even as your muscles coil to spring. Your human mind screams in protest, but your new form moves with deadly purpose. The scent of human flesh ignites a primal hunger within you. As your claws tear into your prey, you taste not just blood but irony: the voice of prudence meeting the fate he cautioned against. You savor the terror and the twisted justice of it all, and that's the most horrifying thing: part of you still remembers his warnings, even as you fulfill them.";
+	say "[line break]Now, on the outskirts of New Eden, you fix your amber eyes on a solitary figure moving in the gathering darkness -- it's Zev the Prudent, one of the old lawgivers who warned you about the ruins. You remember his stern lectures even as your muscles coil to spring. Your human mind screams in protest, but your new form moves with deadly purpose. The scent of human flesh ignites your primal hunger. As your claws tear into your prey, you taste not just blood but irony -- the voice of prudence meeting the fate he cautioned against. You savor the terror and the twisted justice of it all.";
 	now playerTransformed is true;
 
 Part 35 - The Final Resting Place
