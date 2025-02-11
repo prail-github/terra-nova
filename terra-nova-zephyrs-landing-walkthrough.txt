@@ -4,7 +4,7 @@
 
 ===============================================================================
 
-Updated: Jan, 2025
+Updated: Feb, 2025
 Version: 1.0
 Contact: prail@yahoo.com
 
@@ -19,7 +19,7 @@ VERSION HISTORY
 ---------------
 
 1.0: Dec 11, 2024 (First Version)
-1.0: Jan 19, 2025 (Updates)
+1.0: Feb 11, 2025 (Updates)
 
 ===============================================================================
 
@@ -104,6 +104,8 @@ Go north to the Stone Tower
 
 Stone Tower
 -----------
+You notice a scrap heap here. Examine it. A magnet adheres to the box which
+might prove useful later to deactivate the obedience collar.
 Climb to the watchtower level and study the telescope.  Gaze nw to 
 see your home village, gaze up to see a hint of the Legacy spaceship patiently 
 orbiting the planet, gaze east to see the lava flows.  Overall, Terra Nova is 
@@ -112,7 +114,7 @@ damages the telescope revealing an objective lens that might be useful
 later, so take it.  Behind the plaque you find a manuscript. You can read more 
 history from Kael there. While you're up high, throw the rusty metal box off 
 the tower.  It crashes on the rocky terrain below and opens to reveal various 
-relics. Collect these when you leave the tower. The Poster, Chrono Org, and Qubit 
+relics. Collect these when you leave the tower. The Poster, Chrono Orb, and Qubit 
 stick provide historical accounts, but you can't read all of those until later.
 
 Go south to the Fallen Shrine
@@ -143,7 +145,7 @@ Lab Tunnel
 The southeast path goes to the research lab. The east path goes deeper into 
 the tunnels. Go east through the eerie tunnel to the blocked tunnel where you 
 notice a chain leading from under a cave-in of rocks and debris. You hear odd 
-grunts and moans beyond the cave-in. If you pull the chain, more threating 
+grunts and moans beyond the cave-in. If you pull the chain, more threatening 
 noise. If you attempt to "climb over" then you meet your end. If you want to 
 keep playing pour the lava on the chain, or "pour crucible on chain". This 
 frees the trapped beast and unblocks the tunnel. The beast also drops 
@@ -173,7 +175,7 @@ A deserted assembly line to churn out cyborgs lies dormant. This is a chance
 to study the way the Caretaker would convert troublesome settlers to high 
 performing cyborgs by replacing parts of them bit by bit, including their 
 minds. The assembly control panel blinks at you begging to be pressed, but 
-resist.  If you do press it you escape with a robotic hand and your disguise 
+resist.  If you press it, you escape with a robotic hand and your disguise 
 is stripped away. Intead, look but don't touch. 
 
 Go south.
@@ -276,9 +278,7 @@ bay unassisted, you're just a passenger now.
 
 Docking Bay
 -----------
-You notice a repair bench here with a few objects on it.
-Two are red herrings (as noted in the fine print) and one is useful.
-Take the tarp for later.
+You notice a repair bench here. Take the tarp for later.
 
 Go forward
 
