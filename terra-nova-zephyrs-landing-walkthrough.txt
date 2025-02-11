@@ -149,7 +149,7 @@ grunts and moans beyond the cave-in. If you pull the chain, more threatening
 noise. If you attempt to "climb over" then you meet your end. If you want to 
 keep playing pour the lava on the chain, or "pour crucible on chain". This 
 frees the trapped beast and unblocks the tunnel. The beast also drops 
-a keycard that is useful later. If you wait too many turns to use the lava it 
+a key card that is useful later. If you wait too many turns to use the lava it 
 hardens and is useless to you.  You can always backtrack to the Lava 
 Pit and gather more. The hints are generous here and should help guide you.
 
@@ -266,7 +266,7 @@ Lander Craft
 ------------
 You seem to be trapped in the exhibit but escaping your pursuers is at hand.  
 You examine the interior and notice a narrow slot on the console just wide 
-enough for the keycard.  You "put keycard in slot" to start the next part 
+enough for the key card.  You "put key card in slot" to start the next part 
 of the adventure, this time in orbit.
 
 You're launched into orbit much to the surprise of the Caretaker's guards. 
