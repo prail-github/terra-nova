@@ -2330,7 +2330,7 @@ Instead of climbing in the Blocked Passage:
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'grunt', 'mp3/738437__beast-grunt-1.mp3', 1, .75, 7500);";
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'rockslide', 'mp3/60085__rockslide.mp3', 1 );";
 	say "[line break]You place your foot on the lowest stone, testing its stability. It seems solid enough. The growling grows louder, a clear warning that echoes through the tunnel.";
-	say "[line break]You begin to scale the rocks and debris, carefully choosing your handholds and footholds. The smidglet's warnings grow louder and more frantic. The chain rattles violently against the stones, but you continue.";
+	say "[line break]You begin to scale the rocks and debris, carefully choosing your handholds and footholds. The creature's warnings grow louder and more frantic. The chain rattles violently against the stones, but you continue.";
 	say "[line break]When you grasp the edge of a large boulder you feel a sudden shift. Before you can react, sand and debris cascade down around you sending you tumbling onto the damp tunnel floor.";
 	say "[line break]Disoriented, you push yourself up, and that's when you hear it -- an angry growl, primal and hungry -- a roar that no smidglet could ever produce.";
 	pause the game;
@@ -2352,7 +2352,8 @@ Instead of climbing in the Blocked Passage:
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'grunt', 'mp3/738439__beast-grunt-3.mp3', 1, .5, 6500);"; 
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'growl', 'mp3/315769__beast-growl.mp3', 1, .5, 7500);"; 
 	say "[line break]The beast lunges. The chain restraining it snaps under the combined strength of muscle and machine. You try to scramble away, but it's too late.";
-	say "[line break]Angry fangs close around you. The last thing you see is bloody teeth and metal claws. Pain explodes through your body as steel shreds your flesh, and then... nothing.";
+	say "[line break]As angry fangs close around you, your mind flashes to the brittle, rust-weakened links of the chain. Something that old and corroded wouldn't stand up against extreme heat -- the same kind of heat that flows through the lava pits in the area. If only you'd found a way to apply that molten fire to break the chain...";
+	say "[line break]The last thing you see is bloody teeth and metal claws. Pain explodes through your body as steel shreds your flesh, and then... nothing.";
 	say "[line break]Your adventure ends here, in the belly of the Shadow Beast. Your final thought leaves an unanswered question: Who is the fiend who created this hybrid monstrosity?";
 	execute JavaScript command "audioManager.playSound('[sound-state]', 'drip', 'mp3/177958__water-drip-cave.mp3', -1);";  
 	pause the game;
@@ -2918,14 +2919,14 @@ Every turn when the player is wearing the obedience collar:
 				say "The metal is cool against your skin as you slip it around your neck, and for a second or two, nothing happens, but then, with a soft click, the collar comes to life. Your amusement turns to surprise as the collar tightens, snug against your throat. You try to remove it but your fingers find no clasp, no opening. You struggle to catch your breath. The collar compresses your windpipe without mercy.";
 				increase equip-death-turns by 1;
 			otherwise if equip-death-turns is 2:
-				say "The collar constricts further, crushing your windpipe. Black spots dance at the edges of your vision as you desperately claw at the metal band. Your lungs scream for air and panic overwhelms you. Your thoughts are growing clouded. Act quickly or these moments will be your last.";
+				say "The collar constricts further, crushing your windpipe. Black spots dance at the edges of your vision as you desperately claw at the metal band. Your lungs scream for air and panic overwhelms you. Your thoughts are growing clouded.[run paragraph on][if hasFoundMagnet is true] You wonder what Remy would do.[run paragraph on][end if] Act quickly or these moments will be your last.";
 				increase equip-death-turns by 1;
 			otherwise if equip-death-turns > 2:
 				say "You struggle weakly now, your strength fading as the collar inexorably tightens. The darkness at the edges of your vision grows, consuming everything.";
 				pause the game;
 				execute JavaScript command "updateImage('img/drone-attack-9.jpg', 'default');";
 				execute JavaScript command "audioManager.playSound('[sound-state]', 'alarm', 'mp3/586384__alarm.mp3', 5);";
-				say "[line break]A low hum fills the air and the lab's emergency lights flicker to life, filling the room with a harsh, red glow. You freeze as you hear a mechanical buzz from the corridor outside. Drones -- awakened from hibernation.[paragraph break]You see two drones enter, their red glowing eyes fixed on you. They deliver the first shock without warning. You feel a strong jolt and your body goes rigid, a scream caught in your throat. You stumble, crashing into a nearby console and sending equipment clattering to the floor.[paragraph break]Over the alarm you hear their alerts fill the room: 'UNATHORIZED PRESENCE DETECTED[line break]...INITIATING CONTAINMENT PROTOCOL'[paragraph break]With the second shock you can't hold back your screams and collapse on the floor, your body convulsing. The world around you begins to fade. Darkness creeps in at the edges of your vision.[paragraph break]As your heart stops beating and your life slips away, the drones converge on your broken body. Their alerts fill the air once more: 'PROTECTION PROTOCOL COMPLETED...THREAT ELIMINATED'[paragraph break]One drone extends a small magnetic device, and pressing it against the collar, powers it down with a final, ominous hum.";
+				say "[line break]A low hum fills the air and the lab's emergency lights flicker to life, filling the room with a harsh, red glow. You freeze as you hear a mechanical buzz from the corridor outside. Drones -- awakened from hibernation.[paragraph break]You see two drones enter, their red glowing eyes fixed on you. They deliver the first shock without warning. You feel a strong jolt and your body goes rigid, a scream caught in your throat. You stumble, crashing into a nearby console and sending equipment clattering to the floor.[paragraph break]Over the alarm you hear their alerts fill the room: 'UNATHORIZED PRESENCE DETECTED[line break]...INITIATING CONTAINMENT PROTOCOL'[paragraph break]With the second shock you can't hold back your screams and collapse on the floor, your body convulsing. The world around you begins to fade. Darkness creeps in at the edges of your vision.[paragraph break]As your heart stops beating and your life slips away, the drones converge on your broken body. Their alerts fill the air once more: 'PROTECTION PROTOCOL COMPLETED...THREAT ELIMINATED'[paragraph break]One drone extends a small magnetic device, and pressing it against the collar, releases it with a final, ominous hum. If only you'd found a way to do the same.";
 				pause the game;
 				execute JavaScript command "audioManager.stopAll()";
 				now playerDead is true;
@@ -2935,7 +2936,7 @@ Every turn when the player is wearing the obedience collar:
 		otherwise: 
 			[player not in equipment storage but wears the collar]
 			say "The metal is cool against your skin as you slip it around your neck, and for a second or two, nothing happens, but then, with a soft click, the collar comes to life. Your amusement turns to surprise as the collar tightens, snug against your throat. You try to remove it but your fingers find no clasp, no opening. You struggle to catch your breath. The collar compresses your windpipe without mercy.";
-			say "[line break]You feel a strong jolt and your body goes rigid, a scream caught in your throat. With the second shock you can't hold back your screams and collapse, your body convulsing. The world around you begins to fade. Darkness creeps in at the edges of your vision.[paragraph break]As your heart stops beating and your life slips away, the collar powers down with a final, ominous hum.";
+			say "[line break]You feel a strong jolt and your body goes rigid, a scream caught in your throat. With the second shock you can't hold back your screams and collapse, your body convulsing. The world around you begins to fade. Darkness creeps in at the edges of your vision.[run paragraph on][if hasFoundMagnet is true]  You wonder what Remy would do.[end if][paragraph break]As your heart stops beating and your life slips away, the collar powers down with a final, ominous hum.";
 			now playerDead is true;
 			pause the game;
 			stop the action;
@@ -3367,15 +3368,17 @@ Carry out focusing:
 	if the noun is the light beam:
 		if the second noun is the objective lens:
 			clear the screen;
-			say "With careful precision, you position the lens to concentrate the light beam. The focused beam intensifies as you find the right distance, creating a brilliant point of light on the receptor.";
-			say "[line break]For a heart-stopping moment, it seems to work -- the focused beam connects with the receptor, which begins blinking rapidly. You feel a sense of relief and step into the darkened hallway.";
-			say "[line break]However, you soon realize that the security system doesn't rely on a single beam. It's a complex network of crisscrossing lights."; 
+			say "With careful precision, you position the lens to concentrate the light beam. The focused beam intensifies as you find the right angle, creating a brilliant point of light on the receptor.";
+			say "[line break]For a heart-stopping moment, it seems to work -- the focused beam connects with the receptor, which begins blinking rapidly. You feel a surge of triumph as you step into the darkened hallway.";
+			say "[line break]However, you soon realize that the security system doesn't rely on a single beam, but a complex network of crisscrossing sensors."; 
 			pause the game;
 			clear the screen;
 			execute JavaScript command "updateImage('img/caretaker-closeup-4.jpg', '#303030');";
 			execute JavaScript command "audioManager.playSound('[sound-state]', 'alarm', 'mp3/586384__alarm.mp3', -1);";
 			say "[line break]Suddenly, alarms blare throughout the complex, and you hear an automated voice announce, 'Unauthorized Access Detected.'";
-			say "[line break]As you turn to run, you feel a sudden sharp pain in your neck -- an injection. The last thing you see is the Caretaker's impassive face looming over you. She says, 'Initiate Absorption Protocol.'";
+			say "[line break]As you turn to run, you feel a sudden sharp pain in your neck -- an injection. ";
+			say "[paragraph break]You stagger. Your mind grows foggy, yet you have a moment of clarity:  The beams -- they're powered by something -- the same power source that awoke this complex when you first uncovered the solar panels. If only you had thought to interrupt the power at its source rather than trying to outsmart the security system directly.";
+			say "[line break]The last thing you see is the Caretaker's impassive face looming over you. She says, 'Initiate Absorption Protocol.'";
 			pause the game;
 			clear the screen;
 			execute JavaScript command "audioManager.stop('alarm');";
@@ -3436,8 +3439,6 @@ Check blocking it with:
 Carry out blocking it with:
 	if the player is in the Restricted Area Entrance:
 		if the second noun is the objective lens:
-			say "The lens does nothing to impede the beams. The constant low frequency hum reminds you that as long as they're powered, these beams will remain active.";
-			pause the game;
 			try focusing the beam with the objective lens;
 		otherwise if the second noun is the silver key card:
 			say "The key card proves useless against the beams. They continue their relentless sweep, drawing power from somewhere in the complex." instead;
