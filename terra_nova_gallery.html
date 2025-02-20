@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terra Nova Image Reference</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .thumbnail-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .thumbnail {
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+        }
+        .thumbnail:hover {
+            transform: scale(1.05);
+            border: 2px solid #0066cc;
+        }
+        .image-section {
+            margin-bottom: 60px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .caption {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #444;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .full-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .top-link {
+            display: block;
+            text-align: right;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #0066cc;
+            font-weight: bold;
+        }
+        .top-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Terra Nova Image Reference</h1>
+    <div class="thumbnail-container" id="thumbnails">
+        <img 
+            src="img/splash-4.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="splash-4.jpg thumbnail"
+            onclick="document.getElementById('splash-4.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/zephyrs-landing-ruins-6.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="zephyrs-landing-ruins-6.jpg thumbnail"
+            onclick="document.getElementById('zephyrs-landing-ruins-6.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/ruins-solar-glass-2.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="ruins-solar-glass-2.jpg thumbnail"
+            onclick="document.getElementById('ruins-solar-glass-2.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/well-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="well-1.jpg thumbnail"
+            onclick="document.getElementById('well-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/foundry-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="foundry-1.jpg thumbnail"
+            onclick="document.getElementById('foundry-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/stone-tower-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="stone-tower-1.jpg thumbnail"
+            onclick="document.getElementById('stone-tower-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/stone-tower-interior-3.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="stone-tower-interior-3.jpg thumbnail"
+            onclick="document.getElementById('stone-tower-interior-3.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/tower-summit-4.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="tower-summit-4.jpg thumbnail"
+            onclick="document.getElementById('tower-summit-4.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/shrine-5.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="shrine-5.jpg thumbnail"
+            onclick="document.getElementById('shrine-5.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/lava-pit-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="lava-pit-1.jpg thumbnail"
+            onclick="document.getElementById('lava-pit-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/tunnel-2.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="tunnel-2.jpg thumbnail"
+            onclick="document.getElementById('tunnel-2.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/ladder-down-5a.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="ladder-down-5a.jpg thumbnail"
+            onclick="document.getElementById('ladder-down-5a.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/ladder-up-8.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="ladder-up-8.jpg thumbnail"
+            onclick="document.getElementById('ladder-up-8.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/blocked-tunnel-darker.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="blocked-tunnel-darker.jpg thumbnail"
+            onclick="document.getElementById('blocked-tunnel-darker.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/bot-assembly-4.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="bot-assembly-4.jpg thumbnail"
+            onclick="document.getElementById('bot-assembly-4.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/lab-without-caretaker.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="lab-without-caretaker.jpg thumbnail"
+            onclick="document.getElementById('lab-without-caretaker.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/lab-with-caretaker-e.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="lab-with-caretaker-e.jpg thumbnail"
+            onclick="document.getElementById('lab-with-caretaker-e.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/quantum-projector-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="quantum-projector-1.jpg thumbnail"
+            onclick="document.getElementById('quantum-projector-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/restricted-hallway-beams-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="restricted-hallway-beams-1.jpg thumbnail"
+            onclick="document.getElementById('restricted-hallway-beams-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/restricted-hallway-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="restricted-hallway-1.jpg thumbnail"
+            onclick="document.getElementById('restricted-hallway-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/equipment-storage-3.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="equipment-storage-3.jpg thumbnail"
+            onclick="document.getElementById('equipment-storage-3.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/cyborg-hybrid-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="cyborg-hybrid-1.jpg thumbnail"
+            onclick="document.getElementById('cyborg-hybrid-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/lander-museum-z.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="lander-museum-z.jpg thumbnail"
+            onclick="document.getElementById('lander-museum-z.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/legacy-leaves-earth-55.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="legacy-leaves-earth-55.jpg thumbnail"
+            onclick="document.getElementById('legacy-leaves-earth-55.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/legacy-deep-space-11a.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="legacy-deep-space-11a.jpg thumbnail"
+            onclick="document.getElementById('legacy-deep-space-11a.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/legacy-orbits-terra-nova-aa.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="legacy-orbits-terra-nova-aa.jpg thumbnail"
+            onclick="document.getElementById('legacy-orbits-terra-nova-aa.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/legacy-bay-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="legacy-bay-1.jpg thumbnail"
+            onclick="document.getElementById('legacy-bay-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/legacy-deploys-zephyr-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="legacy-deploys-zephyr-1.jpg thumbnail"
+            onclick="document.getElementById('legacy-deploys-zephyr-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/parachute-2.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="parachute-2.jpg thumbnail"
+            onclick="document.getElementById('parachute-2.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/lander-fff.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="lander-fff.jpg thumbnail"
+            onclick="document.getElementById('lander-fff.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/lander-interior-5.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="lander-interior-5.jpg thumbnail"
+            onclick="document.getElementById('lander-interior-5.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/portal-view-of-terra-nova-3.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="portal-view-of-terra-nova-3.jpg thumbnail"
+            onclick="document.getElementById('portal-view-of-terra-nova-3.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/kai-in-orbit-normal-hand.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="kai-in-orbit-normal-hand.jpg thumbnail"
+            onclick="document.getElementById('kai-in-orbit-normal-hand.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/legacy-docking-approach-5.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="legacy-docking-approach-5.jpg thumbnail"
+            onclick="document.getElementById('legacy-docking-approach-5.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/docking-bay-normal-hand.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="docking-bay-normal-hand.jpg thumbnail"
+            onclick="document.getElementById('docking-bay-normal-hand.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/dna-library-2.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="dna-library-2.jpg thumbnail"
+            onclick="document.getElementById('dna-library-2.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/colony-monitor-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="colony-monitor-1.jpg thumbnail"
+            onclick="document.getElementById('colony-monitor-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/legacy-bridge-2.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="legacy-bridge-2.jpg thumbnail"
+            onclick="document.getElementById('legacy-bridge-2.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/kai-on-bridge-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="kai-on-bridge-1.jpg thumbnail"
+            onclick="document.getElementById('kai-on-bridge-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+        <img 
+            src="img/dead-game-over-1.jpg" 
+            class="thumbnail" 
+            width="150" 
+            alt="dead-game-over-1.jpg thumbnail"
+            onclick="document.getElementById('dead-game-over-1.jpg').scrollIntoView({behavior: 'smooth'})"
+        >
+    </div>
+
+    <div class="image-section" id="splash-4.jpg">
+        <div class="caption">Title Cover - desert ruins with visible orbiting ship</div>
+        <img src="img/splash-4.jpg" class="full-image" alt="Title Cover - desert ruins with visible orbiting ship">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="zephyrs-landing-ruins-6.jpg">
+        <div class="caption">Desert ruins</div>
+        <img src="img/zephyrs-landing-ruins-6.jpg" class="full-image" alt="Desert ruins">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="ruins-solar-glass-2.jpg">
+        <div class="caption">Ruins with solar panel visible</div>
+        <img src="img/ruins-solar-glass-2.jpg" class="full-image" alt="Ruins with solar panel visible">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="well-1.jpg">
+        <div class="caption">Long-abandoned well</div>
+        <img src="img/well-1.jpg" class="full-image" alt="Long-abandoned well">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="foundry-1.jpg">
+        <div class="caption">Foundry in the ruins</div>
+        <img src="img/foundry-1.jpg" class="full-image" alt="Foundry in the ruins">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="stone-tower-1.jpg">
+        <div class="caption">Stone Watchtower</div>
+        <img src="img/stone-tower-1.jpg" class="full-image" alt="Stone Watchtower">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="stone-tower-interior-3.jpg">
+        <div class="caption">Stone Watchtower Interior</div>
+        <img src="img/stone-tower-interior-3.jpg" class="full-image" alt="Stone Watchtower Interior">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="tower-summit-4.jpg">
+        <div class="caption">Stone Watchtower Top</div>
+        <img src="img/tower-summit-4.jpg" class="full-image" alt="Stone Watchtower Top">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="shrine-5.jpg">
+        <div class="caption">Fallen Shrine</div>
+        <img src="img/shrine-5.jpg" class="full-image" alt="Fallen Shrine">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="lava-pit-1.jpg">
+        <div class="caption">Lava Pit</div>
+        <img src="img/lava-pit-1.jpg" class="full-image" alt="Lava Pit">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="tunnel-2.jpg">
+        <div class="caption">Lab Tunnel</div>
+        <img src="img/tunnel-2.jpg" class="full-image" alt="Lab Tunnel">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="ladder-down-5a.jpg">
+        <div class="caption">Ladder leads down to underground complex</div>
+        <img src="img/ladder-down-5a.jpg" class="full-image" alt="Ladder leads down to underground complex">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="ladder-up-8.jpg">
+        <div class="caption">Ladder up</div>
+        <img src="img/ladder-up-8.jpg" class="full-image" alt="Ladder up">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="blocked-tunnel-darker.jpg">
+        <div class="caption">Blocked tunnel</div>
+        <img src="img/blocked-tunnel-darker.jpg" class="full-image" alt="Blocked tunnel">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="bot-assembly-4.jpg">
+        <div class="caption">Cyborg assembly</div>
+        <img src="img/bot-assembly-4.jpg" class="full-image" alt="Cyborg assembly">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="lab-without-caretaker.jpg">
+        <div class="caption">Research Lab</div>
+        <img src="img/lab-without-caretaker.jpg" class="full-image" alt="Research Lab">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="lab-with-caretaker-e.jpg">
+        <div class="caption">Research Lab with Caretaker</div>
+        <img src="img/lab-with-caretaker-e.jpg" class="full-image" alt="Research Lab with Caretaker">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="quantum-projector-1.jpg">
+        <div class="caption">Cyborg Testing Station</div>
+        <img src="img/quantum-projector-1.jpg" class="full-image" alt="Cyborg Testing Station">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="restricted-hallway-beams-1.jpg">
+        <div class="caption">Restricted Area (Beams)</div>
+        <img src="img/restricted-hallway-beams-1.jpg" class="full-image" alt="Restricted Area (Beams)">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="restricted-hallway-1.jpg">
+        <div class="caption">Restricted Area (Open)</div>
+        <img src="img/restricted-hallway-1.jpg" class="full-image" alt="Restricted Area (Open)">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="equipment-storage-3.jpg">
+        <div class="caption">Equipment Storage</div>
+        <img src="img/equipment-storage-3.jpg" class="full-image" alt="Equipment Storage">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="cyborg-hybrid-1.jpg">
+        <div class="caption">Damaged Cyborg in Supply Room</div>
+        <img src="img/cyborg-hybrid-1.jpg" class="full-image" alt="Damaged Cyborg in Supply Room">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="lander-museum-z.jpg">
+        <div class="caption">Zephyr Lander Craft in museum</div>
+        <img src="img/lander-museum-z.jpg" class="full-image" alt="Zephyr Lander Craft in museum">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="legacy-leaves-earth-55.jpg">
+        <div class="caption">Legacy leaves Earth</div>
+        <img src="img/legacy-leaves-earth-55.jpg" class="full-image" alt="Legacy leaves Earth">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="legacy-deep-space-11a.jpg">
+        <div class="caption">Legacy in deep space</div>
+        <img src="img/legacy-deep-space-11a.jpg" class="full-image" alt="Legacy in deep space">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="legacy-orbits-terra-nova-aa.jpg">
+        <div class="caption">Legacy arrives at Terra Nova</div>
+        <img src="img/legacy-orbits-terra-nova-aa.jpg" class="full-image" alt="Legacy arrives at Terra Nova">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="legacy-bay-1.jpg">
+        <div class="caption">Legacy prepares to deploy Zephyr lander</div>
+        <img src="img/legacy-bay-1.jpg" class="full-image" alt="Legacy prepares to deploy Zephyr lander">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="legacy-deploys-zephyr-1.jpg">
+        <div class="caption">Legacy deploys Zephyr lander</div>
+        <img src="img/legacy-deploys-zephyr-1.jpg" class="full-image" alt="Legacy deploys Zephyr lander">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="parachute-2.jpg">
+        <div class="caption">Zephyr lander approaches surface</div>
+        <img src="img/parachute-2.jpg" class="full-image" alt="Zephyr lander approaches surface">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="lander-fff.jpg">
+        <div class="caption">Zephyr lander touches down on Terra Nova</div>
+        <img src="img/lander-fff.jpg" class="full-image" alt="Zephyr lander touches down on Terra Nova">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="lander-interior-5.jpg">
+        <div class="caption">Lander craft interior</div>
+        <img src="img/lander-interior-5.jpg" class="full-image" alt="Lander craft interior">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="portal-view-of-terra-nova-3.jpg">
+        <div class="caption">Kai leaves Terra Nova</div>
+        <img src="img/portal-view-of-terra-nova-3.jpg" class="full-image" alt="Kai leaves Terra Nova">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="kai-in-orbit-normal-hand.jpg">
+        <div class="caption">Kai approaches Legacy seed ship</div>
+        <img src="img/kai-in-orbit-normal-hand.jpg" class="full-image" alt="Kai approaches Legacy seed ship">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="legacy-docking-approach-5.jpg">
+        <div class="caption">Kai docks with seed ship</div>
+        <img src="img/legacy-docking-approach-5.jpg" class="full-image" alt="Kai docks with seed ship">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="docking-bay-normal-hand.jpg">
+        <div class="caption">Kai arrives on Legacy</div>
+        <img src="img/docking-bay-normal-hand.jpg" class="full-image" alt="Kai arrives on Legacy">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="dna-library-2.jpg">
+        <div class="caption">DNA Library</div>
+        <img src="img/dna-library-2.jpg" class="full-image" alt="DNA Library">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="colony-monitor-1.jpg">
+        <div class="caption">Colony monitoring center</div>
+        <img src="img/colony-monitor-1.jpg" class="full-image" alt="Colony monitoring center">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="legacy-bridge-2.jpg">
+        <div class="caption">Legacy Pilot on bridge</div>
+        <img src="img/legacy-bridge-2.jpg" class="full-image" alt="Legacy Pilot on bridge">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="kai-on-bridge-1.jpg">
+        <div class="caption">Kai on bridge</div>
+        <img src="img/kai-on-bridge-1.jpg" class="full-image" alt="Kai on bridge">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <div class="image-section" id="dead-game-over-1.jpg">
+        <div class="caption">Kai dies</div>
+        <img src="img/dead-game-over-1.jpg" class="full-image" alt="Kai dies">
+        <a href="#thumbnails" class="top-link">Back to Top</a>
+    </div>
+    <script>
+        // Add any JavaScript enhancements here if needed
+    </script>
+</body>
+</html>
