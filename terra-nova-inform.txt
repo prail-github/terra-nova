@@ -805,7 +805,7 @@ The doorway is scenery in the Docking Bay.
 The description of the doorway is "Through dim lighting you can see that the doorway leads to the bridge of the ship."
 
 The Chrono Orb is in the rusty box.
-The description of the Chrono Orb is "A sturdy piece of nickle-silver alloy shaped into a sphere, smooth and cool, it fits agreeably in your hand. Its surface gleams with an otherworldly iridescence, shifting colors like oil on water as you turn it over. The orb's outer shell is scratched and pitted from centuries of age, yet it remains remarkably intact. You notice a faint seam running around its equator, suggesting it can be activated somehow.";
+The description of the Chrono Orb is "A sturdy piece of nickel-silver alloy shaped into a sphere, smooth and cool, it fits agreeably in your hand. Its surface gleams with an otherworldly iridescence, shifting colors like oil on water as you turn it over. The orb's outer shell is scratched and pitted from centuries of age, yet it remains remarkably intact. You notice a faint seam running around its equator, suggesting it can be activated somehow.";
 	
 Instead of reading the climate report:	try examining the climate report.
 
@@ -1583,6 +1583,9 @@ Instead of climbing the old stone steps:
 The scrap heap is in the Stone Tower Exterior.
 The scrap heap is fixed in place.
 
+Instead of taking the scrap heap:
+	say "You rummage through the heap but find nothing worth taking."
+
 The description of the scrap heap is "A pile of twisted metal and scorched fragments lies half-buried by the desert wind. Jagged edges and charred components protrude from the sand like bones in some mechanical graveyard."
 
 Understand "pile" or "twisted metal" or "scorched fragments" or "components" as the scrap heap.
@@ -2246,7 +2249,7 @@ The image file name of the Eerie Tunnel is "tunnel-3.jpg".
 The sound-file-name of the Eerie Tunnel is "177958__water-drip-cave.mp3".
 The Eerie Tunnel is scored.
 The Blocked Passage is east of the Eerie Tunnel.
-The description of the Eerie Tunnel is "Your footsteps echo on cold, damp stone, the passage stretching out ahead in near darkness. Grimy walls, stained with age and decay, close in, and secrets lurk in shadow. Dread gnaws at you but curiosity compels you. [paragraph break]Go [hyperlink direction east] to venture deeper into the silence or [hyperlink direction west] to backtrack." 
+The description of the Eerie Tunnel is "Your footsteps echo on cold, damp stone, the passage stretching out ahead in near darkness. Grimy walls, stained with age and decay, close in, and secrets lurk in shadow. Dread gnaws at you, but curiosity compels you. [paragraph break]Go [hyperlink direction east] to venture deeper into the silence or [hyperlink direction west] to backtrack." 
 
 Part 18 - Blocked Passage
 
@@ -2626,7 +2629,7 @@ Report wearing the cybernetic suit:
 The female cyborg is a woman in the Supply Room.
 The female cyborg is undescribed.
 The indefinite article of the female cyborg is "a".
-The description of the female cyborg is "A damaged cyborg lays discarded like a broken doll. Her eyes, a mix of cold circuitry and wary humanity study you. Despite her weakened state, you sense a lethal capability lurking beneath her ruined exterior, a silent warning that she is still a formidable enemy."
+The description of the female cyborg is "A damaged cyborg lies discarded like a broken doll. Her eyes, a mix of cold circuitry and wary humanity study you. Despite her weakened state, you sense a lethal capability lurking beneath her ruined exterior, a silent warning that she is still a formidable enemy."
 
 Understand "figure" as the female cyborg.
 Understand "Eve" as the female cyborg.
@@ -3164,7 +3167,7 @@ After asking the Caretaker Bot about something:
 	otherwise:
 		say "The Caretaker ignores you.";
 
-The description of the Caretaker Bot is "The Caretaker was once a marvel of robotics designed to evoke a sense of maternal care despite her artifical nature, but no more. Now her mechanized form is fused with the lab's electronics in a tangle of cables and tubes. Her face is a cruel mask, one side mostly intact and the other a jumble of improvised repairs. Her eyes gleam with malevolent intelligence.[paragraph break]Ask Caretaker about _____[line break]- the DNA Databank[line break]- the gestation pods[line break]- the Restricted Area."
+The description of the Caretaker Bot is "The Caretaker was once a marvel of robotics designed to evoke a sense of maternal care despite her artificial nature, but no more. Now her mechanized form is fused with the lab's electronics in a tangle of cables and tubes. Her face is a cruel mask, one side mostly intact and the other a jumble of improvised repairs. Her eyes gleam with malevolent intelligence.[paragraph break]Ask Caretaker about _____[line break]- the DNA Databank[line break]- the gestation pods[line break]- the Restricted Area."
 
 The various monitors, slight platform, screens, screen, the holographic displays, the holographic display, workstations, organized chaos, cyborg parts, maze of buttons, switches, line items, line item, modified key, and modified keypad are scenery in the Research Lab.
 
